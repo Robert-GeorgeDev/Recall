@@ -29,12 +29,12 @@ export default function BottomNav() {
           ))}
           <SignOutButton />
         </div>
-        <button
-          type="button"
+        <Link
+          href="/followups/new"
           className="whitespace-nowrap rounded-xl bg-cta px-4 py-2.5 text-sm font-semibold text-white hover:bg-cta-dark"
         >
           + Follow-up
-        </button>
+        </Link>
       </div>
     </nav>
   );
