@@ -4,11 +4,11 @@ export type Priority = (typeof PRIORITIES)[number];
 
 export type FollowUp = {
   id: string;
-  contactId: string;
-  contactName: string;
+  contact_id: string;
+  contact_name: string;
   company: string;
-  dueDate: string;
-  dueTime: string;
+  due_date: string;
+  due_time: string;
   priority: Priority;
   note: string;
   status: "open" | "done";

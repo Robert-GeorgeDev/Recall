@@ -1,9 +1,7 @@
 "use client";
 
 import { useState } from "react";
-import { addDoc, collection, serverTimestamp } from "firebase/firestore";
-import { useAuth } from "@/components/auth-provider";
-import { db } from "@/lib/firebase";
+import { supabase } from "@/lib/supabase";
 import { STATUSES, type Status } from "@/types/contact";
 
 const inputClass =
@@ -16,7 +14,6 @@ export default function AddContactForm({
   orgId: string;
   onDone: () => void;
 }) {
-  const { user } = useAuth();
   const [firstName, setFirstName] = useState("");
   const [lastName, setLastName] = useState("");
   const [company, setCompany] = useState("");
@@ -29,30 +26,28 @@ export default function AddContactForm({
 
   async function handleSubmit(e: React.FormEvent<HTMLFormElement>) {
     e.preventDefault();
-    if (!user) return;
     if (firstName.trim().length === 0) {
       setError("First name is required.");
       return;
     }
     setError("");
     setBusy(true);
-    try {
-      await addDoc(collection(db, "organizations", orgId, "contacts"), {
-        firstName: firstName.trim(),
-        lastName: lastName.trim(),
-        company: company.trim(),
-        email: email.trim(),
-        phone: phone.trim(),
-        status,
-        notes: notes.trim(),
-        createdAt: serverTimestamp(),
-        createdBy: user.uid,
-      });
-      onDone();
-    } catch {
+    const { error: failure } = await supabase.from("contacts").insert({
+      organization_id: orgId,
+      first_name: firstName.trim(),
+      last_name: lastName.trim(),
+      company: company.trim(),
+      email: email.trim(),
+      phone: phone.trim(),
+      status,
+      notes: notes.trim(),
+    });
+    if (failure) {
       setError("Something went wrong. Please try again.");
       setBusy(false);
+      return;
     }
+    onDone();
   }
 
   return (

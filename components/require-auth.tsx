@@ -2,9 +2,8 @@
 
 import { useEffect, useState } from "react";
 import { useRouter } from "next/navigation";
-import { doc, getDoc } from "firebase/firestore";
 import { useAuth } from "@/components/auth-provider";
-import { db } from "@/lib/firebase";
+import { supabase } from "@/lib/supabase";
 
 export default function RequireAuth({
   children,
@@ -29,17 +28,21 @@ export default function RequireAuth({
       return;
     }
     let cancelled = false;
-    getDoc(doc(db, "users", user.uid))
-      .then((snap) => {
+    supabase
+      .from("organization_members")
+      .select("organization_id")
+      .eq("user_id", user.id)
+      .limit(1)
+      .maybeSingle()
+      .then(({ data, error }) => {
         if (cancelled) return;
-        if (snap.exists()) {
+        if (error) {
+          setFailed(true);
+        } else if (data) {
           setReady(true);
         } else {
           router.replace("/onboarding");
         }
-      })
-      .catch(() => {
-        if (!cancelled) setFailed(true);
       });
     return () => {
       cancelled = true;

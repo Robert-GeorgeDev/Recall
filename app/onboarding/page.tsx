@@ -2,18 +2,10 @@
 
 import { useState } from "react";
 import { useRouter } from "next/navigation";
-import {
-  collection,
-  doc,
-  serverTimestamp,
-  writeBatch,
-} from "firebase/firestore";
 import RequireAuth from "@/components/require-auth";
-import { useAuth } from "@/components/auth-provider";
-import { db } from "@/lib/firebase";
+import { supabase } from "@/lib/supabase";
 
 function OnboardingForm() {
-  const { user } = useAuth();
   const router = useRouter();
   const [name, setName] = useState("");
   const [error, setError] = useState("");
@@ -21,7 +13,6 @@ function OnboardingForm() {
 
   async function handleSubmit(e: React.FormEvent<HTMLFormElement>) {
     e.preventDefault();
-    if (!user) return;
 
     const workspaceName = name.trim();
     if (workspaceName.length === 0 || workspaceName.length > 80) {
@@ -31,28 +22,15 @@ function OnboardingForm() {
 
     setError("");
     setBusy(true);
-    try {
-      const orgRef = doc(collection(db, "organizations"));
-      const batch = writeBatch(db);
-      batch.set(orgRef, {
-        name: workspaceName,
-        ownerId: user.uid,
-        createdAt: serverTimestamp(),
-      });
-      batch.set(doc(db, "organizations", orgRef.id, "members", user.uid), {
-        role: "owner",
-        createdAt: serverTimestamp(),
-      });
-      batch.set(doc(db, "users", user.uid), {
-        orgId: orgRef.id,
-        createdAt: serverTimestamp(),
-      });
-      await batch.commit();
-      router.replace("/dashboard");
-    } catch {
+    const { error: failure } = await supabase.rpc("create_workspace", {
+      workspace_name: workspaceName,
+    });
+    if (failure) {
       setError("Something went wrong. Please try again.");
       setBusy(false);
+      return;
     }
+    router.replace("/dashboard");
   }
 
   return (

@@ -1,20 +1,12 @@
 "use client";
 
-import { useEffect, useMemo, useState } from "react";
+import { useCallback, useEffect, useMemo, useState } from "react";
 import Link from "next/link";
-import {
-  collection,
-  deleteDoc,
-  doc,
-  onSnapshot,
-  orderBy,
-  query,
-} from "firebase/firestore";
 import RequireAuth from "@/components/require-auth";
 import BottomNav from "@/components/bottom-nav";
 import AddContactForm from "@/components/add-contact-form";
 import { useOrgId } from "@/hooks/use-org-id";
-import { db } from "@/lib/firebase";
+import { supabase } from "@/lib/supabase";
 import type { Contact } from "@/types/contact";
 
 function ContactsView() {
@@ -24,33 +16,31 @@ function ContactsView() {
   const [showForm, setShowForm] = useState(false);
   const [error, setError] = useState("");
 
-  useEffect(() => {
+  const load = useCallback(async () => {
     if (!orgId) return;
-    const q = query(
-      collection(db, "organizations", orgId, "contacts"),
-      orderBy("createdAt", "desc")
-    );
-    const unsubscribe = onSnapshot(
-      q,
-      (snap) => {
-        setContacts(
-          snap.docs.map((d) => ({
-            id: d.id,
-            ...(d.data() as Omit<Contact, "id">),
-          }))
-        );
-      },
-      () => setError("Could not load contacts. Please refresh the page.")
-    );
-    return () => unsubscribe();
+    const { data, error: queryError } = await supabase
+      .from("contacts")
+      .select("*")
+      .eq("organization_id", orgId)
+      .order("created_at", { ascending: false });
+    if (queryError) {
+      setError("Could not load contacts. Please refresh the page.");
+      return;
+    }
+    setError("");
+    setContacts((data ?? []) as Contact[]);
   }, [orgId]);
+
+  useEffect(() => {
+    load();
+  }, [load]);
 
   const filtered = useMemo(() => {
     if (!contacts) return [];
     const term = search.trim().toLowerCase();
     if (!term) return contacts;
     return contacts.filter((c) =>
-      [c.firstName, c.lastName, c.company, c.email, c.phone, c.notes]
+      [c.first_name, c.last_name, c.company, c.email, c.phone, c.notes]
         .join(" ")
         .toLowerCase()
         .includes(term)
@@ -58,14 +48,17 @@ function ContactsView() {
   }, [contacts, search]);
 
   async function handleDelete(c: Contact) {
-    if (!orgId) return;
-    const fullName = `${c.firstName} ${c.lastName}`.trim();
+    const fullName = `${c.first_name} ${c.last_name}`.trim();
     if (!window.confirm(`Delete ${fullName}? This cannot be undone.`)) return;
-    try {
-      await deleteDoc(doc(db, "organizations", orgId, "contacts", c.id));
-    } catch {
+    const { error: failure } = await supabase
+      .from("contacts")
+      .delete()
+      .eq("id", c.id);
+    if (failure) {
       setError("Could not delete the contact. Please try again.");
+      return;
     }
+    load();
   }
 
   return (
@@ -90,7 +83,13 @@ function ContactsView() {
       )}
 
       {showForm && orgId && (
-        <AddContactForm orgId={orgId} onDone={() => setShowForm(false)} />
+        <AddContactForm
+          orgId={orgId}
+          onDone={() => {
+            setShowForm(false);
+            load();
+          }}
+        />
       )}
 
       {contacts && contacts.length > 0 && (
@@ -140,7 +139,7 @@ function ContactsView() {
                   href={`/contacts/${c.id}`}
                   className="font-semibold text-ink hover:text-brand"
                 >
-                  {c.firstName} {c.lastName}
+                  {c.first_name} {c.last_name}
                 </Link>
                 {c.company && (
                   <p className="text-sm text-slate-600">{c.company}</p>

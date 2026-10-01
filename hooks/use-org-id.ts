@@ -1,9 +1,8 @@
 "use client";
 
 import { useEffect, useState } from "react";
-import { doc, getDoc } from "firebase/firestore";
 import { useAuth } from "@/components/auth-provider";
-import { db } from "@/lib/firebase";
+import { supabase } from "@/lib/supabase";
 
 export function useOrgId() {
   const { user } = useAuth();
@@ -12,13 +11,17 @@ export function useOrgId() {
   useEffect(() => {
     if (!user) return;
     let cancelled = false;
-    getDoc(doc(db, "users", user.uid))
-      .then((snap) => {
-        if (!cancelled && snap.exists()) {
-          setOrgId(snap.data().orgId as string);
+    supabase
+      .from("organization_members")
+      .select("organization_id")
+      .eq("user_id", user.id)
+      .limit(1)
+      .maybeSingle()
+      .then(({ data }) => {
+        if (!cancelled && data) {
+          setOrgId(data.organization_id as string);
         }
-      })
-      .catch(() => {});
+      });
     return () => {
       cancelled = true;
     };

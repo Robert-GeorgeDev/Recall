@@ -12,8 +12,8 @@ export type Status = (typeof STATUSES)[number];
 
 export type Contact = {
   id: string;
-  firstName: string;
-  lastName: string;
+  first_name: string;
+  last_name: string;
   company: string;
   email: string;
   phone: string;

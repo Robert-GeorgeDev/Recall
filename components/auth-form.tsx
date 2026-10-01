@@ -3,25 +3,23 @@
 import { useState } from "react";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
-import {
-  createUserWithEmailAndPassword,
-  signInWithEmailAndPassword,
-} from "firebase/auth";
-import { auth } from "@/lib/firebase";
+import { supabase } from "@/lib/supabase";
 
-function friendlyError(code: string): string {
+function friendlyError(code: string | undefined): string {
   switch (code) {
-    case "auth/email-already-in-use":
+    case "user_already_exists":
       return "An account with this email already exists. Try logging in.";
-    case "auth/invalid-email":
+    case "validation_failed":
+    case "email_address_invalid":
       return "Please enter a valid email address.";
-    case "auth/weak-password":
+    case "weak_password":
       return "Please choose a stronger password.";
-    case "auth/invalid-credential":
-    case "auth/user-not-found":
-    case "auth/wrong-password":
+    case "invalid_credentials":
       return "Incorrect email or password.";
-    case "auth/too-many-requests":
+    case "email_not_confirmed":
+      return "Please confirm your email first. Check your inbox.";
+    case "over_request_rate_limit":
+    case "over_email_send_rate_limit":
       return "Too many attempts. Please wait a moment and try again.";
     default:
       return "Something went wrong. Please try again.";
@@ -33,26 +31,35 @@ export default function AuthForm({ mode }: { mode: "login" | "signup" }) {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [error, setError] = useState("");
+  const [info, setInfo] = useState("");
   const [busy, setBusy] = useState(false);
   const isSignup = mode === "signup";
 
   async function handleSubmit(e: React.FormEvent<HTMLFormElement>) {
     e.preventDefault();
     setError("");
+    setInfo("");
     setBusy(true);
     try {
-      if (isSignup) {
-        await createUserWithEmailAndPassword(auth, email, password);
-      } else {
-        await signInWithEmailAndPassword(auth, email, password);
+      const result = isSignup
+        ? await supabase.auth.signUp({ email, password })
+        : await supabase.auth.signInWithPassword({ email, password });
+
+      if (result.error) {
+        setError(friendlyError(result.error.code));
+        setBusy(false);
+        return;
       }
+
+      if (isSignup && !result.data.session) {
+        setInfo("Check your email to confirm your account, then log in.");
+        setBusy(false);
+        return;
+      }
+
       router.replace("/dashboard");
-    } catch (err) {
-      const code =
-        typeof err === "object" && err !== null && "code" in err
-          ? String((err as { code: unknown }).code)
-          : "";
-      setError(friendlyError(code));
+    } catch {
+      setError("Something went wrong. Please try again.");
       setBusy(false);
     }
   }
@@ -108,6 +115,11 @@ export default function AuthForm({ mode }: { mode: "login" | "signup" }) {
         {error && (
           <p role="alert" className="rounded-xl bg-red-50 px-4 py-3 text-sm text-overdue">
             {error}
+          </p>
+        )}
+        {info && (
+          <p role="status" className="rounded-xl bg-brand-soft px-4 py-3 text-sm text-brand">
+            {info}
           </p>
         )}
 

@@ -3,18 +3,9 @@
 import { useEffect, useState } from "react";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
-import {
-  addDoc,
-  collection,
-  getDocs,
-  orderBy,
-  query,
-  serverTimestamp,
-} from "firebase/firestore";
 import RequireAuth from "@/components/require-auth";
-import { useAuth } from "@/components/auth-provider";
 import { useOrgId } from "@/hooks/use-org-id";
-import { db } from "@/lib/firebase";
+import { supabase } from "@/lib/supabase";
 import { addDays, todayISO } from "@/lib/dates";
 import { PRIORITIES, type Priority } from "@/types/followup";
 
@@ -24,7 +15,6 @@ const inputClass =
   "mt-1 w-full rounded-xl border border-line bg-white px-4 py-3 outline-none focus:border-brand focus:ring-2 focus:ring-brand/20";
 
 function NewFollowUpForm() {
-  const { user } = useAuth();
   const orgId = useOrgId();
   const router = useRouter();
 
@@ -40,27 +30,24 @@ function NewFollowUpForm() {
   useEffect(() => {
     if (!orgId) return;
     let cancelled = false;
-    getDocs(
-      query(
-        collection(db, "organizations", orgId, "contacts"),
-        orderBy("createdAt", "desc")
-      )
-    )
-      .then((snap) => {
+    supabase
+      .from("contacts")
+      .select("id, first_name, last_name, company")
+      .eq("organization_id", orgId)
+      .order("created_at", { ascending: false })
+      .then(({ data, error: queryError }) => {
         if (cancelled) return;
+        if (queryError) {
+          setError("Could not load contacts. Please refresh the page.");
+          return;
+        }
         setContacts(
-          snap.docs.map((d) => {
-            const data = d.data();
-            return {
-              id: d.id,
-              name: `${data.firstName ?? ""} ${data.lastName ?? ""}`.trim(),
-              company: (data.company ?? "") as string,
-            };
-          })
+          (data ?? []).map((c) => ({
+            id: c.id as string,
+            name: `${c.first_name ?? ""} ${c.last_name ?? ""}`.trim(),
+            company: (c.company ?? "") as string,
+          }))
         );
-      })
-      .catch(() => {
-        if (!cancelled) setError("Could not load contacts. Please refresh the page.");
       });
     return () => {
       cancelled = true;
@@ -69,9 +56,8 @@ function NewFollowUpForm() {
 
   async function handleSubmit(e: React.FormEvent<HTMLFormElement>) {
     e.preventDefault();
-    if (!user || !orgId || !contacts) return;
-    const contact = contacts.find((c) => c.id === contactId);
-    if (!contact) {
+    if (!orgId || !contacts) return;
+    if (!contacts.some((c) => c.id === contactId)) {
       setError("Please choose a contact.");
       return;
     }
@@ -81,25 +67,20 @@ function NewFollowUpForm() {
     }
     setError("");
     setBusy(true);
-    try {
-      await addDoc(collection(db, "organizations", orgId, "followUps"), {
-        contactId: contact.id,
-        contactName: contact.name,
-        company: contact.company,
-        dueDate,
-        dueTime,
-        priority,
-        note: note.trim(),
-        status: "open",
-        createdAt: serverTimestamp(),
-        createdBy: user.uid,
-        completedAt: null,
-      });
-      router.replace("/dashboard");
-    } catch {
+    const { error: failure } = await supabase.from("follow_ups").insert({
+      organization_id: orgId,
+      contact_id: contactId,
+      due_date: dueDate,
+      due_time: dueTime || null,
+      priority,
+      note: note.trim(),
+    });
+    if (failure) {
       setError("Something went wrong. Please try again.");
       setBusy(false);
+      return;
     }
+    router.replace("/dashboard");
   }
 
   if (error && contacts === null) {

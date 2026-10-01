@@ -25,20 +25,20 @@ function greeting(): string {
 }
 
 function compare(a: FollowUp, b: FollowUp): number {
-  if (a.dueDate !== b.dueDate) return a.dueDate < b.dueDate ? -1 : 1;
-  return (a.dueTime || "99:99").localeCompare(b.dueTime || "99:99");
+  if (a.due_date !== b.due_date) return a.due_date < b.due_date ? -1 : 1;
+  return (a.due_time || "99:99").localeCompare(b.due_time || "99:99");
 }
 
 function DashboardView() {
   const orgId = useOrgId();
-  const { followUps, error } = useFollowUps(orgId);
+  const { followUps, error, reload } = useFollowUps(orgId);
   const today = todayISO();
 
   const open = (followUps ?? []).filter((f) => f.status === "open").sort(compare);
   const groups: Record<Group, FollowUp[]> = {
-    overdue: open.filter((f) => f.dueDate < today),
-    today: open.filter((f) => f.dueDate === today),
-    upcoming: open.filter((f) => f.dueDate > today),
+    overdue: open.filter((f) => f.due_date < today),
+    today: open.filter((f) => f.due_date === today),
+    upcoming: open.filter((f) => f.due_date > today),
   };
 
   const stats = [
@@ -92,26 +92,30 @@ function DashboardView() {
             <p className="mt-6 text-sm text-slate-600">Nothing is due today.</p>
           )}
 
-          {orgId &&
-            order.map((g) => {
-              const list = groups[g];
-              if (list.length === 0) return null;
-              return (
-                <section key={g} className="mt-8">
-                  <h2 className="mb-3 flex items-center gap-2 text-lg font-semibold">
-                    {labels[g].label}
-                    <span className={`rounded-full px-2 py-0.5 text-xs ${labels[g].badge}`}>
-                      {list.length}
-                    </span>
-                  </h2>
-                  <div className="space-y-3">
-                    {list.map((item) => (
-                      <FollowUpCard key={item.id} orgId={orgId} item={item} group={g} />
-                    ))}
-                  </div>
-                </section>
-              );
-            })}
+          {order.map((g) => {
+            const list = groups[g];
+            if (list.length === 0) return null;
+            return (
+              <section key={g} className="mt-8">
+                <h2 className="mb-3 flex items-center gap-2 text-lg font-semibold">
+                  {labels[g].label}
+                  <span className={`rounded-full px-2 py-0.5 text-xs ${labels[g].badge}`}>
+                    {list.length}
+                  </span>
+                </h2>
+                <div className="space-y-3">
+                  {list.map((item) => (
+                    <FollowUpCard
+                      key={item.id}
+                      item={item}
+                      group={g}
+                      onChanged={reload}
+                    />
+                  ))}
+                </div>
+              </section>
+            );
+          })}
         </>
       )}
 

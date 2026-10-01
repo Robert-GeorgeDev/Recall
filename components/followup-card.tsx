@@ -1,8 +1,7 @@
 "use client";
 
 import { useState } from "react";
-import { deleteDoc, doc, serverTimestamp, updateDoc } from "firebase/firestore";
-import { db } from "@/lib/firebase";
+import { supabase } from "@/lib/supabase";
 import { addDays, formatDate, todayISO } from "@/lib/dates";
 import type { FollowUp } from "@/types/followup";
 
@@ -15,45 +14,51 @@ const bars: Record<Group, string> = {
 };
 
 export default function FollowUpCard({
-  orgId,
   item,
   group,
+  onChanged,
 }: {
-  orgId: string;
   item: FollowUp;
   group: Group;
+  onChanged: () => void;
 }) {
   const [mode, setMode] = useState<"none" | "snooze" | "custom">("none");
-  const [customDate, setCustomDate] = useState(item.dueDate);
+  const [customDate, setCustomDate] = useState(item.due_date);
   const [busy, setBusy] = useState(false);
   const [error, setError] = useState("");
 
-  const ref = doc(db, "organizations", orgId, "followUps", item.id);
-
-  async function run(action: () => Promise<void>) {
+  async function run(action: () => PromiseLike<{ error: unknown }>) {
     setBusy(true);
     setError("");
-    try {
-      await action();
-      setMode("none");
-    } catch {
+    const { error: failure } = await action();
+    if (failure) {
       setError("Something went wrong. Please try again.");
+    } else {
+      setMode("none");
+      onChanged();
     }
     setBusy(false);
   }
 
   function complete() {
-    run(() => updateDoc(ref, { status: "done", completedAt: serverTimestamp() }));
+    run(() =>
+      supabase
+        .from("follow_ups")
+        .update({ status: "done", completed_at: new Date().toISOString() })
+        .eq("id", item.id)
+    );
   }
 
   function moveTo(date: string) {
     if (!date) return;
-    run(() => updateDoc(ref, { dueDate: date }));
+    run(() =>
+      supabase.from("follow_ups").update({ due_date: date }).eq("id", item.id)
+    );
   }
 
   function remove() {
     if (!window.confirm("Delete this follow-up?")) return;
-    run(() => deleteDoc(ref));
+    run(() => supabase.from("follow_ups").delete().eq("id", item.id));
   }
 
   return (
@@ -62,14 +67,14 @@ export default function FollowUpCard({
     >
       <div className="flex items-start justify-between gap-3">
         <div className="min-w-0">
-          <p className="font-semibold">{item.contactName}</p>
+          <p className="font-semibold">{item.contact_name}</p>
           {item.company && (
             <p className="text-sm text-slate-600">{item.company}</p>
           )}
         </div>
         <div className="shrink-0 text-right text-sm">
-          <p className="font-medium">{formatDate(item.dueDate)}</p>
-          {item.dueTime && <p className="text-slate-500">{item.dueTime}</p>}
+          <p className="font-medium">{formatDate(item.due_date)}</p>
+          {item.due_time && <p className="text-slate-500">{item.due_time}</p>}
         </div>
       </div>
 
