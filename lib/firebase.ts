@@ -1,13 +1,15 @@
 import { initializeApp, getApps, getApp } from "firebase/app";
 import { getAuth } from "firebase/auth";
 
+// Public web configuration (safe to be visible in the browser).
+// Real protection comes from Firebase Security Rules, not from hiding these.
 const firebaseConfig = {
-  apiKey: process.env.NEXT_PUBLIC_FIREBASE_API_KEY,
-  authDomain: process.env.NEXT_PUBLIC_FIREBASE_AUTH_DOMAIN,
-  projectId: process.env.NEXT_PUBLIC_FIREBASE_PROJECT_ID,
-  storageBucket: process.env.NEXT_PUBLIC_FIREBASE_STORAGE_BUCKET,
-  messagingSenderId: process.env.NEXT_PUBLIC_FIREBASE_MESSAGING_SENDER_ID,
-  appId: process.env.NEXT_PUBLIC_FIREBASE_APP_ID,
+  apiKey: "AIzaSyDb1mZe79RkNZmyYB8h98AqvQvdcsyC_Nc",
+  authDomain: "followup-app-ro.firebaseapp.com",
+  projectId: "followup-app-ro",
+  storageBucket: "followup-app-ro.firebasestorage.app",
+  messagingSenderId: "347609077160",
+  appId: "1:347609077160:web:7acad4c8df2236ecc2b99d",
 };
 
 const app = getApps().length ? getApp() : initializeApp(firebaseConfig);
