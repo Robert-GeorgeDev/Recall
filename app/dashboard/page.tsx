@@ -1,4 +1,6 @@
 import Link from "next/link";
+import RequireAuth from "@/components/require-auth";
+import SignOutButton from "@/components/sign-out-button";
 
 type Group = "overdue" | "today" | "upcoming";
 
@@ -28,53 +30,58 @@ const order: Group[] = ["overdue", "today", "upcoming"];
 
 export default function Dashboard() {
   return (
-    <main className="mx-auto max-w-3xl px-5 pb-28 pt-10">
-      <h1 className="text-3xl font-bold tracking-tight">Good morning</h1>
-      <p className="mt-1 text-slate-600">Here&apos;s what needs your attention.</p>
-      <p className="mt-2 text-xs text-slate-500">Sample data for the preview.</p>
+    <RequireAuth>
+      <main className="mx-auto max-w-3xl px-5 pb-28 pt-10">
+        <h1 className="text-3xl font-bold tracking-tight">Good morning</h1>
+        <p className="mt-1 text-slate-600">Here&apos;s what needs your attention.</p>
+        <p className="mt-2 text-xs text-slate-500">Sample data for the preview.</p>
 
-      {order.map((g) => {
-        const list = items.filter((i) => i.group === g);
-        if (list.length === 0) return null;
-        return (
-          <section key={g} className="mt-8">
-            <h2 className="mb-3 flex items-center gap-2 text-lg font-semibold">
-              {styles[g].label}
-              <span className={`rounded-full px-2 py-0.5 text-xs ${styles[g].badge}`}>
-                {list.length}
-              </span>
-            </h2>
-            <div className="space-y-3">
-              {list.map((i) => (
-                <article
-                  key={i.id}
-                  className={`rounded-xl border border-line border-l-4 bg-white p-4 ${styles[g].bar}`}
-                >
-                  <p className="font-semibold">{i.name}</p>
-                  <p className="text-sm text-slate-600">
-                    {i.company} · {i.status}
-                  </p>
-                  <p className="mt-2 text-sm text-slate-700">{i.note}</p>
-                </article>
-              ))}
+        {order.map((g) => {
+          const list = items.filter((i) => i.group === g);
+          if (list.length === 0) return null;
+          return (
+            <section key={g} className="mt-8">
+              <h2 className="mb-3 flex items-center gap-2 text-lg font-semibold">
+                {styles[g].label}
+                <span className={`rounded-full px-2 py-0.5 text-xs ${styles[g].badge}`}>
+                  {list.length}
+                </span>
+              </h2>
+              <div className="space-y-3">
+                {list.map((i) => (
+                  <article
+                    key={i.id}
+                    className={`rounded-xl border border-line border-l-4 bg-white p-4 ${styles[g].bar}`}
+                  >
+                    <p className="font-semibold">{i.name}</p>
+                    <p className="text-sm text-slate-600">
+                      {i.company} · {i.status}
+                    </p>
+                    <p className="mt-2 text-sm text-slate-700">{i.note}</p>
+                  </article>
+                ))}
+              </div>
+            </section>
+          );
+        })}
+
+        <nav className="fixed inset-x-0 bottom-0 border-t border-line bg-white">
+          <div className="mx-auto flex max-w-3xl items-center justify-between px-5 py-3">
+            <div className="flex items-center gap-4">
+              <Link href="/" className="text-sm font-semibold text-brand">
+                Home
+              </Link>
+              <SignOutButton />
             </div>
-          </section>
-        );
-      })}
-
-      <nav className="fixed inset-x-0 bottom-0 border-t border-line bg-white">
-        <div className="mx-auto flex max-w-3xl items-center justify-between px-5 py-3">
-          <Link href="/" className="text-sm font-semibold text-brand">
-            Home
-          </Link>
-          <button
-            type="button"
-            className="rounded-xl bg-cta px-5 py-2.5 text-sm font-semibold text-white hover:bg-cta-dark"
-          >
-            + Add follow-up
-          </button>
-        </div>
-      </nav>
-    </main>
+            <button
+              type="button"
+              className="rounded-xl bg-cta px-5 py-2.5 text-sm font-semibold text-white hover:bg-cta-dark"
+            >
+              + Add follow-up
+            </button>
+          </div>
+        </nav>
+      </main>
+    </RequireAuth>
   );
 }
