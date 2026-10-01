@@ -3,7 +3,6 @@
 import { useCallback, useEffect, useMemo, useState } from "react";
 import Link from "next/link";
 import RequireAuth from "@/components/require-auth";
-import BottomNav from "@/components/bottom-nav";
 import AddContactForm from "@/components/add-contact-form";
 import { useOrgId } from "@/hooks/use-org-id";
 import { supabase } from "@/lib/supabase";
@@ -190,7 +189,6 @@ function ContactsView() {
         ))}
       </div>
 
-      <BottomNav />
     </main>
   );
 }

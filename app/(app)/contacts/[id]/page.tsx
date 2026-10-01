@@ -4,7 +4,6 @@ import { useCallback, useEffect, useState } from "react";
 import Link from "next/link";
 import { useParams } from "next/navigation";
 import RequireAuth from "@/components/require-auth";
-import BottomNav from "@/components/bottom-nav";
 import FollowUpCard, { type Group } from "@/components/followup-card";
 import { useOrgId } from "@/hooks/use-org-id";
 import { useFollowUps } from "@/hooks/use-followups";
@@ -211,7 +210,6 @@ function ProfileView() {
         </div>
       </section>
 
-      <BottomNav />
     </main>
   );
 }

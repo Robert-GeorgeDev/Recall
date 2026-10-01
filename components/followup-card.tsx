@@ -3,6 +3,7 @@
 import { useState } from "react";
 import { supabase } from "@/lib/supabase";
 import { addDays, formatDate, todayISO } from "@/lib/dates";
+import { useLanguage } from "@/components/language-provider";
 import type { FollowUp } from "@/types/followup";
 
 export type Group = "overdue" | "today" | "upcoming";
@@ -22,6 +23,7 @@ export default function FollowUpCard({
   group: Group;
   onChanged: () => void;
 }) {
+  const { t, lang } = useLanguage();
   const [mode, setMode] = useState<"none" | "snooze" | "custom">("none");
   const [customDate, setCustomDate] = useState(item.due_date);
   const [busy, setBusy] = useState(false);
@@ -32,7 +34,7 @@ export default function FollowUpCard({
     setError("");
     const { error: failure } = await action();
     if (failure) {
-      setError("Something went wrong. Please try again.");
+      setError(t("common.error"));
     } else {
       setMode("none");
       onChanged();
@@ -57,9 +59,11 @@ export default function FollowUpCard({
   }
 
   function remove() {
-    if (!window.confirm("Delete this follow-up?")) return;
+    if (!window.confirm(t("card.confirmDelete"))) return;
     run(() => supabase.from("follow_ups").delete().eq("id", item.id));
   }
+
+  const locale = lang === "ro" ? "ro-RO" : "en-GB";
 
   return (
     <article
@@ -73,13 +77,13 @@ export default function FollowUpCard({
           )}
         </div>
         <div className="shrink-0 text-right text-sm">
-          <p className="font-medium">{formatDate(item.due_date)}</p>
+          <p className="font-medium">{formatDate(item.due_date, locale)}</p>
           {item.due_time && <p className="text-slate-500">{item.due_time}</p>}
         </div>
       </div>
 
       {item.priority === "High" && (
-        <p className="mt-2 text-xs font-semibold text-overdue">High priority</p>
+        <p className="mt-2 text-xs font-semibold text-overdue">{t("card.high")}</p>
       )}
       {item.note && <p className="mt-2 text-sm text-slate-700">{item.note}</p>}
 
@@ -96,7 +100,7 @@ export default function FollowUpCard({
           disabled={busy}
           className="rounded-xl bg-done px-4 py-2 text-sm font-semibold text-white hover:opacity-90 disabled:opacity-60"
         >
-          Complete
+          {t("card.complete")}
         </button>
         <button
           type="button"
@@ -104,7 +108,7 @@ export default function FollowUpCard({
           disabled={busy}
           className="rounded-xl border border-line bg-white px-4 py-2 text-sm font-semibold text-ink hover:bg-brand-soft disabled:opacity-60"
         >
-          Snooze
+          {t("card.snooze")}
         </button>
         <button
           type="button"
@@ -112,7 +116,7 @@ export default function FollowUpCard({
           disabled={busy}
           className="px-2 py-2 text-sm font-semibold text-overdue hover:underline disabled:opacity-60"
         >
-          Delete
+          {t("card.delete")}
         </button>
       </div>
 
@@ -125,7 +129,7 @@ export default function FollowUpCard({
               onClick={() => moveTo(addDays(todayISO(), 1))}
               className="rounded-xl border border-line bg-white px-3 py-1.5 text-sm font-semibold hover:bg-brand-soft disabled:opacity-60"
             >
-              Tomorrow
+              {t("card.tomorrow")}
             </button>
             <button
               type="button"
@@ -133,7 +137,7 @@ export default function FollowUpCard({
               onClick={() => moveTo(addDays(todayISO(), 7))}
               className="rounded-xl border border-line bg-white px-3 py-1.5 text-sm font-semibold hover:bg-brand-soft disabled:opacity-60"
             >
-              Next week
+              {t("card.nextWeek")}
             </button>
             <button
               type="button"
@@ -141,14 +145,14 @@ export default function FollowUpCard({
               onClick={() => setMode("custom")}
               className="rounded-xl border border-line bg-white px-3 py-1.5 text-sm font-semibold hover:bg-brand-soft disabled:opacity-60"
             >
-              Pick a date
+              {t("card.pickDate")}
             </button>
           </div>
 
           {mode === "custom" && (
             <div className="mt-3 flex items-center gap-2">
               <label htmlFor={`date-${item.id}`} className="sr-only">
-                New date
+                {t("card.newDate")}
               </label>
               <input
                 id={`date-${item.id}`}
@@ -163,7 +167,7 @@ export default function FollowUpCard({
                 onClick={() => moveTo(customDate)}
                 className="rounded-xl bg-brand px-4 py-2 text-sm font-semibold text-white hover:bg-brand-dark disabled:opacity-60"
               >
-                Save
+                {t("card.save")}
               </button>
             </div>
           )}

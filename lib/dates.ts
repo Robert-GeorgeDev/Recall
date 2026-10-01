@@ -14,9 +14,9 @@ export function addDays(iso: string, days: number): string {
   return toISODate(new Date(y, m - 1, d + days));
 }
 
-export function formatDate(iso: string): string {
+export function formatDate(iso: string, locale = "en-GB"): string {
   const [y, m, d] = iso.split("-").map(Number);
-  return new Date(y, m - 1, d).toLocaleDateString("en-GB", {
+  return new Date(y, m - 1, d).toLocaleDateString(locale, {
     day: "numeric",
     month: "short",
     year: "numeric",
