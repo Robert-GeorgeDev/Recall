@@ -1,6 +1,7 @@
 "use client";
 
 import { useEffect, useMemo, useState } from "react";
+import Link from "next/link";
 import {
   collection,
   deleteDoc,
@@ -135,9 +136,12 @@ function ContactsView() {
           <article key={c.id} className="rounded-xl border border-line bg-white p-4">
             <div className="flex items-start justify-between gap-3">
               <div className="min-w-0">
-                <p className="font-semibold">
+                <Link
+                  href={`/contacts/${c.id}`}
+                  className="font-semibold text-ink hover:text-brand"
+                >
                   {c.firstName} {c.lastName}
-                </p>
+                </Link>
                 {c.company && (
                   <p className="text-sm text-slate-600">{c.company}</p>
                 )}
@@ -168,13 +172,21 @@ function ContactsView() {
               <p className="mt-2 text-sm text-slate-700">{c.notes}</p>
             )}
 
-            <button
-              type="button"
-              onClick={() => handleDelete(c)}
-              className="mt-3 text-sm font-semibold text-overdue hover:underline"
-            >
-              Delete
-            </button>
+            <div className="mt-3 flex items-center gap-4">
+              <Link
+                href={`/contacts/${c.id}`}
+                className="text-sm font-semibold text-brand hover:underline"
+              >
+                Open
+              </Link>
+              <button
+                type="button"
+                onClick={() => handleDelete(c)}
+                className="text-sm font-semibold text-overdue hover:underline"
+              >
+                Delete
+              </button>
+            </div>
           </article>
         ))}
       </div>
