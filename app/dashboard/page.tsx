@@ -1,6 +1,5 @@
-import Link from "next/link";
 import RequireAuth from "@/components/require-auth";
-import SignOutButton from "@/components/sign-out-button";
+import BottomNav from "@/components/bottom-nav";
 
 type Group = "overdue" | "today" | "upcoming";
 
@@ -65,22 +64,7 @@ export default function Dashboard() {
           );
         })}
 
-        <nav className="fixed inset-x-0 bottom-0 border-t border-line bg-white">
-          <div className="mx-auto flex max-w-3xl items-center justify-between px-5 py-3">
-            <div className="flex items-center gap-4">
-              <Link href="/" className="text-sm font-semibold text-brand">
-                Home
-              </Link>
-              <SignOutButton />
-            </div>
-            <button
-              type="button"
-              className="rounded-xl bg-cta px-5 py-2.5 text-sm font-semibold text-white hover:bg-cta-dark"
-            >
-              + Add follow-up
-            </button>
-          </div>
-        </nav>
+        <BottomNav />
       </main>
     </RequireAuth>
   );
