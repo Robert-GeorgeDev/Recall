@@ -146,6 +146,20 @@ export default function AuthForm({ mode }: { mode: "login" | "signup" }) {
         </button>
       </form>
 
+      {isSignup && (
+        <p className="mt-4 text-xs text-slate-500">
+          {t("legal.agree")}{" "}
+          <Link href="/terms" className="font-semibold text-brand">
+            {t("legal.terms")}
+          </Link>{" "}
+          {t("legal.and")}{" "}
+          <Link href="/privacy" className="font-semibold text-brand">
+            {t("legal.privacy")}
+          </Link>
+          .
+        </p>
+      )}
+
       <p className="mt-6 text-sm text-slate-600">
         {isSignup ? t("auth.haveAccount") : t("auth.newHere")}{" "}
         <Link

@@ -2,6 +2,7 @@
 
 import Link from "next/link";
 import Logo from "@/components/logo";
+import { BRAND } from "@/lib/brand";
 import LanguageSwitcher from "@/components/language-switcher";
 import { useLanguage } from "@/components/language-provider";
 
@@ -63,6 +64,24 @@ export default function Home() {
           ))}
         </div>
       </section>
+      <footer className="border-t border-line">
+        <div className="mx-auto flex max-w-5xl flex-wrap items-center justify-between gap-3 px-5 py-6 text-sm text-slate-600">
+          <span>
+            © {new Date().getFullYear()} {BRAND}
+          </span>
+          <nav className="flex gap-4" aria-label="Legal">
+            <Link href="/privacy" className="hover:text-ink">
+              {t("legal.privacy")}
+            </Link>
+            <Link href="/terms" className="hover:text-ink">
+              {t("legal.terms")}
+            </Link>
+            <Link href="/cookies" className="hover:text-ink">
+              {t("legal.cookies")}
+            </Link>
+          </nav>
+        </div>
+      </footer>
     </main>
   );
 }

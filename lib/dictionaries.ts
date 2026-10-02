@@ -1,4 +1,5 @@
 import { BRAND } from "@/lib/brand";
+import { enLegal, roLegal } from "@/lib/dictionary-legal";
 import { enAi, roAi } from "@/lib/dictionary-ai";
 import { enData, roData } from "@/lib/dictionary-data";
 import { enActivity, roActivity } from "@/lib/dictionary-activity";
@@ -86,7 +87,7 @@ const enBase = {
   "card.confirmDelete": "Delete this follow-up?",
 };
 
-const en = { ...enBase, ...enMore, ...enActivity, ...enData, ...enAi };
+const en = { ...enBase, ...enMore, ...enActivity, ...enData, ...enAi, ...enLegal };
 export type Key = keyof typeof en;
 
 const roBase: Record<keyof typeof enBase, string> = {
@@ -171,7 +172,7 @@ const roBase: Record<keyof typeof enBase, string> = {
   "card.confirmDelete": "Ștergi acest follow-up?",
 };
 
-const ro: Record<Key, string> = { ...roBase, ...roMore, ...roActivity, ...roData, ...roAi };
+const ro: Record<Key, string> = { ...roBase, ...roMore, ...roActivity, ...roData, ...roAi, ...roLegal };
 
 export const dictionaries: Record<"en" | "ro", Record<Key, string>> = { en, ro };
 
