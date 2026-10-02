@@ -4,9 +4,11 @@ import { useEffect, useState } from "react";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
 import RequireAuth from "@/components/require-auth";
+import { useLanguage } from "@/components/language-provider";
 import { useOrgId } from "@/hooks/use-org-id";
 import { supabase } from "@/lib/supabase";
 import { addDays, todayISO } from "@/lib/dates";
+import type { Key } from "@/lib/dictionaries";
 import { PRIORITIES, type Priority } from "@/types/followup";
 
 type ContactOption = { id: string; name: string; company: string };
@@ -15,6 +17,7 @@ const inputClass =
   "mt-1 w-full rounded-xl border border-line bg-white px-4 py-3 outline-none focus:border-brand focus:ring-2 focus:ring-brand/20";
 
 function NewFollowUpForm() {
+  const { t } = useLanguage();
   const orgId = useOrgId();
   const router = useRouter();
 
@@ -25,6 +28,7 @@ function NewFollowUpForm() {
   const [priority, setPriority] = useState<Priority>("Normal");
   const [note, setNote] = useState("");
   const [error, setError] = useState("");
+  const [loadFailed, setLoadFailed] = useState(false);
   const [busy, setBusy] = useState(false);
 
   useEffect(() => {
@@ -38,7 +42,7 @@ function NewFollowUpForm() {
       .then(({ data, error: queryError }) => {
         if (cancelled) return;
         if (queryError) {
-          setError("Could not load contacts. Please refresh the page.");
+          setLoadFailed(true);
           return;
         }
         setContacts(
@@ -58,11 +62,11 @@ function NewFollowUpForm() {
     e.preventDefault();
     if (!orgId || !contacts) return;
     if (!contacts.some((c) => c.id === contactId)) {
-      setError("Please choose a contact.");
+      setError(t("fu.chooseContactError"));
       return;
     }
     if (!dueDate) {
-      setError("Please choose a date.");
+      setError(t("fu.chooseDateError"));
       return;
     }
     setError("");
@@ -76,49 +80,47 @@ function NewFollowUpForm() {
       note: note.trim(),
     });
     if (failure) {
-      setError("Something went wrong. Please try again.");
+      setError(t("common.error"));
       setBusy(false);
       return;
     }
     router.replace("/dashboard");
   }
 
-  if (error && contacts === null) {
-    return <p className="p-8 text-slate-600">{error}</p>;
+  if (loadFailed) {
+    return <p className="p-8 text-slate-600">{t("contacts.loadError")}</p>;
   }
 
   if (contacts === null) {
-    return <p className="p-8 text-slate-600">Loading…</p>;
+    return <p className="p-8 text-slate-600">{t("common.loading")}</p>;
   }
 
   if (contacts.length === 0) {
     return (
       <main className="mx-auto max-w-sm px-5 py-16">
-        <h1 className="text-2xl font-bold tracking-tight">Add a contact first</h1>
-        <p className="mt-2 text-slate-600">
-          A follow-up belongs to a contact. Add your first contact, then come back.
-        </p>
+        <h1 className="text-2xl font-bold tracking-tight">{t("fu.addContactFirst")}</h1>
+        <p className="mt-2 text-slate-600">{t("fu.addContactText")}</p>
         <Link
           href="/contacts"
           className="mt-6 inline-block rounded-xl bg-cta px-6 py-3 font-semibold text-white hover:bg-cta-dark"
         >
-          Go to contacts
+          {t("fu.goToContacts")}
         </Link>
       </main>
     );
   }
 
   return (
-    <main className="mx-auto max-w-sm px-5 py-10">
+    <main className="mx-auto max-w-sm px-5 py-8">
       <Link href="/dashboard" className="text-sm font-semibold text-brand">
-        ← Back
+        {t("fu.back")}
       </Link>
-      <h1 className="mt-4 text-3xl font-bold tracking-tight">New follow-up</h1>
+      <h1 className="mt-4 text-3xl font-bold tracking-tight">{t("fu.new")}</h1>
 
       <form onSubmit={handleSubmit} className="mt-6 space-y-4">
         <div>
           <label htmlFor="contact" className="block text-sm font-medium">
-            Contact *
+            {t("fu.contact")}
           </label>
           <select
             id="contact"
@@ -127,7 +129,7 @@ function NewFollowUpForm() {
             onChange={(e) => setContactId(e.target.value)}
             className={inputClass}
           >
-            <option value="">Choose a contact…</option>
+            <option value="">{t("fu.chooseContact")}</option>
             {contacts.map((c) => (
               <option key={c.id} value={c.id}>
                 {c.name}
@@ -140,7 +142,7 @@ function NewFollowUpForm() {
         <div className="grid grid-cols-2 gap-4">
           <div>
             <label htmlFor="dueDate" className="block text-sm font-medium">
-              Date *
+              {t("fu.date")}
             </label>
             <input
               id="dueDate"
@@ -153,7 +155,7 @@ function NewFollowUpForm() {
           </div>
           <div>
             <label htmlFor="dueTime" className="block text-sm font-medium">
-              Time (optional)
+              {t("fu.time")}
             </label>
             <input
               id="dueTime"
@@ -167,7 +169,7 @@ function NewFollowUpForm() {
 
         <div>
           <label htmlFor="priority" className="block text-sm font-medium">
-            Priority
+            {t("fu.priority")}
           </label>
           <select
             id="priority"
@@ -177,7 +179,7 @@ function NewFollowUpForm() {
           >
             {PRIORITIES.map((p) => (
               <option key={p} value={p}>
-                {p}
+                {t(("priority." + p) as Key)}
               </option>
             ))}
           </select>
@@ -185,7 +187,7 @@ function NewFollowUpForm() {
 
         <div>
           <label htmlFor="note" className="block text-sm font-medium">
-            Note
+            {t("fu.note")}
           </label>
           <textarea
             id="note"
@@ -208,7 +210,7 @@ function NewFollowUpForm() {
           disabled={busy}
           className="w-full rounded-xl bg-cta px-6 py-3 font-semibold text-white hover:bg-cta-dark disabled:opacity-60"
         >
-          {busy ? "Saving…" : "Save follow-up"}
+          {busy ? t("form.saving") : t("fu.save")}
         </button>
       </form>
     </main>

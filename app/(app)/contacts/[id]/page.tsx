@@ -5,16 +5,19 @@ import Link from "next/link";
 import { useParams } from "next/navigation";
 import RequireAuth from "@/components/require-auth";
 import FollowUpCard, { type Group } from "@/components/followup-card";
+import { useLanguage } from "@/components/language-provider";
 import { useOrgId } from "@/hooks/use-org-id";
 import { useFollowUps } from "@/hooks/use-followups";
 import { supabase } from "@/lib/supabase";
 import { todayISO } from "@/lib/dates";
+import type { Key } from "@/lib/dictionaries";
 import { STATUSES, type Contact, type Status } from "@/types/contact";
 
 const inputClass =
   "mt-1 w-full rounded-xl border border-line bg-white px-4 py-3 outline-none focus:border-brand focus:ring-2 focus:ring-brand/20";
 
 function ProfileView() {
+  const { t } = useLanguage();
   const params = useParams();
   const id = String(params.id);
   const orgId = useOrgId();
@@ -24,6 +27,7 @@ function ProfileView() {
   const [contact, setContact] = useState<Contact | null | undefined>(undefined);
   const [notes, setNotes] = useState<string | null>(null);
   const [error, setError] = useState("");
+  const [loadFailed, setLoadFailed] = useState(false);
   const [busy, setBusy] = useState(false);
 
   const load = useCallback(async () => {
@@ -35,10 +39,10 @@ function ProfileView() {
       .eq("organization_id", orgId)
       .maybeSingle();
     if (queryError) {
-      setError("Could not load this contact. Please refresh the page.");
+      setLoadFailed(true);
       return;
     }
-    setError("");
+    setLoadFailed(false);
     setContact(data ? (data as Contact) : null);
   }, [orgId, id]);
 
@@ -53,7 +57,7 @@ function ProfileView() {
       .update({ status })
       .eq("id", id);
     if (failure) {
-      setError("Something went wrong. Please try again.");
+      setError(t("common.error"));
       return;
     }
     load();
@@ -68,7 +72,7 @@ function ProfileView() {
       .update({ notes: notes.trim() })
       .eq("id", id);
     if (failure) {
-      setError("Something went wrong. Please try again.");
+      setError(t("common.error"));
     } else {
       setNotes(null);
       load();
@@ -87,23 +91,23 @@ function ProfileView() {
     return "upcoming";
   }
 
-  if (error && contact === undefined) {
-    return <p className="p-8 text-slate-600">{error}</p>;
+  if (loadFailed) {
+    return <p className="p-8 text-slate-600">{t("profile.loadError")}</p>;
   }
 
   if (contact === undefined) {
-    return <p className="p-8 text-slate-600">Loading…</p>;
+    return <p className="p-8 text-slate-600">{t("common.loading")}</p>;
   }
 
   if (contact === null) {
     return (
       <main className="mx-auto max-w-sm px-5 py-16">
-        <h1 className="text-2xl font-bold tracking-tight">Contact not found</h1>
+        <h1 className="text-2xl font-bold tracking-tight">{t("profile.notFound")}</h1>
         <Link
           href="/contacts"
           className="mt-6 inline-block rounded-xl bg-cta px-6 py-3 font-semibold text-white hover:bg-cta-dark"
         >
-          Back to contacts
+          {t("profile.backToContacts")}
         </Link>
       </main>
     );
@@ -113,9 +117,9 @@ function ProfileView() {
   const notesValue = notes ?? contact.notes;
 
   return (
-    <main className="mx-auto max-w-3xl px-5 pb-28 pt-10">
+    <main className="mx-auto max-w-3xl px-5 pb-10 pt-8">
       <Link href="/contacts" className="text-sm font-semibold text-brand">
-        ← Contacts
+        {t("profile.back")}
       </Link>
 
       <h1 className="mt-4 text-3xl font-bold tracking-tight">{fullName}</h1>
@@ -148,7 +152,7 @@ function ProfileView() {
 
       <div className="mt-6">
         <label htmlFor="status" className="block text-sm font-medium">
-          Lead status
+          {t("profile.leadStatus")}
         </label>
         <select
           id="status"
@@ -158,7 +162,7 @@ function ProfileView() {
         >
           {STATUSES.map((s) => (
             <option key={s} value={s}>
-              {s}
+              {t(("status." + s) as Key)}
             </option>
           ))}
         </select>
@@ -166,7 +170,7 @@ function ProfileView() {
 
       <div className="mt-6">
         <label htmlFor="notes" className="block text-sm font-medium">
-          Notes
+          {t("profile.notes")}
         </label>
         <textarea
           id="notes"
@@ -183,20 +187,20 @@ function ProfileView() {
             disabled={busy}
             className="mt-3 rounded-xl bg-brand px-5 py-2.5 text-sm font-semibold text-white hover:bg-brand-dark disabled:opacity-60"
           >
-            {busy ? "Saving…" : "Save notes"}
+            {busy ? t("form.saving") : t("profile.saveNotes")}
           </button>
         )}
       </div>
 
       <section className="mt-10">
         <div className="mb-3 flex items-center justify-between">
-          <h2 className="text-lg font-semibold">Follow-ups</h2>
+          <h2 className="text-lg font-semibold">{t("profile.followUps")}</h2>
           <Link href="/followups/new" className="text-sm font-semibold text-brand">
-            + Add
+            {t("profile.add")}
           </Link>
         </div>
         {followUps !== null && open.length === 0 && (
-          <p className="text-sm text-slate-600">No open follow-ups for this contact.</p>
+          <p className="text-sm text-slate-600">{t("profile.noFollowUps")}</p>
         )}
         <div className="space-y-3">
           {open.map((f) => (
@@ -209,7 +213,6 @@ function ProfileView() {
           ))}
         </div>
       </section>
-
     </main>
   );
 }

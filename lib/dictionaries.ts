@@ -1,6 +1,7 @@
 import { BRAND } from "@/lib/brand";
+import { enMore, roMore } from "@/lib/dictionary-more";
 
-const en = {
+const enBase = {
   "nav.dashboard": "Dashboard",
   "nav.contacts": "Contacts",
   "nav.addFollowUp": "Add follow-up",
@@ -82,9 +83,10 @@ const en = {
   "card.confirmDelete": "Delete this follow-up?",
 };
 
+const en = { ...enBase, ...enMore };
 export type Key = keyof typeof en;
 
-const ro: Record<Key, string> = {
+const roBase: Record<keyof typeof enBase, string> = {
   "nav.dashboard": "Panou",
   "nav.contacts": "Contacte",
   "nav.addFollowUp": "Adaugă follow-up",
@@ -165,6 +167,8 @@ const ro: Record<Key, string> = {
   "card.high": "Prioritate mare",
   "card.confirmDelete": "Ștergi acest follow-up?",
 };
+
+const ro: Record<Key, string> = { ...roBase, ...roMore };
 
 export const dictionaries: Record<"en" | "ro", Record<Key, string>> = { en, ro };
 

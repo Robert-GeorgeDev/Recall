@@ -2,6 +2,8 @@
 
 import { useState } from "react";
 import { supabase } from "@/lib/supabase";
+import { useLanguage } from "@/components/language-provider";
+import type { Key } from "@/lib/dictionaries";
 import { STATUSES, type Status } from "@/types/contact";
 
 const inputClass =
@@ -14,6 +16,7 @@ export default function AddContactForm({
   orgId: string;
   onDone: () => void;
 }) {
+  const { t } = useLanguage();
   const [firstName, setFirstName] = useState("");
   const [lastName, setLastName] = useState("");
   const [company, setCompany] = useState("");
@@ -27,7 +30,7 @@ export default function AddContactForm({
   async function handleSubmit(e: React.FormEvent<HTMLFormElement>) {
     e.preventDefault();
     if (firstName.trim().length === 0) {
-      setError("First name is required.");
+      setError(t("form.firstNameRequired"));
       return;
     }
     setError("");
@@ -43,7 +46,7 @@ export default function AddContactForm({
       notes: notes.trim(),
     });
     if (failure) {
-      setError("Something went wrong. Please try again.");
+      setError(t("common.error"));
       setBusy(false);
       return;
     }
@@ -55,12 +58,12 @@ export default function AddContactForm({
       onSubmit={handleSubmit}
       className="mt-6 space-y-4 rounded-xl border border-line bg-white p-5"
     >
-      <h2 className="text-lg font-semibold">New contact</h2>
+      <h2 className="text-lg font-semibold">{t("form.newContact")}</h2>
 
       <div className="grid gap-4 sm:grid-cols-2">
         <div>
           <label htmlFor="firstName" className="block text-sm font-medium">
-            First name *
+            {t("form.firstName")}
           </label>
           <input
             id="firstName"
@@ -73,7 +76,7 @@ export default function AddContactForm({
         </div>
         <div>
           <label htmlFor="lastName" className="block text-sm font-medium">
-            Last name
+            {t("form.lastName")}
           </label>
           <input
             id="lastName"
@@ -87,7 +90,7 @@ export default function AddContactForm({
 
       <div>
         <label htmlFor="company" className="block text-sm font-medium">
-          Company
+          {t("form.company")}
         </label>
         <input
           id="company"
@@ -101,7 +104,7 @@ export default function AddContactForm({
       <div className="grid gap-4 sm:grid-cols-2">
         <div>
           <label htmlFor="email" className="block text-sm font-medium">
-            Email
+            {t("form.email")}
           </label>
           <input
             id="email"
@@ -114,7 +117,7 @@ export default function AddContactForm({
         </div>
         <div>
           <label htmlFor="phone" className="block text-sm font-medium">
-            Phone
+            {t("form.phone")}
           </label>
           <input
             id="phone"
@@ -129,7 +132,7 @@ export default function AddContactForm({
 
       <div>
         <label htmlFor="status" className="block text-sm font-medium">
-          Status
+          {t("form.status")}
         </label>
         <select
           id="status"
@@ -139,7 +142,7 @@ export default function AddContactForm({
         >
           {STATUSES.map((s) => (
             <option key={s} value={s}>
-              {s}
+              {t(("status." + s) as Key)}
             </option>
           ))}
         </select>
@@ -147,7 +150,7 @@ export default function AddContactForm({
 
       <div>
         <label htmlFor="notes" className="block text-sm font-medium">
-          Notes
+          {t("form.notes")}
         </label>
         <textarea
           id="notes"
@@ -171,14 +174,14 @@ export default function AddContactForm({
           disabled={busy}
           className="rounded-xl bg-cta px-6 py-3 font-semibold text-white hover:bg-cta-dark disabled:opacity-60"
         >
-          {busy ? "Saving…" : "Save contact"}
+          {busy ? t("form.saving") : t("form.save")}
         </button>
         <button
           type="button"
           onClick={onDone}
           className="rounded-xl border border-line bg-white px-6 py-3 font-semibold text-ink hover:bg-brand-soft"
         >
-          Cancel
+          {t("form.cancel")}
         </button>
       </div>
     </form>

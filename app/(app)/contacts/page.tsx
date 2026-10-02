@@ -4,11 +4,14 @@ import { useCallback, useEffect, useMemo, useState } from "react";
 import Link from "next/link";
 import RequireAuth from "@/components/require-auth";
 import AddContactForm from "@/components/add-contact-form";
+import { useLanguage } from "@/components/language-provider";
 import { useOrgId } from "@/hooks/use-org-id";
 import { supabase } from "@/lib/supabase";
+import type { Key } from "@/lib/dictionaries";
 import type { Contact } from "@/types/contact";
 
 function ContactsView() {
+  const { t } = useLanguage();
   const orgId = useOrgId();
   const [contacts, setContacts] = useState<Contact[] | null>(null);
   const [search, setSearch] = useState("");
@@ -23,7 +26,7 @@ function ContactsView() {
       .eq("organization_id", orgId)
       .order("created_at", { ascending: false });
     if (queryError) {
-      setError("Could not load contacts. Please refresh the page.");
+      setError("load");
       return;
     }
     setError("");
@@ -47,37 +50,43 @@ function ContactsView() {
   }, [contacts, search]);
 
   async function handleDelete(c: Contact) {
-    const fullName = `${c.first_name} ${c.last_name}`.trim();
-    if (!window.confirm(`Delete ${fullName}? This cannot be undone.`)) return;
+    if (!window.confirm(t("contacts.confirmDelete"))) return;
     const { error: failure } = await supabase
       .from("contacts")
       .delete()
       .eq("id", c.id);
     if (failure) {
-      setError("Could not delete the contact. Please try again.");
+      setError("delete");
       return;
     }
     load();
   }
 
+  const errorText =
+    error === "load"
+      ? t("contacts.loadError")
+      : error === "delete"
+      ? t("contacts.deleteError")
+      : "";
+
   return (
-    <main className="mx-auto max-w-3xl px-5 pb-28 pt-10">
+    <main className="mx-auto max-w-3xl px-5 pb-10 pt-8">
       <div className="flex items-center justify-between gap-3">
-        <h1 className="text-3xl font-bold tracking-tight">Contacts</h1>
+        <h1 className="text-3xl font-bold tracking-tight">{t("contacts.title")}</h1>
         {!showForm && (
           <button
             type="button"
             onClick={() => setShowForm(true)}
             className="rounded-xl bg-cta px-5 py-2.5 text-sm font-semibold text-white hover:bg-cta-dark"
           >
-            + Add contact
+            {t("contacts.add")}
           </button>
         )}
       </div>
 
-      {error && (
+      {errorText && (
         <p role="alert" className="mt-4 rounded-xl bg-red-50 px-4 py-3 text-sm text-overdue">
-          {error}
+          {errorText}
         </p>
       )}
 
@@ -94,12 +103,12 @@ function ContactsView() {
       {contacts && contacts.length > 0 && (
         <div className="mt-6">
           <label htmlFor="search" className="sr-only">
-            Search contacts
+            {t("contacts.searchLabel")}
           </label>
           <input
             id="search"
             type="search"
-            placeholder="Search by name, company, email…"
+            placeholder={t("contacts.search")}
             value={search}
             onChange={(e) => setSearch(e.target.value)}
             className="w-full rounded-xl border border-line bg-white px-4 py-3 outline-none focus:border-brand focus:ring-2 focus:ring-brand/20"
@@ -108,25 +117,25 @@ function ContactsView() {
       )}
 
       {contacts === null && !error && (
-        <p className="mt-8 text-slate-600">Loading…</p>
+        <p className="mt-8 text-slate-600">{t("common.loading")}</p>
       )}
 
       {contacts && contacts.length === 0 && !showForm && (
         <div className="mt-10 rounded-xl border border-dashed border-line bg-white p-8 text-center">
-          <p className="text-lg font-semibold">Your CRM is empty.</p>
-          <p className="mt-1 text-slate-600">Add your first contact to get started.</p>
+          <p className="text-lg font-semibold">{t("contacts.emptyTitle")}</p>
+          <p className="mt-1 text-slate-600">{t("contacts.emptyText")}</p>
           <button
             type="button"
             onClick={() => setShowForm(true)}
             className="mt-5 rounded-xl bg-cta px-6 py-3 font-semibold text-white hover:bg-cta-dark"
           >
-            Add contact
+            {t("contacts.addShort")}
           </button>
         </div>
       )}
 
       {contacts && contacts.length > 0 && filtered.length === 0 && (
-        <p className="mt-8 text-slate-600">No contacts match your search.</p>
+        <p className="mt-8 text-slate-600">{t("contacts.noMatch")}</p>
       )}
 
       <div className="mt-6 space-y-3">
@@ -145,7 +154,7 @@ function ContactsView() {
                 )}
               </div>
               <span className="shrink-0 rounded-full bg-brand-soft px-2.5 py-0.5 text-xs font-semibold text-brand">
-                {c.status}
+                {t(("status." + c.status) as Key)}
               </span>
             </div>
 
@@ -175,20 +184,19 @@ function ContactsView() {
                 href={`/contacts/${c.id}`}
                 className="text-sm font-semibold text-brand hover:underline"
               >
-                Open
+                {t("contacts.open")}
               </Link>
               <button
                 type="button"
                 onClick={() => handleDelete(c)}
                 className="text-sm font-semibold text-overdue hover:underline"
               >
-                Delete
+                {t("contacts.delete")}
               </button>
             </div>
           </article>
         ))}
       </div>
-
     </main>
   );
 }
