@@ -6,6 +6,7 @@ import { useParams } from "next/navigation";
 import RequireAuth from "@/components/require-auth";
 import FollowUpCard, { type Group } from "@/components/followup-card";
 import ActivityTimeline from "@/components/activity-timeline";
+import AiAssistant from "@/components/ai-assistant";
 import { useLanguage } from "@/components/language-provider";
 import { useOrgId } from "@/hooks/use-org-id";
 import { useFollowUps } from "@/hooks/use-followups";
@@ -214,6 +215,8 @@ function ProfileView() {
           ))}
         </div>
       </section>
+
+      <AiAssistant contactId={id} email={contact.email} />
 
       {orgId && (
         <ActivityTimeline
