@@ -6,6 +6,7 @@ import { Download, Upload } from "lucide-react";
 import RequireAuth from "@/components/require-auth";
 import { useLanguage } from "@/components/language-provider";
 import { useOrgId } from "@/hooks/use-org-id";
+import { FREE_LIMITS, usePlan } from "@/hooks/use-plan";
 import { supabase } from "@/lib/supabase";
 import { addDays, todayISO } from "@/lib/dates";
 import { BRAND } from "@/lib/brand";
@@ -58,6 +59,7 @@ async function fetchPages<T>(
 function DataView() {
   const { t } = useLanguage();
   const orgId = useOrgId();
+  const { state: planState, reload: reloadPlan } = usePlan(orgId);
 
   const [parsed, setParsed] = useState<Parsed | null>(null);
   const [fileError, setFileError] = useState<Key | "">("");
@@ -161,6 +163,7 @@ function DataView() {
     }
 
     setResult({ imported, followUps, failed });
+    reloadPlan();
     setImporting(false);
   }
 
@@ -224,6 +227,20 @@ function DataView() {
   }
 
   const showPreview = parsed !== null && result === null;
+
+  const contactsLeft =
+    planState && planState.plan === "free"
+      ? Math.max(0, FREE_LIMITS.contacts - planState.contacts)
+      : null;
+  const followUpsLeft =
+    planState && planState.plan === "free"
+      ? Math.max(0, FREE_LIMITS.followUps - planState.followUps)
+      : null;
+  const datedRows = parsed ? parsed.rows.filter((r) => r.nextFollowup).length : 0;
+  const overLimit =
+    parsed !== null &&
+    ((contactsLeft !== null && parsed.rows.length > contactsLeft) ||
+      (followUpsLeft !== null && datedRows > followUpsLeft));
 
   return (
     <main className="mx-auto max-w-3xl px-5 pb-10 pt-8">
@@ -328,11 +345,19 @@ function DataView() {
               </div>
             )}
 
+            {overLimit && (
+              <p role="alert" className="mt-5 rounded-xl bg-amber-50 px-4 py-3 text-sm text-amber-800">
+                {t("plan.limitImport")
+                  .replace("{c}", String(contactsLeft ?? 0))
+                  .replace("{f}", String(followUpsLeft ?? 0))}
+              </p>
+            )}
+
             <div className="mt-6 flex flex-wrap items-center gap-3">
               <button
                 type="button"
                 onClick={runImport}
-                disabled={importing || parsed.rows.length === 0 || !orgId}
+                disabled={importing || parsed.rows.length === 0 || !orgId || overLimit}
                 className="rounded-xl bg-cta px-6 py-3 font-semibold text-white hover:bg-cta-dark disabled:opacity-60"
               >
                 {importing

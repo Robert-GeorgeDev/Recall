@@ -5,6 +5,7 @@ import Link from "next/link";
 import { AlertCircle, Clock, Trophy, Users } from "lucide-react";
 import RequireAuth from "@/components/require-auth";
 import FollowUpCard, { type Group } from "@/components/followup-card";
+import PlanUsage from "@/components/plan-usage";
 import { useLanguage } from "@/components/language-provider";
 import { useOrgId } from "@/hooks/use-org-id";
 import { useFollowUps } from "@/hooks/use-followups";
@@ -91,6 +92,7 @@ function DashboardView() {
         <div>
           <h1 className="text-3xl font-bold tracking-tight">{greeting}</h1>
           <p className="mt-1 text-slate-600">{t("dash.subtitle")}</p>
+          {orgId && <PlanUsage orgId={orgId} />}
 
           {error && (
             <p role="alert" className="mt-4 rounded-xl bg-red-50 px-4 py-3 text-sm text-overdue">

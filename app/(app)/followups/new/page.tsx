@@ -80,7 +80,11 @@ function NewFollowUpForm() {
       note: note.trim(),
     });
     if (failure) {
-      setError(t("common.error"));
+      setError(
+        String(failure.message).includes("plan_limit")
+          ? t("plan.limitFollowUps")
+          : t("common.error")
+      );
       setBusy(false);
       return;
     }
