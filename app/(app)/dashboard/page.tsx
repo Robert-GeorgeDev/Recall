@@ -2,7 +2,7 @@
 
 import { useEffect, useState } from "react";
 import Link from "next/link";
-import { AlertCircle, Clock, ListChecks, Users } from "lucide-react";
+import { AlertCircle, Clock, Trophy, Users } from "lucide-react";
 import RequireAuth from "@/components/require-auth";
 import FollowUpCard, { type Group } from "@/components/followup-card";
 import { useLanguage } from "@/components/language-provider";
@@ -37,6 +37,7 @@ function DashboardView() {
   const orgId = useOrgId();
   const { followUps, error, reload } = useFollowUps(orgId);
   const [openLeads, setOpenLeads] = useState<number | null>(null);
+  const [wonCount, setWonCount] = useState<number | null>(null);
 
   useEffect(() => {
     if (!orgId) return;
@@ -48,6 +49,17 @@ function DashboardView() {
       .not("status", "in", "(Won,Lost)")
       .then(({ count }) => {
         if (!cancelled) setOpenLeads(count ?? 0);
+      });
+    const now = new Date();
+    const monthStart = new Date(now.getFullYear(), now.getMonth(), 1).toISOString();
+    supabase
+      .from("contacts")
+      .select("id", { count: "exact", head: true })
+      .eq("organization_id", orgId)
+      .eq("status", "Won")
+      .gte("won_at", monthStart)
+      .then(({ count }) => {
+        if (!cancelled) setWonCount(count ?? 0);
       });
     return () => {
       cancelled = true;
@@ -70,7 +82,7 @@ function DashboardView() {
     { label: t("dash.openLeads"), value: openLeads, Icon: Users, tone: "bg-brand-soft text-brand" },
     { label: t("dash.dueToday"), value: groups.today.length, Icon: Clock, tone: "bg-amber-50 text-amber-700" },
     { label: t("dash.overdue"), value: groups.overdue.length, Icon: AlertCircle, tone: "bg-red-50 text-overdue" },
-    { label: t("dash.openFollowUps"), value: open.length, Icon: ListChecks, tone: "bg-emerald-50 text-done" },
+    { label: t("dash.wonThisMonth"), value: wonCount, Icon: Trophy, tone: "bg-emerald-50 text-done" },
   ];
 
   return (

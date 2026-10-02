@@ -5,6 +5,7 @@ import Link from "next/link";
 import { useParams } from "next/navigation";
 import RequireAuth from "@/components/require-auth";
 import FollowUpCard, { type Group } from "@/components/followup-card";
+import ActivityTimeline from "@/components/activity-timeline";
 import { useLanguage } from "@/components/language-provider";
 import { useOrgId } from "@/hooks/use-org-id";
 import { useFollowUps } from "@/hooks/use-followups";
@@ -213,6 +214,14 @@ function ProfileView() {
           ))}
         </div>
       </section>
+
+      {orgId && (
+        <ActivityTimeline
+          orgId={orgId}
+          contactId={id}
+          refreshKey={`${contact.status}|${contact.notes}|${open.map((f) => f.id + f.due_date).join(",")}`}
+        />
+      )}
     </main>
   );
 }
