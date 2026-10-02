@@ -2,7 +2,7 @@
 
 import Link from "next/link";
 import { usePathname } from "next/navigation";
-import { LayoutDashboard, Plus, Users } from "lucide-react";
+import { FileSpreadsheet, LayoutDashboard, Plus, Users } from "lucide-react";
 import Logo from "@/components/logo";
 import LanguageSwitcher from "@/components/language-switcher";
 import SignOutButton from "@/components/sign-out-button";
@@ -16,6 +16,7 @@ export default function AppShell({ children }: { children: React.ReactNode }) {
   const links = [
     { href: "/dashboard", label: t("nav.dashboard"), Icon: LayoutDashboard },
     { href: "/contacts", label: t("nav.contacts"), Icon: Users },
+    { href: "/data", label: t("nav.data"), Icon: FileSpreadsheet },
   ];
 
   const isActive = (href: string) =>

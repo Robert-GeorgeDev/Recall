@@ -84,6 +84,12 @@ function ContactsView() {
         )}
       </div>
 
+      <p className="mt-2 text-sm">
+        <Link href="/data" className="font-semibold text-brand hover:underline">
+          {t("data.link")}
+        </Link>
+      </p>
+
       {errorText && (
         <p role="alert" className="mt-4 rounded-xl bg-red-50 px-4 py-3 text-sm text-overdue">
           {errorText}
