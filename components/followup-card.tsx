@@ -67,7 +67,7 @@ export default function FollowUpCard({
 
   return (
     <article
-      className={`rounded-xl border border-line border-l-4 bg-white p-4 ${bars[group]}`}
+      className={`rounded-2xl border border-line border-l-4 bg-white p-4 shadow-sm ${bars[group]}`}
     >
       <div className="flex items-start justify-between gap-3">
         <div className="min-w-0">
