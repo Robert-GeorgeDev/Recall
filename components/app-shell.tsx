@@ -2,7 +2,7 @@
 
 import Link from "next/link";
 import { usePathname } from "next/navigation";
-import { CreditCard, FileSpreadsheet, LayoutDashboard, Plus, Users } from "lucide-react";
+import { CreditCard, FileSpreadsheet, LayoutDashboard, Plus, Settings, Users } from "lucide-react";
 import Logo from "@/components/logo";
 import LanguageSwitcher from "@/components/language-switcher";
 import SignOutButton from "@/components/sign-out-button";
@@ -18,6 +18,7 @@ export default function AppShell({ children }: { children: React.ReactNode }) {
     { href: "/contacts", label: t("nav.contacts"), Icon: Users },
     { href: "/data", label: t("nav.data"), Icon: FileSpreadsheet },
     { href: "/plans", label: t("nav.plans"), Icon: CreditCard },
+    { href: "/account", label: t("nav.account"), Icon: Settings },
   ];
 
   const isActive = (href: string) =>
@@ -69,6 +70,13 @@ export default function AppShell({ children }: { children: React.ReactNode }) {
         <Logo />
         <div className="flex items-center gap-3">
           <LanguageSwitcher />
+          <Link
+            href="/account"
+            aria-label={t("nav.account")}
+            className="text-slate-600 hover:text-ink"
+          >
+            <Settings className="h-5 w-5" aria-hidden="true" />
+          </Link>
           <SignOutButton />
         </div>
       </header>

@@ -1,0 +1,29 @@
+export const enAccount = {
+  "nav.account": "Account",
+  "account.title": "Account",
+  "account.email": "Signed in as",
+  "account.dataTitle": "Your data",
+  "account.dataText": "You can download all your contacts at any time.",
+  "account.exportLink": "Go to import & export",
+  "account.deleteTitle": "Delete account",
+  "account.deleteText": "This permanently deletes your workspace, all contacts, follow-ups and activity, and your login. It cannot be undone. Export your data first if you need it.",
+  "account.confirmLabel": "Type DELETE to confirm",
+  "account.deleteBtn": "Delete my account",
+  "account.deleting": "Deleting…",
+  "account.err.members": "This workspace has other members, so it cannot be deleted from here. Contact us for help.",
+};
+
+export const roAccount: Record<keyof typeof enAccount, string> = {
+  "nav.account": "Cont",
+  "account.title": "Cont",
+  "account.email": "Autentificat ca",
+  "account.dataTitle": "Datele tale",
+  "account.dataText": "Poți descărca oricând toate contactele tale.",
+  "account.exportLink": "Mergi la import și export",
+  "account.deleteTitle": "Șterge contul",
+  "account.deleteText": "Aceasta șterge definitiv spațiul tău de lucru, toate contactele, follow-up-urile și activitatea, plus contul de autentificare. Nu poate fi anulată. Exportă-ți mai întâi datele, dacă ai nevoie de ele.",
+  "account.confirmLabel": "Scrie DELETE pentru confirmare",
+  "account.deleteBtn": "Șterge contul meu",
+  "account.deleting": "Se șterge…",
+  "account.err.members": "Acest spațiu de lucru are alți membri, deci nu poate fi șters de aici. Contactează-ne pentru ajutor.",
+};

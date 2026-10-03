@@ -87,9 +87,9 @@ export default function PrivacyPage() {
       <h2>7. How long we keep data</h2>
       <p>
         We keep your data while your account is active. You can export your
-        contacts at any time from the Import &amp; export page. To delete your
-        account and its data, email us at {LEGAL.email} and we will do it
-        within a reasonable time. AI usage counters are short-lived and contain
+        contacts at any time from the Import &amp; export page. You can delete
+        your account and all its data yourself from the Account page, or
+        email us at {LEGAL.email}. AI usage counters are short-lived and contain
         no content.
       </p>
 
