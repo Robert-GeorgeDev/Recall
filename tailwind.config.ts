@@ -5,6 +5,8 @@ const config: Config = {
   theme: {
     extend: {
       colors: {
+        lavender: "#F5F3FF",
+        navy: "#0B1F3A",
         brand: { DEFAULT: "#4F46E5", dark: "#4338CA", soft: "#EEF2FF", accent: "#6366F1" },
         cta: { DEFAULT: "#4F46E5", dark: "#4338CA" },
         ink: "#0F172A",

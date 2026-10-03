@@ -10,3 +10,7 @@ body {
   outline: 2px solid #6366f1;
   outline-offset: 2px;
 }
+
+/* NEXIMO-BG */
+body{background:linear-gradient(180deg,#F5F3FF 0%,#F8FAFC 60%);min-height:100vh}
+input,select,textarea{font-size:16px}
