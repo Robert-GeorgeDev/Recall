@@ -2,7 +2,7 @@
 
 import Link from "next/link";
 import { usePathname } from "next/navigation";
-import { LayoutDashboard, Plus, Users, Database, CreditCard, UserCircle } from "lucide-react";
+import { LayoutDashboard, Plus, Users, Database, CreditCard, UserCircle, UserPlus } from "lucide-react";
 import Logo from "@/components/logo";
 import LanguageSwitcher from "@/components/language-switcher";
 import SignOutButton from "@/components/sign-out-button";
@@ -16,6 +16,7 @@ export default function AppShell({ children }: { children: React.ReactNode }) {
   const links = [
     { href: "/dashboard", label: t("nav.dashboard"), Icon: LayoutDashboard },
     { href: "/contacts", label: t("nav.contacts"), Icon: Users },
+    { href: "/team", label: t("nav.team"), Icon: UserPlus },
     { href: "/data", label: t("nav.data"), Icon: Database },
     { href: "/plans", label: t("nav.plans"), Icon: CreditCard },
     { href: "/account", label: t("nav.account"), Icon: UserCircle },
@@ -85,6 +86,9 @@ export default function AppShell({ children }: { children: React.ReactNode }) {
       <header className="sticky top-0 z-20 flex items-center justify-between border-b border-line bg-white/90 px-4 py-3 backdrop-blur md:hidden">
         <Link href="/dashboard" aria-label={BRAND}><Logo /></Link>
         <div className="flex items-center gap-3">
+          <Link href="/team" aria-label={t("nav.team")} className="grid h-11 w-11 place-items-center rounded-xl text-slate-600">
+            <UserPlus className="h-5 w-5" aria-hidden="true" />
+          </Link>
           <Link href="/data" aria-label={t("nav.data")} className="grid h-11 w-11 place-items-center rounded-xl text-slate-600">
             <Database className="h-5 w-5" aria-hidden="true" />
           </Link>
