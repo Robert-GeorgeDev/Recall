@@ -43,7 +43,7 @@ export default function AppShell({ children }: { children: React.ReactNode }) {
       {/* Tablet + desktop sidebar: icon rail at md, full at lg */}
       <aside className="fixed inset-y-0 left-0 z-30 hidden w-20 flex-col border-r border-line bg-white p-3 md:flex lg:w-64 lg:p-5">
         <Link href="/dashboard" aria-label={BRAND} className="flex h-10 items-center justify-center lg:justify-start">
-          <span className="lg:hidden text-xl font-extrabold text-brand">o</span>
+          <span className="lg:hidden text-xl font-bold text-brand">t</span>
           <span className="hidden lg:inline"><Logo /></span>
         </Link>
 

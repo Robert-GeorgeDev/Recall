@@ -14,3 +14,6 @@ body {
 /* NEXIMO-BG */
 body{background:linear-gradient(180deg,#F5F3FF 0%,#F8FAFC 60%);min-height:100vh}
 input,select,textarea{font-size:16px}
+
+/* OCTOM-SMOOTH */
+html{scroll-behavior:smooth}
