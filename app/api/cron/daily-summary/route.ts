@@ -33,14 +33,14 @@ function build(rows: Row[], today: string, base: string, token: string) {
   const html = `<div style="font-family:Arial,sans-serif;max-width:520px;margin:0 auto;color:#0F172A">
 <h1 style="font-size:20px">Who to contact today</h1>
 ${block("Overdue", overdue)}${block("Due today", due)}
-<p style="margin:24px 0"><a href="${base}/dashboard" style="background:#4F46E5;color:#fff;padding:12px 18px;border-radius:10px;text-decoration:none">Open Neximo</a></p>
+<p style="margin:24px 0"><a href="${base}/dashboard" style="background:#4F46E5;color:#fff;padding:12px 18px;border-radius:10px;text-decoration:none">Open Octom</a></p>
 <p style="font-size:12px;color:#64748B">You get this because you turned on the daily summary. <a href="${unsub}">Unsubscribe</a></p></div>`;
   const line = (r: Row) => `- ${nameOf(r)}${r.note ? `: ${r.note}` : ""}`;
   const text = [
     "Who to contact today",
     overdue.length ? `\nOverdue:\n${overdue.map(line).join("\n")}` : "",
     due.length ? `\nDue today:\n${due.map(line).join("\n")}` : "",
-    `\nOpen Neximo: ${base}/dashboard`,
+    `\nOpen Octom: ${base}/dashboard`,
     `Unsubscribe: ${unsub}`,
   ].join("\n");
   return { subject: `Your follow-ups for today (${rows.length})`, html, text, unsub };
@@ -60,7 +60,7 @@ export async function GET(request: Request) {
   }
 
   const dry = new URL(request.url).searchParams.get("dry") === "1";
-  const from = process.env.EMAIL_FROM ?? "Neximo <onboarding@resend.dev>";
+  const from = process.env.EMAIL_FROM ?? "Octom <onboarding@resend.dev>";
   const admin = createClient(SUPABASE_URL, serviceKey, { auth: { persistSession: false } });
   const today = new Date().toLocaleDateString("en-CA", { timeZone: "Europe/Bucharest" });
 

@@ -7,9 +7,9 @@ import { LanguageProvider } from "@/components/language-provider";
 const inter = Inter({ subsets: ["latin", "latin-ext"], variable: "--font-inter" });
 
 export const metadata: Metadata = {
-  title: "Neximo – Know who to contact today",
+  title: "Octom – Know who to contact today",
   description:
-    "Neximo is the simple CRM that tells you who to contact, when to contact them, and what to say.",
+    "Octom is the simple CRM that tells you who to contact, when to contact them, and what to say.",
 };
 
 export default function RootLayout({

@@ -8,7 +8,7 @@ const TOKEN = /^[a-f0-9]{32,64}$/;
 
 function page(body: string, status = 200) {
   return new NextResponse(
-    `<!doctype html><html><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>Neximo</title></head><body style="font-family:Arial,sans-serif;max-width:420px;margin:15vh auto;padding:0 20px;color:#0F172A">${body}</body></html>`,
+    `<!doctype html><html><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>Octom</title></head><body style="font-family:Arial,sans-serif;max-width:420px;margin:15vh auto;padding:0 20px;color:#0F172A">${body}</body></html>`,
     { status, headers: { "content-type": "text/html; charset=utf-8" } }
   );
 }

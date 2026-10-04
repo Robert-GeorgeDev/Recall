@@ -1,20 +1,20 @@
 import LegalLayout from "@/components/legal-layout";
 import { LEGAL } from "@/lib/legal";
 
-export const metadata = { title: "Terms of Service – Neximo" };
+export const metadata = { title: "Terms of Service – Octom" };
 
 export default function TermsPage() {
   return (
     <LegalLayout title="Terms of Service">
       <p>
-        These terms govern your use of Neximo, operated by {LEGAL.name},{" "}
+        These terms govern your use of Octom, operated by {LEGAL.name},{" "}
         {LEGAL.address} (“we”, “us”). By creating an account or using the
         service you agree to them.
       </p>
 
       <h2>1. The service</h2>
       <p>
-        Neximo is a simple CRM that helps you keep track of contacts and
+        Octom is a simple CRM that helps you keep track of contacts and
         follow-ups. The service is currently in beta. Features may change, and
         we do not guarantee uninterrupted availability.
       </p>
@@ -23,7 +23,7 @@ export default function TermsPage() {
       <p>
         You must provide accurate information and keep your login details
         secure. You are responsible for activity under your account. You must be
-        at least 18 and use Neximo for business purposes.
+        at least 18 and use Octom for business purposes.
       </p>
 
       <h2>3. Your content</h2>
@@ -47,20 +47,20 @@ export default function TermsPage() {
       <p>
         The AI assistant produces suggested text. It can be inaccurate or
         incomplete. You must review everything before you use or send it, and
-        you are responsible for what you send. Neximo never sends messages on
+        you are responsible for what you send. Octom never sends messages on
         your behalf. We may limit how much you can use it.
       </p>
 
       <h2>6. Plans and payments</h2>
       <p>
-        Neximo is free during the beta. If we introduce paid plans, we will
+        Octom is free during the beta. If we introduce paid plans, we will
         explain prices and limits clearly before you are charged, and you will
         be able to choose whether to upgrade.
       </p>
 
       <h2>7. Ending the service</h2>
       <p>
-        You can stop using Neximo at any time and export your contacts first.
+        You can stop using Octom at any time and export your contacts first.
         You can ask us to delete your account at {LEGAL.email}. We may suspend
         or close accounts that break these terms.
       </p>
@@ -77,7 +77,7 @@ export default function TermsPage() {
       <h2>9. Changes</h2>
       <p>
         We may update these terms. If a change is important we will tell you.
-        Continuing to use Neximo after a change means you accept it.
+        Continuing to use Octom after a change means you accept it.
       </p>
 
       <h2>10. Governing law</h2>

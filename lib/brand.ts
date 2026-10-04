@@ -1,2 +1,2 @@
-export const BRAND = "Neximo";
-export const TAGLINE = "Know what comes next.";
+export const BRAND = "Octom";
+export const TAGLINE = "Know who to contact today.";

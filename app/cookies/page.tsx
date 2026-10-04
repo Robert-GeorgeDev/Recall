@@ -1,12 +1,12 @@
 import LegalLayout from "@/components/legal-layout";
 
-export const metadata = { title: "Cookies – Neximo" };
+export const metadata = { title: "Cookies – Octom" };
 
 export default function CookiesPage() {
   return (
     <LegalLayout title="Cookies and browser storage">
       <p>
-        Neximo uses only the browser storage that is strictly necessary to make
+        Octom uses only the browser storage that is strictly necessary to make
         the service work. We do not use advertising or tracking cookies, and we
         do not use analytics at the moment.
       </p>

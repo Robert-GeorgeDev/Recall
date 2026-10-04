@@ -2,9 +2,9 @@ export function Logo({ className = "", light = false }: { className?: string; li
   return (
     <span
       className={`inline-flex items-baseline font-extrabold tracking-tight text-xl leading-none select-none ${light ? "text-white" : "text-ink"} ${className}`}
-      aria-label="Neximo"
+      aria-label="Octom"
     >
-      ne<span className={light ? "text-indigo-300" : "text-brand"}>x</span>imo
+      <span className={light ? "text-indigo-300" : "text-brand"}>o</span>ctom
     </span>
   );
 }
