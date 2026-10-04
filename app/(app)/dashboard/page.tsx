@@ -2,7 +2,7 @@
 
 import { useEffect, useState } from "react";
 import Link from "next/link";
-import { AlertCircle, Clock, Trophy, Users } from "lucide-react";
+import { AlertCircle, Clock, Sparkles, Trophy, Users } from "lucide-react";
 import RequireAuth from "@/components/require-auth";
 import FollowUpCard, { type Group } from "@/components/followup-card";
 import PlanUsage from "@/components/plan-usage";
@@ -214,6 +214,16 @@ function DashboardView() {
               </ul>
             )}
           </div>
+          <Link
+            href="/assistant"
+            className="mt-4 block rounded-xl border border-line bg-white p-5 hover:border-brand"
+          >
+            <span className="flex items-center gap-2 font-semibold">
+              <Sparkles className="h-4 w-4 text-brand" aria-hidden="true" />
+              {t("chat.title")}
+            </span>
+            <span className="mt-2 block text-sm text-slate-600">{t("chat.subtitle")}</span>
+          </Link>
         </aside>
       </div>
     </main>

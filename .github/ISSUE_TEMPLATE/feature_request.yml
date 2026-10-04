@@ -1,0 +1,10 @@
+name: Feature request
+description: An idea for Octom
+body:
+  - type: textarea
+    id: problem
+    attributes:
+      label: The problem you want to solve
+      description: Describe the problem first. Octom stays small on purpose.
+    validations:
+      required: true
