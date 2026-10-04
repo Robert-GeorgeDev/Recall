@@ -7,9 +7,9 @@ import { LanguageProvider } from "@/components/language-provider";
 const inter = Inter({ subsets: ["latin", "latin-ext"], variable: "--font-inter" });
 
 export const metadata: Metadata = {
-  title: "Orbito – Know who to contact today",
+  title: "Neximo – Know who to contact today",
   description:
-    "Orbito is the simple CRM that tells you who to contact, when to contact them, and what to say.",
+    "Neximo is the simple CRM that tells you who to contact, when to contact them, and what to say.",
 };
 
 export default function RootLayout({

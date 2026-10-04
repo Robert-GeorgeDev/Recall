@@ -1,19 +1,19 @@
 import LegalLayout from "@/components/legal-layout";
 import { LEGAL } from "@/lib/legal";
 
-export const metadata = { title: "Privacy Policy – Orbito" };
+export const metadata = { title: "Privacy Policy – Neximo" };
 
 export default function PrivacyPage() {
   return (
     <LegalLayout title="Privacy Policy">
       <p>
-        This policy explains how Orbito (“we”, “us”) handles personal data when
+        This policy explains how Neximo (“we”, “us”) handles personal data when
         you use our service. We try to collect as little as possible.
       </p>
 
       <h2>1. Who we are</h2>
       <p>
-        The operator of Orbito is {LEGAL.name}, {LEGAL.address}. You can contact
+        The operator of Neximo is {LEGAL.name}, {LEGAL.address}. You can contact
         us at {LEGAL.email}.
       </p>
 
@@ -60,7 +60,7 @@ export default function PrivacyPage() {
       </p>
 
       <h2>5. Who we share data with</h2>
-      <p>We use these providers to run Orbito:</p>
+      <p>We use these providers to run Neximo:</p>
       <ul>
         <li>Supabase: database and authentication (project hosted in the EU, Frankfurt).</li>
         <li>Vercel: website hosting.</li>
@@ -110,7 +110,7 @@ export default function PrivacyPage() {
       </p>
 
       <h2>10. Children</h2>
-      <p>Orbito is intended for business use and is not for people under 18.</p>
+      <p>Neximo is intended for business use and is not for people under 18.</p>
 
       <h2>11. Changes</h2>
       <p>

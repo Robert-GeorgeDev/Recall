@@ -19,7 +19,7 @@ const enBase = {
   "common.error": "Something went wrong. Please try again.",
 
   "landing.login": "Log in",
-  "landing.title": "Never miss a follow-up again.",
+  "landing.title": "Stop letting follow-ups slip.",
   "landing.subtitle": `${BRAND} is the simple CRM that tells you who to contact, when to contact them, and what to say.`,
   "landing.cta": "Start free",
   "landing.how": "See how it works",
@@ -104,7 +104,7 @@ const roBase: Record<keyof typeof enBase, string> = {
   "common.error": "Ceva nu a mers. Te rugăm să încerci din nou.",
 
   "landing.login": "Autentificare",
-  "landing.title": "Nu mai uita niciodată un follow-up.",
+  "landing.title": "Nu lăsa follow-up-urile să alunece.",
   "landing.subtitle": `${BRAND} este CRM-ul simplu care îți spune pe cine să contactezi, când și ce să spui.`,
   "landing.cta": "Începe gratuit",
   "landing.how": "Vezi cum funcționează",
