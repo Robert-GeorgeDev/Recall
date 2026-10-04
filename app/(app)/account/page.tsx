@@ -7,6 +7,7 @@ import RequireAuth from "@/components/require-auth";
 import { useAuth } from "@/components/auth-provider";
 import { useLanguage } from "@/components/language-provider";
 import { supabase } from "@/lib/supabase";
+import EmailPrefs from "@/components/email-prefs";
 
 function AccountView() {
   const { t } = useLanguage();
@@ -57,6 +58,8 @@ function AccountView() {
           {t("account.exportLink")}
         </Link>
       </section>
+
+      <EmailPrefs />
 
       <section className="mt-4 rounded-xl border border-red-200 bg-white p-5">
         <h2 className="text-lg font-semibold text-overdue">
