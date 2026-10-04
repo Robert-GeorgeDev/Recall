@@ -2,7 +2,7 @@
 
 import Link from "next/link";
 import { usePathname } from "next/navigation";
-import { LayoutDashboard, Plus, Users, Database, CreditCard, UserCircle, UserPlus } from "lucide-react";
+import { LayoutDashboard, Plus, Users, Database, CreditCard, UserCircle, UserPlus, LayoutGrid } from "lucide-react";
 import Logo from "@/components/logo";
 import LanguageSwitcher from "@/components/language-switcher";
 import SignOutButton from "@/components/sign-out-button";
@@ -16,6 +16,7 @@ export default function AppShell({ children }: { children: React.ReactNode }) {
   const links = [
     { href: "/dashboard", label: t("nav.dashboard"), Icon: LayoutDashboard },
     { href: "/contacts", label: t("nav.contacts"), Icon: Users },
+    { href: "/pipeline", label: t("nav.pipeline"), Icon: LayoutGrid },
     { href: "/team", label: t("nav.team"), Icon: UserPlus },
     { href: "/data", label: t("nav.data"), Icon: Database },
     { href: "/plans", label: t("nav.plans"), Icon: CreditCard },
@@ -89,8 +90,8 @@ export default function AppShell({ children }: { children: React.ReactNode }) {
           <Link href="/team" aria-label={t("nav.team")} className="grid h-11 w-11 place-items-center rounded-xl text-slate-600">
             <UserPlus className="h-5 w-5" aria-hidden="true" />
           </Link>
-          <Link href="/data" aria-label={t("nav.data")} className="grid h-11 w-11 place-items-center rounded-xl text-slate-600">
-            <Database className="h-5 w-5" aria-hidden="true" />
+          <Link href="/pipeline" aria-label={t("nav.pipeline")} className="grid h-11 w-11 place-items-center rounded-xl text-slate-600">
+            <LayoutGrid className="h-5 w-5" aria-hidden="true" />
           </Link>
           <LanguageSwitcher />
         </div>
