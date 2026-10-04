@@ -12,4 +12,5 @@ export type FollowUp = {
   priority: Priority;
   note: string;
   status: "open" | "done";
+  assigned_to: string | null;
 };

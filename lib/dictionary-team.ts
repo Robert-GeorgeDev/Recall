@@ -38,6 +38,9 @@ export const enTeam = {
   "join.err.inWorkspace": "Your account already has a workspace with data, so it cannot join another one.",
   "join.err.seats": "This workspace has no free seats left.",
   "join.err.already": "You are already a member of this workspace.",
+  "dash.mine": "Mine",
+  "dash.all": "Everyone",
+  "fu.assignee": "Assigned to",
 };
 
 export const roTeam: Record<keyof typeof enTeam, string> = {
@@ -80,4 +83,7 @@ export const roTeam: Record<keyof typeof enTeam, string> = {
   "join.err.inWorkspace": "Contul tău are deja un spațiu de lucru cu date, deci nu se poate alătura altuia.",
   "join.err.seats": "Acest spațiu de lucru nu mai are locuri libere.",
   "join.err.already": "Ești deja membru în acest spațiu de lucru.",
+  "dash.mine": "Ale mele",
+  "dash.all": "Toți",
+  "fu.assignee": "Responsabil",
 };

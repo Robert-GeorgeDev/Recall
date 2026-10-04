@@ -14,6 +14,7 @@ type Row = {
   priority: Priority;
   note: string;
   status: "open" | "done";
+  assigned_to: string | null;
   contacts: ContactInfo | ContactInfo[] | null;
 };
 
@@ -26,7 +27,7 @@ export function useFollowUps(orgId: string | null) {
     const { data, error: queryError } = await supabase
       .from("follow_ups")
       .select(
-        "id, contact_id, due_date, due_time, priority, note, status, contacts!follow_ups_contact_fk(first_name, last_name, company)"
+        "id, contact_id, due_date, due_time, priority, note, status, assigned_to, contacts!follow_ups_contact_fk(first_name, last_name, company)"
       )
       .eq("organization_id", orgId)
       .order("due_date", { ascending: true });
@@ -51,6 +52,7 @@ export function useFollowUps(orgId: string | null) {
           priority: r.priority,
           note: r.note,
           status: r.status,
+          assigned_to: r.assigned_to,
         };
       })
     );

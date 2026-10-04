@@ -6,6 +6,7 @@ import { useRouter } from "next/navigation";
 import RequireAuth from "@/components/require-auth";
 import { useLanguage } from "@/components/language-provider";
 import { useOrgId } from "@/hooks/use-org-id";
+import { useAuth } from "@/components/auth-provider";
 import { supabase } from "@/lib/supabase";
 import { addDays, todayISO } from "@/lib/dates";
 import type { Key } from "@/lib/dictionaries";
@@ -19,6 +20,7 @@ const inputClass =
 function NewFollowUpForm() {
   const { t } = useLanguage();
   const orgId = useOrgId();
+  const { user } = useAuth();
   const router = useRouter();
 
   const [contacts, setContacts] = useState<ContactOption[] | null>(null);
@@ -27,6 +29,8 @@ function NewFollowUpForm() {
   const [dueTime, setDueTime] = useState("");
   const [priority, setPriority] = useState<Priority>("Normal");
   const [note, setNote] = useState("");
+  const [members, setMembers] = useState<{ user_id: string; email: string }[]>([]);
+  const [assignee, setAssignee] = useState("");
   const [error, setError] = useState("");
   const [loadFailed, setLoadFailed] = useState(false);
   const [busy, setBusy] = useState(false);
@@ -58,6 +62,12 @@ function NewFollowUpForm() {
     };
   }, [orgId]);
 
+  useEffect(() => {
+    supabase.rpc("list_members").then(({ data }) => {
+      if (Array.isArray(data)) setMembers(data as { user_id: string; email: string }[]);
+    });
+  }, [orgId]);
+
   async function handleSubmit(e: React.FormEvent<HTMLFormElement>) {
     e.preventDefault();
     if (!orgId || !contacts) return;
@@ -78,6 +88,7 @@ function NewFollowUpForm() {
       due_time: dueTime || null,
       priority,
       note: note.trim(),
+      ...(assignee ? { assigned_to: assignee } : {}),
     });
     if (failure) {
       setError(
@@ -142,6 +153,24 @@ function NewFollowUpForm() {
             ))}
           </select>
         </div>
+
+        {members.length > 1 && (
+          <div>
+            <label htmlFor="assignee" className="block text-sm font-medium">
+              {t("fu.assignee")}
+            </label>
+            <select id="assignee" value={assignee} onChange={(e) => setAssignee(e.target.value)} className={inputClass}>
+              <option value="">{t("team.you")}</option>
+              {members
+                .filter((m) => m.user_id !== user?.id)
+                .map((m) => (
+                  <option key={m.user_id} value={m.user_id}>
+                    {m.email}
+                  </option>
+                ))}
+            </select>
+          </div>
+        )}
 
         <div className="grid grid-cols-2 gap-4">
           <div>

@@ -8,6 +8,7 @@ import FollowUpCard, { type Group } from "@/components/followup-card";
 import PlanUsage from "@/components/plan-usage";
 import { useLanguage } from "@/components/language-provider";
 import { useOrgId } from "@/hooks/use-org-id";
+import { useAuth } from "@/components/auth-provider";
 import { useFollowUps } from "@/hooks/use-followups";
 import { supabase } from "@/lib/supabase";
 import { todayISO } from "@/lib/dates";
@@ -36,8 +37,17 @@ function compare(a: FollowUp, b: FollowUp): number {
 function DashboardView() {
   const { t } = useLanguage();
   const orgId = useOrgId();
+  const { user } = useAuth();
   const { followUps, error, reload } = useFollowUps(orgId);
   const [openLeads, setOpenLeads] = useState<number | null>(null);
+  const [scope, setScope] = useState<"mine" | "all">("mine");
+  const [teamSize, setTeamSize] = useState(1);
+
+  useEffect(() => {
+    supabase.rpc("list_members").then(({ data }) => {
+      setTeamSize(Array.isArray(data) ? data.length : 1);
+    });
+  }, [orgId]);
   const [wonCount, setWonCount] = useState<number | null>(null);
 
   useEffect(() => {
@@ -68,7 +78,13 @@ function DashboardView() {
   }, [orgId]);
 
   const today = todayISO();
-  const open = (followUps ?? []).filter((f) => f.status === "open").sort(compare);
+  const open = (followUps ?? [])
+    .filter(
+      (f) =>
+        f.status === "open" &&
+        (teamSize <= 1 || scope === "all" || f.assigned_to === user?.id || f.assigned_to === null)
+    )
+    .sort(compare);
   const groups: Record<Group, FollowUp[]> = {
     overdue: open.filter((f) => f.due_date < today),
     today: open.filter((f) => f.due_date === today),
@@ -92,6 +108,21 @@ function DashboardView() {
         <div>
           <h1 className="text-3xl font-bold tracking-tight">{greeting}</h1>
           <p className="mt-1 text-slate-600">{t("dash.subtitle")}</p>
+
+          {teamSize > 1 && (
+            <div role="group" className="mt-4 inline-flex rounded-xl border border-line bg-white p-1 text-sm font-semibold">
+              {(["mine", "all"] as const).map((s) => (
+                <button
+                  key={s}
+                  onClick={() => setScope(s)}
+                  aria-pressed={scope === s}
+                  className={`min-h-[40px] rounded-lg px-4 ${scope === s ? "bg-brand text-white" : "text-slate-600"}`}
+                >
+                  {s === "mine" ? t("dash.mine") : t("dash.all")}
+                </button>
+              ))}
+            </div>
+          )}
           {orgId && <PlanUsage orgId={orgId} />}
 
           {error && (
