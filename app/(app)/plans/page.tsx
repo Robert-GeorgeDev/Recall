@@ -4,6 +4,7 @@ import { Check } from "lucide-react";
 import RequireAuth from "@/components/require-auth";
 import { useLanguage } from "@/components/language-provider";
 import { useOrgId } from "@/hooks/use-org-id";
+import BillingButton, { CheckoutNotice } from "@/components/billing-actions";
 import { FREE_LIMITS, usePlan, type Plan } from "@/hooks/use-plan";
 import type { Key } from "@/lib/dictionaries";
 
@@ -62,7 +63,7 @@ function Usage({
 function PlansView() {
   const { t } = useLanguage();
   const orgId = useOrgId();
-  const { state } = usePlan(orgId);
+  const { state, reload } = usePlan(orgId);
   const current: Plan = state?.plan ?? "free";
   const isFree = current === "free";
 
@@ -87,6 +88,12 @@ function PlansView() {
             />
           </div>
         </section>
+      )}
+      <CheckoutNotice reload={reload} />
+      {!isFree && (
+        <div className="mt-4 max-w-xs">
+          <BillingButton orgId={orgId} kind="manage" />
+        </div>
       )}
 
       <div className="mt-6 grid gap-4 md:grid-cols-3">
@@ -120,13 +127,7 @@ function PlansView() {
               ))}
             </ul>
             {id !== "free" && id !== current && (
-              <button
-                type="button"
-                disabled
-                className="mt-5 w-full rounded-xl border border-line bg-surface px-4 py-2.5 text-sm font-semibold text-slate-500"
-              >
-                {t("plans.comingSoon")}
-              </button>
+              isFree ? <BillingButton orgId={orgId} kind={id} className="mt-5" /> : null
             )}
           </article>
         ))}
