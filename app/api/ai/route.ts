@@ -158,7 +158,10 @@ async function askModel(
   messages: ChatMessage[]
 ): Promise<string | null> {
   const key = process.env.OPENAI_API_KEY;
-  if (!key) return null;
+  if (!key) {
+    console.error("AI: OPENAI_API_KEY is not set in this environment");
+    return null;
+  }
 
   const controller = new AbortController();
   const timer = setTimeout(() => controller.abort(), 25_000);
@@ -177,14 +180,21 @@ async function askModel(
       signal: controller.signal,
     });
     if (!res.ok) {
-      console.error("AI provider error, status", res.status);
+      let detail = "";
+      try {
+        const err = await res.json();
+        detail = String(err?.error?.code ?? err?.error?.type ?? "");
+      } catch {
+        // the provider sent no readable error body
+      }
+      console.error("AI provider error, status", res.status, detail, "model", MODEL);
       return null;
     }
     const json = await res.json();
     const text = json?.choices?.[0]?.message?.content;
     return typeof text === "string" ? text : null;
-  } catch {
-    console.error("AI request failed");
+  } catch (e) {
+    console.error("AI request failed", e instanceof Error ? e.name : "unknown");
     return null;
   } finally {
     clearTimeout(timer);
