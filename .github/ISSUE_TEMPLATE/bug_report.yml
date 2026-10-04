@@ -1,0 +1,14 @@
+name: Bug report
+description: Something does not work as expected
+body:
+  - type: textarea
+    id: what
+    attributes:
+      label: What happened
+      description: What did you do, what did you expect and what did you see?
+    validations:
+      required: true
+  - type: input
+    id: device
+    attributes:
+      label: Browser and device

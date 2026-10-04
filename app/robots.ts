@@ -17,6 +17,8 @@ export default function robots(): MetadataRoute.Robots {
         "/onboarding",
         "/pipeline",
         "/team",
+        "/assistant",
+        "/join",
       ],
     },
     ...(siteConfigured ? { sitemap: `${SITE_URL}/sitemap.xml` } : {}),

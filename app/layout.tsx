@@ -25,6 +25,27 @@ export const metadata: Metadata = {
   twitter: { card: "summary_large_image" },
 };
 
+const jsonLd = {
+  "@context": "https://schema.org",
+  "@graph": [
+    {
+      "@type": "Organization",
+      name: "Octom",
+      ...(siteConfigured ? { url: SITE_URL } : {}),
+    },
+    {
+      "@type": "SoftwareApplication",
+      name: "Octom",
+      applicationCategory: "BusinessApplication",
+      operatingSystem: "Web",
+      description:
+        "A simple CRM built around follow-ups for freelancers, consultants and small teams.",
+      inLanguage: ["en", "ro"],
+      license: "https://www.gnu.org/licenses/agpl-3.0.html",
+    },
+  ],
+};
+
 export default function RootLayout({
   children,
 }: {
@@ -33,6 +54,12 @@ export default function RootLayout({
   return (
     <html lang="en">
       <body className={`${inter.variable} font-sans`}>
+        <script
+          type="application/ld+json"
+          dangerouslySetInnerHTML={{
+            __html: JSON.stringify(jsonLd).replace(/</g, "\\u003c"),
+          }}
+        />
         <LanguageProvider>
           <AuthProvider>{children}</AuthProvider>
         </LanguageProvider>
