@@ -35,6 +35,14 @@ export default function PrivacyPage() {
           limits. We do not store the prompts or the generated text.
         </li>
         <li>
+          <strong>Team data:</strong> if you invite colleagues, they can see and edit the
+          workspace data and can see your email address inside the workspace.
+        </li>
+        <li>
+          <strong>Email preferences:</strong> whether you turned on the optional daily
+          summary email.
+        </li>
+        <li>
           <strong>Browser storage:</strong> your login session and language
           choice (see our Cookies page).
         </li>
@@ -64,6 +72,7 @@ export default function PrivacyPage() {
       <ul>
         <li>Supabase: database and authentication (project hosted in the EU, Frankfurt).</li>
         <li>Vercel: website hosting.</li>
+        <li>Resend: sends the optional daily summary email to you, only if you turn it on.</li>
         <li>
           OpenAI: text generation for the AI assistant. When you use it, the
           relevant contact details (name, company, status, notes, recent
