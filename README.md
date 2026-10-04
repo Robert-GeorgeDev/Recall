@@ -44,8 +44,11 @@ for tests.
 
 Run the tests with `npm test`. End-to-end tests run with `npm run test:e2e`.
 
-The database schema for self-hosting is not published yet. It will be added
-under `supabase/migrations`.
+The database schema is in `supabase/migrations`. In a new Supabase project, open
+the SQL Editor and run `0001_schema.sql`, then `0002_hardening.sql`, then
+`supabase/tests/security_test.sql`, which must end with
+"ALL TESTS PASSED (rolled back on purpose)". The scripts were tested on
+PostgreSQL 16 with the Supabase roles and `auth` schema.
 
 ## Contributing
 
