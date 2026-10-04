@@ -106,7 +106,7 @@ const roBase: Record<keyof typeof enBase, string> = {
   "common.error": "Ceva nu a mers. Te rugăm să încerci din nou.",
 
   "landing.login": "Autentificare",
-  "landing.title": "Nu lăsa follow-up-urile să alunece.",
+  "landing.title": "Nu lăsa follow-up-urile să îți scape.",
   "landing.subtitle": `${BRAND} este CRM-ul simplu care îți spune pe cine să contactezi, când și ce să spui.`,
   "landing.cta": "Începe gratuit",
   "landing.how": "Vezi cum funcționează",
