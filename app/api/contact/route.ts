@@ -65,7 +65,12 @@ export async function POST(req: Request) {
 
   const key = process.env.RESEND_API_KEY;
   const to = process.env.CONTACT_TO_EMAIL;
-  if (!key || !to) return fail(503, "not_configured");
+  if (!key || !to) {
+    console.error(
+      `contact: not configured (RESEND_API_KEY ${key ? "set" : "MISSING"}, CONTACT_TO_EMAIL ${to ? "set" : "MISSING"})`
+    );
+    return fail(503, "not_configured");
+  }
 
   try {
     const res = await fetch("https://api.resend.com/emails", {
@@ -80,8 +85,14 @@ export async function POST(req: Request) {
         text: `From: ${name} <${email}>\n\n${message}\n`,
       }),
     });
-    if (!res.ok) return fail(502, "send_failed");
-  } catch {
+    if (!res.ok) {
+      // Log the provider's reason (for example an unverified sender domain). No secrets.
+      const detail = await res.text().catch(() => "");
+      console.error(`contact: Resend rejected the email (${res.status}): ${detail.slice(0, 300)}`);
+      return fail(502, "send_failed");
+    }
+  } catch (error) {
+    console.error("contact: could not reach Resend", error instanceof Error ? error.message : "");
     return fail(502, "send_failed");
   }
 
