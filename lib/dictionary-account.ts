@@ -1,4 +1,7 @@
 export const enAccount = {
+  "menu.workspace": "Workspace",
+  "menu.settings": "Settings",
+  "menu.label": "Account menu",
   "nav.account": "Account",
   "account.title": "Account",
   "account.email": "Signed in as",
@@ -14,6 +17,9 @@ export const enAccount = {
 };
 
 export const roAccount: Record<keyof typeof enAccount, string> = {
+  "menu.workspace": "Spațiu de lucru",
+  "menu.settings": "Setări",
+  "menu.label": "Meniu cont",
   "nav.account": "Cont",
   "account.title": "Cont",
   "account.email": "Autentificat ca",

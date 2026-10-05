@@ -6,6 +6,7 @@ import { LayoutDashboard, Plus, Users, Database, CreditCard, UserCircle, UserPlu
 import Logo from "@/components/logo";
 import LanguageSwitcher from "@/components/language-switcher";
 import SignOutButton from "@/components/sign-out-button";
+import AccountMenu from "@/components/account-menu";
 import { useLanguage } from "@/components/language-provider";
 import { BRAND } from "@/lib/brand";
 
@@ -102,7 +103,15 @@ export default function AppShell({ children }: { children: React.ReactNode }) {
       </header>
 
       <div className="pb-24 md:pb-0 md:pl-20 lg:pl-64">
-        <div className="mx-auto w-full max-w-[1400px]">{children}</div>
+        {/* Desktop and laptop only: account menu, top right */}
+        <div className="pointer-events-none sticky top-0 z-40 hidden h-0 md:block">
+          <div className="mx-auto flex w-full max-w-[1400px] justify-end px-5 pt-4">
+            <div className="pointer-events-auto">
+              <AccountMenu />
+            </div>
+          </div>
+        </div>
+        <div className="mx-auto w-full max-w-[1400px] md:pt-14">{children}</div>
       </div>
 
       {/* Phone bottom bar */}
