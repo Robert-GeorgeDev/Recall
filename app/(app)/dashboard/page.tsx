@@ -95,28 +95,42 @@ function DashboardView() {
   const greeting =
     hour < 12 ? t("dash.morning") : hour < 18 ? t("dash.afternoon") : t("dash.evening");
 
-  const stats = [
-    { label: t("dash.openLeads"), value: openLeads, Icon: Users, tone: "bg-brand-soft text-brand" },
-    { label: t("dash.dueToday"), value: groups.today.length, Icon: Clock, tone: "bg-amber-50 text-amber-700" },
-    { label: t("dash.overdue"), value: groups.overdue.length, Icon: AlertCircle, tone: "bg-red-50 text-overdue" },
-    { label: t("dash.wonThisMonth"), value: wonCount, Icon: Trophy, tone: "bg-emerald-50 text-done" },
+  const primary = [
+    { label: t("dash.overdue"), value: groups.overdue.length, Icon: AlertCircle, tone: "bg-red-50 text-overdue", num: "text-overdue" },
+    { label: t("dash.dueToday"), value: groups.today.length, Icon: Clock, tone: "bg-amber-50 text-amber-700", num: "text-amber-700" },
   ];
+  const secondary = [
+    { label: t("dash.openLeads"), value: openLeads, Icon: Users },
+    { label: t("dash.wonThisMonth"), value: wonCount, Icon: Trophy },
+  ];
+
+  const urgent = groups.overdue.length + groups.today.length;
+  const summary =
+    urgent === 0
+      ? t("dash.count.none")
+      : urgent === 1
+      ? t("dash.count.one")
+      : t("dash.count.many").replace("{n}", String(urgent));
+
+  const meta = user?.user_metadata as Record<string, unknown> | undefined;
+  const fullName = typeof meta?.full_name === "string" ? meta.full_name : typeof meta?.name === "string" ? meta.name : "";
+  const firstName = fullName.trim().split(/\s+/)[0] ?? "";
 
   return (
     <main className="mx-auto max-w-6xl px-5 pb-10 pt-8">
       <div className="grid gap-6 lg:grid-cols-[minmax(0,1fr)_320px]">
         <div>
-          <h1 className="text-4xl font-semibold tracking-tight">{greeting}</h1>
-          <p className="mt-2 text-lg text-slate-500">{t("dash.subtitle")}</p>
+          <h1 className="text-4xl font-semibold tracking-tight">{firstName ? `${greeting}, ${firstName}.` : greeting}</h1>
+          <p className="mt-2 text-lg text-slate-500">{followUps === null ? t("dash.subtitle") : summary}</p>
 
           {teamSize > 1 && (
-            <div role="group" className="mt-4 inline-flex rounded-full border border-line bg-white p-1 text-sm font-semibold">
+            <div role="group" className="mt-4 inline-flex rounded-lg border border-line bg-white p-1 text-sm font-semibold">
               {(["mine", "all"] as const).map((s) => (
                 <button
                   key={s}
                   onClick={() => setScope(s)}
                   aria-pressed={scope === s}
-                  className={`min-h-[40px] rounded-full px-4 ${scope === s ? "bg-ink text-white" : "text-slate-600"}`}
+                  className={`min-h-[40px] rounded-md px-4 ${scope === s ? "bg-ink text-white" : "text-slate-600"}`}
                 >
                   {s === "mine" ? t("dash.mine") : t("dash.all")}
                 </button>
@@ -137,17 +151,27 @@ function DashboardView() {
 
           {followUps !== null && (
             <>
-              <div className="mt-6 grid grid-cols-2 gap-3 lg:grid-cols-4">
-                {stats.map(({ label, value, Icon, tone }) => (
-                  <div key={label} className="card p-5">
-                    <span className={`grid h-10 w-10 place-items-center rounded-2xl ${tone}`}>
+              <div className="mt-6 grid grid-cols-2 gap-4">
+                {primary.map(({ label, value, Icon, tone, num }) => (
+                  <div key={label} className="card flex items-center gap-4 p-5">
+                    <span className={`grid h-11 w-11 shrink-0 place-items-center rounded-xl ${tone}`}>
                       <Icon className="h-5 w-5" aria-hidden="true" />
                     </span>
-                    <p className="mt-4 text-3xl font-semibold tracking-tight">{value ?? "–"}</p>
-                    <p className="mt-0.5 text-sm text-slate-500">{label}</p>
+                    <div>
+                      <p className={`text-4xl font-semibold leading-none tracking-tight ${num}`}>{value}</p>
+                      <p className="mt-1 text-sm text-slate-500">{label}</p>
+                    </div>
                   </div>
                 ))}
               </div>
+              <p className="mt-4 flex flex-wrap gap-x-6 gap-y-1 text-sm text-slate-500">
+                {secondary.map(({ label, value, Icon }) => (
+                  <span key={label} className="inline-flex items-center gap-2">
+                    <Icon className="h-4 w-4" aria-hidden="true" />
+                    <span className="font-semibold text-slate-700">{value ?? "–"}</span> {label}
+                  </span>
+                ))}
+              </p>
 
               {open.length === 0 && (
                 <div className="mt-10 rounded-2xl border border-dashed border-line bg-white/70 p-10 text-center">

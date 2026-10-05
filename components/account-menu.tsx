@@ -71,9 +71,9 @@ export default function AccountMenu() {
         aria-haspopup="menu"
         aria-expanded={open}
         aria-label={t("menu.label")}
-        className="flex items-center gap-2 rounded-full border border-line/70 bg-white/90 py-1.5 pl-1.5 pr-3 shadow-soft backdrop-blur transition hover:bg-white"
+        className="flex items-center gap-2 rounded-xl border border-line/80 bg-white/90 py-1.5 pl-1.5 pr-3 shadow-soft backdrop-blur transition hover:bg-white"
       >
-        <span className="grid h-8 w-8 place-items-center rounded-full bg-ink text-sm font-semibold text-white">
+        <span className="grid h-8 w-8 place-items-center rounded-lg bg-ink text-sm font-semibold text-white">
           {initial}
         </span>
         <span className="hidden max-w-[10rem] truncate text-sm font-semibold lg:inline">{name}</span>

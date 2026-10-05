@@ -98,7 +98,7 @@ export default function FollowUpCard({
           type="button"
           onClick={complete}
           disabled={busy}
-          className="rounded-full bg-done px-5 py-2 text-sm font-semibold text-white hover:opacity-90 disabled:opacity-60"
+          className="rounded-lg bg-done px-5 py-2 text-sm font-semibold text-white hover:opacity-90 disabled:opacity-60"
         >
           {t("card.complete")}
         </button>
@@ -106,7 +106,7 @@ export default function FollowUpCard({
           type="button"
           onClick={() => setMode(mode === "none" ? "snooze" : "none")}
           disabled={busy}
-          className="rounded-full border border-line bg-white px-5 py-2 text-sm font-semibold text-ink hover:bg-slate-50 disabled:opacity-60"
+          className="rounded-lg border border-line bg-white px-5 py-2 text-sm font-semibold text-ink hover:bg-slate-50 disabled:opacity-60"
         >
           {t("card.snooze")}
         </button>

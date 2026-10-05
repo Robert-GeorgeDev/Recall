@@ -2,7 +2,7 @@ import { test, expect } from "@playwright/test";
 
 test("landing shows headline and call to action", async ({ page }) => {
   await page.goto("/");
-  await expect(page.getByRole("heading", { level: 1 })).toContainText(/follow-up/i);
+  await expect(page.getByRole("heading", { level: 1 })).toContainText(/follow[- ]up/i);
   await expect(page.getByRole("link", { name: /start free/i }).first()).toBeVisible();
 });
 
