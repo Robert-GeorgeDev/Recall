@@ -1,4 +1,12 @@
 export const enAccount = {
+  "dash.count.none": "Nothing to do today.",
+  "dash.count.one": "You have 1 follow-up to do today.",
+  "dash.count.many": "You have {n} follow-ups to do today.",
+  "account.prefs": "Preferences",
+  "account.lang": "Language",
+  "account.danger": "Danger zone",
+  "account.more": "More",
+  "account.dataLead": "Download all your contacts and data.",
   "menu.workspace": "Workspace",
   "menu.settings": "Settings",
   "menu.label": "Account menu",
@@ -17,6 +25,14 @@ export const enAccount = {
 };
 
 export const roAccount: Record<keyof typeof enAccount, string> = {
+  "dash.count.none": "Nimic de rezolvat azi.",
+  "dash.count.one": "Ai 1 follow-up de rezolvat azi.",
+  "dash.count.many": "Ai {n} follow-up-uri de rezolvat azi.",
+  "account.prefs": "Preferințe",
+  "account.lang": "Limbă",
+  "account.danger": "Zona periculoasă",
+  "account.more": "Mai mult",
+  "account.dataLead": "Descarcă toate contactele și datele tale.",
   "menu.workspace": "Spațiu de lucru",
   "menu.settings": "Setări",
   "menu.label": "Meniu cont",

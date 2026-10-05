@@ -127,7 +127,7 @@ function ContactsView() {
             placeholder={t("contacts.search")}
             value={search}
             onChange={(e) => setSearch(e.target.value)}
-            className="w-full rounded-full border border-line bg-white px-5 py-3 shadow-soft outline-none focus:border-brand focus:ring-2 focus:ring-brand/20"
+            className="w-full rounded-xl border border-line bg-white px-5 py-3 outline-none focus:border-brand focus:ring-2 focus:ring-brand/20"
           />
         </div>
       )}

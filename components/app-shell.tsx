@@ -59,7 +59,7 @@ export default function AppShell({ children }: { children: React.ReactNode }) {
                 title={label}
                 aria-label={label}
                 aria-current={active ? "page" : undefined}
-                className={`flex min-h-[44px] items-center justify-center gap-3 rounded-full px-3 text-sm font-semibold transition lg:justify-start lg:px-4 ${
+                className={`flex min-h-[44px] items-center justify-center gap-3 rounded-xl px-3 text-sm font-semibold transition duration-200 lg:justify-start lg:px-4 ${
                   active ? "bg-ink text-white shadow-soft" : "text-slate-600 hover:bg-slate-100 hover:text-ink"
                 }`}
               >
@@ -73,7 +73,7 @@ export default function AppShell({ children }: { children: React.ReactNode }) {
         <Link
           href="/followups/new"
           aria-label={t("nav.addFollowUp")}
-          className="mt-6 flex min-h-[44px] items-center justify-center gap-2 rounded-full bg-brand px-3 text-sm font-semibold text-white shadow-soft hover:bg-brand-dark"
+          className="mt-6 flex min-h-[44px] items-center justify-center gap-2 rounded-xl bg-brand px-3 text-sm font-semibold text-white shadow-soft hover:bg-brand-dark"
         >
           <Plus className="h-5 w-5" aria-hidden="true" />
           <span className="hidden lg:inline">{t("nav.addFollowUp")}</span>
@@ -91,12 +91,6 @@ export default function AppShell({ children }: { children: React.ReactNode }) {
         <div className="flex items-center gap-3">
           <Link href="/assistant" aria-label={t("nav.assistant")} className="grid h-11 w-11 place-items-center rounded-xl text-slate-600">
             <Sparkles className="h-5 w-5" aria-hidden="true" />
-          </Link>
-          <Link href="/team" aria-label={t("nav.team")} className="grid h-11 w-11 place-items-center rounded-xl text-slate-600">
-            <UserPlus className="h-5 w-5" aria-hidden="true" />
-          </Link>
-          <Link href="/pipeline" aria-label={t("nav.pipeline")} className="grid h-11 w-11 place-items-center rounded-xl text-slate-600">
-            <LayoutGrid className="h-5 w-5" aria-hidden="true" />
           </Link>
           <LanguageSwitcher />
         </div>

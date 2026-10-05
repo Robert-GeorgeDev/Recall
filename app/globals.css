@@ -4,12 +4,7 @@
 
 body {
   @apply text-ink antialiased;
-  background-color: #f8fafc;
-  background-image:
-    radial-gradient(60rem 40rem at 8% -10%, rgba(99, 102, 241, 0.10), transparent 60%),
-    radial-gradient(50rem 36rem at 100% 0%, rgba(56, 189, 248, 0.10), transparent 60%),
-    radial-gradient(50rem 40rem at 60% 110%, rgba(251, 191, 136, 0.12), transparent 60%);
-  background-attachment: fixed;
+  background-color: #fafaf9;
   min-height: 100vh;
 }
 
@@ -27,7 +22,7 @@ html { scroll-behavior: smooth; }
     @apply rounded-2xl border border-line/70 bg-white shadow-soft;
   }
   .btn {
-    @apply inline-flex min-h-[44px] items-center justify-center gap-2 rounded-full px-5 text-sm font-semibold transition disabled:cursor-not-allowed disabled:opacity-60;
+    @apply inline-flex min-h-[44px] items-center justify-center gap-2 rounded-xl px-5 duration-200 text-sm font-semibold transition disabled:cursor-not-allowed disabled:opacity-60;
   }
   .btn-dark {
     @apply btn bg-ink text-white hover:bg-slate-800;
