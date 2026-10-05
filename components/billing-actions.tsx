@@ -79,7 +79,12 @@ export default function BillingButton({
         {busy ? t("billing.redirecting") : t(labels[kind])}
       </button>
       {kind !== "manage" && (
-        <p className="mt-2 text-center text-xs text-slate-500">{t("billing.note")}</p>
+        <p className="mt-2 text-center text-xs text-slate-500">
+          {t("billing.note")}{" "}
+          <a href="/terms" className="font-semibold text-brand">{t("billing.terms")}</a>
+          {" · "}
+          <a href="/refunds" className="font-semibold text-brand">{t("billing.refunds")}</a>
+        </p>
       )}
       {error && (
         <p role="alert" className="mt-2 text-sm text-red-600">

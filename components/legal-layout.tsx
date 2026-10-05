@@ -76,8 +76,10 @@ export default function LegalLayout({
             <Link href="/privacy" className="hover:text-ink">{ro ? "Confidențialitate" : "Privacy"}</Link>
             <Link href="/terms" className="hover:text-ink">{ro ? "Termeni" : "Terms"}</Link>
             <Link href="/cookies" className="hover:text-ink">Cookies</Link>
+            <Link href="/refunds" className="hover:text-ink">{ro ? "Rambursări" : "Refunds"}</Link>
             <Link href="/subprocessors" className="hover:text-ink">{ro ? "Subprocesatori" : "Subprocessors"}</Link>
             <Link href="/security" className="hover:text-ink">{ro ? "Securitate" : "Security"}</Link>
+            <Link href="/accessibility" className="hover:text-ink">{ro ? "Accesibilitate" : "Accessibility"}</Link>
             <Link href="/company" className="hover:text-ink">{ro ? "Companie" : "Company"}</Link>
             <Link href="/contact" className="hover:text-ink">{ro ? "Contact" : "Contact"}</Link>
             <Link href="/" className="hover:text-ink">{ro ? "Acasă" : "Home"}</Link>

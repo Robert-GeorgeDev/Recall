@@ -165,6 +165,12 @@ export function buildCsv(rows: string[][]): string {
   return lines.join("\r\n") + "\r\n";
 }
 
+// Builds a CSV with custom headers (used for the extra exports).
+export function buildTable(headers: string[], rows: string[][]): string {
+  const lines = [headers.join(","), ...rows.map((r) => r.map(escapeCell).join(","))];
+  return lines.join("\r\n") + "\r\n";
+}
+
 export function downloadCsv(filename: string, content: string) {
   // The BOM makes Excel read accents (ă, â, î, ș, ț) correctly.
   const blob = new Blob(["\uFEFF" + content], {

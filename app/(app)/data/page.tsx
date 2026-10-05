@@ -12,6 +12,7 @@ import { addDays, todayISO } from "@/lib/dates";
 import { BRAND } from "@/lib/brand";
 import {
   buildCsv,
+  buildTable,
   downloadCsv,
   MAX_FILE_BYTES,
   parseContactsCsv,
@@ -165,6 +166,90 @@ function DataView() {
     setResult({ imported, followUps, failed });
     reloadPlan();
     setImporting(false);
+  }
+
+  async function handleExtra(kind: "followups" | "activity") {
+    if (!orgId) return;
+    setExporting(true);
+    setExportFailed(false);
+    try {
+      const contacts = await fetchPages<ContactRow>((from, to) =>
+        supabase
+          .from("contacts")
+          .select("id, first_name, last_name, company, email, phone, status, notes")
+          .eq("organization_id", orgId)
+          .order("created_at", { ascending: true })
+          .order("id", { ascending: true })
+          .range(from, to)
+      );
+      const who = new Map(
+        contacts.map((c) => [c.id, [`${c.first_name} ${c.last_name}`.trim(), c.email]])
+      );
+
+      if (kind === "followups") {
+        type F = {
+          contact_id: string;
+          due_date: string;
+          due_time: string | null;
+          priority: string;
+          note: string;
+          status: string;
+          completed_at: string | null;
+        };
+        const rows = await fetchPages<F>((from, to) =>
+          supabase
+            .from("follow_ups")
+            .select("contact_id, due_date, due_time, priority, note, status, completed_at")
+            .eq("organization_id", orgId)
+            .order("due_date", { ascending: true })
+            .order("id", { ascending: true })
+            .range(from, to)
+        );
+        downloadCsv(
+          `${BRAND.toLowerCase()}-follow-ups-${todayISO()}.csv`,
+          buildTable(
+            ["contact_name", "contact_email", "due_date", "due_time", "priority", "status", "completed_at", "note"],
+            rows.map((r) => [
+              who.get(r.contact_id)?.[0] ?? "",
+              who.get(r.contact_id)?.[1] ?? "",
+              r.due_date,
+              r.due_time ?? "",
+              r.priority,
+              r.status,
+              r.completed_at ?? "",
+              r.note,
+            ])
+          )
+        );
+      } else {
+        type A = { contact_id: string; type: string; description: string; created_at: string };
+        const rows = await fetchPages<A>((from, to) =>
+          supabase
+            .from("activities")
+            .select("contact_id, type, description, created_at")
+            .eq("organization_id", orgId)
+            .order("created_at", { ascending: true })
+            .order("id", { ascending: true })
+            .range(from, to)
+        );
+        downloadCsv(
+          `${BRAND.toLowerCase()}-activity-${todayISO()}.csv`,
+          buildTable(
+            ["contact_name", "contact_email", "created_at", "type", "description"],
+            rows.map((r) => [
+              who.get(r.contact_id)?.[0] ?? "",
+              who.get(r.contact_id)?.[1] ?? "",
+              r.created_at,
+              r.type,
+              r.description,
+            ])
+          )
+        );
+      }
+    } catch {
+      setExportFailed(true);
+    }
+    setExporting(false);
   }
 
   async function handleExport() {
@@ -422,6 +507,26 @@ function DataView() {
           <Download className="h-4 w-4" aria-hidden="true" />
           {exporting ? t("data.exporting") : t("data.exportBtn")}
         </button>
+        <div className="mt-3 flex flex-wrap gap-3">
+          <button
+            type="button"
+            onClick={() => handleExtra("followups")}
+            disabled={exporting || !orgId}
+            className={`${buttonClass} disabled:opacity-60`}
+          >
+            <Download className="h-4 w-4" aria-hidden="true" />
+            {t("data.exportFollowUps")}
+          </button>
+          <button
+            type="button"
+            onClick={() => handleExtra("activity")}
+            disabled={exporting || !orgId}
+            className={`${buttonClass} disabled:opacity-60`}
+          >
+            <Download className="h-4 w-4" aria-hidden="true" />
+            {t("data.exportActivity")}
+          </button>
+        </div>
         {exportFailed && (
           <p role="alert" className="mt-4 rounded-xl bg-red-50 px-4 py-3 text-sm text-overdue">
             {t("data.exportError")}
