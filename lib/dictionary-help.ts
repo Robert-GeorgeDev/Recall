@@ -1,5 +1,6 @@
 export const enHelp = {
   "auth.forgot": "Forgot your password?",
+  "auth.marketing": "I agree to receive Octom news, product updates and offers by email. Optional; you can unsubscribe at any time.",
   "forgot.title": "Reset your password",
   "forgot.sub": "Enter your email and we'll send you a link to choose a new password.",
   "forgot.btn": "Send reset link",
@@ -32,6 +33,7 @@ export const enHelp = {
 
 export const roHelp: Record<keyof typeof enHelp, string> = {
   "auth.forgot": "Ai uitat parola?",
+  "auth.marketing": "Sunt de acord să primesc pe email noutăți, actualizări de produs și oferte Octom. Opțional; mă pot dezabona oricând.",
   "forgot.title": "Resetează-ți parola",
   "forgot.sub": "Scrie adresa de email și îți trimitem un link ca să alegi o parolă nouă.",
   "forgot.btn": "Trimite linkul",

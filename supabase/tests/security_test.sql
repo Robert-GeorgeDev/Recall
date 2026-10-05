@@ -86,6 +86,66 @@ begin
   exception when insufficient_privilege then null;
   end;
 
+  -- Cross-workspace isolation: user A must not touch workspace B
+  reset role;
+  declare
+    uid_b uuid;
+    oid_b uuid;
+  begin
+    select user_id, organization_id into uid_b, oid_b
+    from public.organization_members
+    where role = 'owner' and organization_id <> oid and user_id <> uid
+    limit 1;
+
+    if oid_b is null then
+      raise notice 'SKIPPED cross-workspace tests: only one workspace exists';
+    else
+      perform set_config(
+        'request.jwt.claims',
+        json_build_object('sub', uid, 'role', 'authenticated')::text,
+        true
+      );
+      set local role authenticated;
+
+      select count(*) into n from public.contacts where organization_id = oid_b;
+      if n > 0 then raise exception 'FAIL: user A can read contacts of workspace B'; end if;
+
+      select count(*) into n from public.follow_ups where organization_id = oid_b;
+      if n > 0 then raise exception 'FAIL: user A can read follow-ups of workspace B'; end if;
+
+      select count(*) into n from public.organization_members where organization_id = oid_b;
+      if n > 0 then raise exception 'FAIL: user A can read members of workspace B'; end if;
+
+      select count(*) into n from public.subscriptions where organization_id = oid_b;
+      if n > 0 then raise exception 'FAIL: user A can read subscription of workspace B'; end if;
+
+      update public.contacts set notes = 'x' where organization_id = oid_b;
+      get diagnostics n = row_count;
+      if n > 0 then raise exception 'FAIL: user A modified contacts of workspace B'; end if;
+
+      delete from public.contacts where organization_id = oid_b;
+      get diagnostics n = row_count;
+      if n > 0 then raise exception 'FAIL: user A deleted contacts of workspace B'; end if;
+
+      begin
+        insert into public.contacts (organization_id, first_name) values (oid_b, 'intruder');
+        raise exception 'FAIL: user A inserted a contact into workspace B';
+      exception when insufficient_privilege or check_violation then null;
+      end;
+
+      -- A signed-in user without any workspace sees nothing
+      perform set_config(
+        'request.jwt.claims',
+        json_build_object('sub', gen_random_uuid(), 'role', 'authenticated')::text,
+        true
+      );
+      select count(*) into n from public.contacts;
+      if n > 0 then raise exception 'FAIL: user without workspace can read contacts'; end if;
+    end if;
+  end;
+
+  reset role;
+  set local role anon;
   raise exception 'ALL TESTS PASSED (rolled back on purpose)';
 end
 $$;

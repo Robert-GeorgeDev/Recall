@@ -1,7 +1,8 @@
 export const enBilling = {
   "auth.planChosen": "You chose the {plan} plan. You'll pay right after you create your account.",
-  "billing.upgradePro": "Upgrade to Pro",
-  "billing.upgradeBusiness": "Upgrade to Business",
+  "billing.upgradePro": "Subscribe to Pro — €7.99/month",
+  "billing.upgradeBusiness": "Subscribe to Business — €14.99/month",
+  "billing.note": "Billed monthly and renewed automatically. Cancel anytime from Manage subscription.",
   "billing.manage": "Manage subscription",
   "billing.redirecting": "Redirecting…",
   "billing.err.forbidden": "Only the workspace owner or an admin can manage billing.",
@@ -13,8 +14,9 @@ export const enBilling = {
 
 export const roBilling = {
   "auth.planChosen": "Ai ales planul {plan}. Vei plăti imediat după ce îți creezi contul.",
-  "billing.upgradePro": "Treci la Pro",
-  "billing.upgradeBusiness": "Treci la Business",
+  "billing.upgradePro": "Abonează-te la Pro — 7,99 €/lună",
+  "billing.upgradeBusiness": "Abonează-te la Business — 14,99 €/lună",
+  "billing.note": "Se facturează lunar și se reînnoiește automat. Poți anula oricând din Gestionează abonamentul.",
   "billing.manage": "Gestionează abonamentul",
   "billing.redirecting": "Te redirecționăm…",
   "billing.err.forbidden": "Doar proprietarul sau un administrator al workspace-ului poate gestiona facturarea.",
