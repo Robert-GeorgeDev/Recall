@@ -22,8 +22,8 @@ const enBase = {
   "common.error": "Something went wrong. Please try again.",
 
   "landing.login": "Log in",
-  "landing.title": "You said you'd follow up.\nOctom reminds you.",
-  "landing.subtitle": "Octom shows you every day who to talk to, what to do and what you left behind. No digging through inboxes, forgotten spreadsheets or things kept in your head.",
+  "landing.title": "You said you'd follow up.\nOctom remembers.",
+  "landing.subtitle": "Octom shows you who to contact, when to follow up and what to do. No forgotten spreadsheets, nothing kept in your head.",
   "landing.cta": "Start free",
   "landing.how": "See how it works",
   "landing.howTitle": "How it works",
@@ -107,8 +107,8 @@ const roBase: Record<keyof typeof enBase, string> = {
   "common.error": "Ceva nu a mers. Te rugăm să încerci din nou.",
 
   "landing.login": "Autentificare",
-  "landing.title": "Ai spus că revii.\nOctom îți amintește.",
-  "landing.subtitle": "Octom îți arată în fiecare zi cu cine trebuie să vorbești, ce ai de făcut și ce ai lăsat în urmă. Fără inbox-uri căutate, tabele uitate și lucruri ținute minte în cap.",
+  "landing.title": "Ai spus că revii.\nOctom ține minte.",
+  "landing.subtitle": "Octom îți arată pe cine să contactezi, când să revii și ce ai de făcut. Fără tabele uitate și lucruri ținute în cap.",
   "landing.cta": "Începe gratuit",
   "landing.how": "Vezi cum funcționează",
   "landing.howTitle": "Cum funcționează",
