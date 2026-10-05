@@ -17,11 +17,12 @@ export const enAccount = {
   "account.dataText": "You can download all your contacts at any time.",
   "account.exportLink": "Go to import & export",
   "account.deleteTitle": "Delete account",
-  "account.deleteText": "This permanently deletes your workspace, all contacts, follow-ups and activity, and your login. It cannot be undone. Export your data first if you need it.",
+  "account.deleteText": "This permanently deletes your workspace, all contacts, follow-ups and activity, and your login. Any paid subscription is cancelled. Copies in backups expire on the provider’s normal schedule, and billing records we must keep by law are retained. It cannot be undone, so export your data first if you need it.",
   "account.confirmLabel": "Type DELETE to confirm",
   "account.deleteBtn": "Delete my account",
   "account.deleting": "Deleting…",
   "account.err.members": "This workspace has other members, so it cannot be deleted from here. Contact us for help.",
+  "account.err.billing": "We could not cancel your subscription, so your account was not deleted. Try again or contact us.",
 };
 
 export const roAccount: Record<keyof typeof enAccount, string> = {
@@ -43,9 +44,10 @@ export const roAccount: Record<keyof typeof enAccount, string> = {
   "account.dataText": "Poți descărca oricând toate contactele tale.",
   "account.exportLink": "Mergi la import și export",
   "account.deleteTitle": "Șterge contul",
-  "account.deleteText": "Aceasta șterge definitiv spațiul tău de lucru, toate contactele, follow-up-urile și activitatea, plus contul de autentificare. Nu poate fi anulată. Exportă-ți mai întâi datele, dacă ai nevoie de ele.",
+  "account.deleteText": "Aceasta șterge definitiv spațiul tău de lucru, toate contactele, follow-up-urile și activitatea, plus contul de autentificare. Orice abonament plătit este anulat. Copiile din backup expiră conform ciclului normal al furnizorului, iar înregistrările de facturare pe care legea ne obligă să le păstrăm rămân. Nu poate fi anulată, deci exportă-ți mai întâi datele, dacă ai nevoie de ele.",
   "account.confirmLabel": "Scrie DELETE pentru confirmare",
   "account.deleteBtn": "Șterge contul meu",
   "account.deleting": "Se șterge…",
   "account.err.members": "Acest spațiu de lucru are alți membri, deci nu poate fi șters de aici. Contactează-ne pentru ajutor.",
+  "account.err.billing": "Nu am putut anula abonamentul, deci contul nu a fost șters. Încearcă din nou sau contactează-ne.",
 };

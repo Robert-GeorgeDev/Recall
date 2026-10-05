@@ -26,12 +26,25 @@ function AccountView() {
     setBusy(true);
     setError("");
 
-    const { error: failure } = await supabase.rpc("delete_my_account");
+    const { data: sess } = await supabase.auth.getSession();
+    let failure: string | null = "error";
+    try {
+      const res = await fetch("/api/account/delete", {
+        method: "POST",
+        headers: { Authorization: `Bearer ${sess.session?.access_token ?? ""}` },
+      });
+      if (res.ok) failure = null;
+      else failure = ((await res.json().catch(() => ({}))) as { error?: string }).error ?? "error";
+    } catch {
+      failure = "error";
+    }
     if (failure) {
       setError(
-        String(failure.message).includes("members_exist")
+        failure === "members_exist"
           ? t("account.err.members")
-          : t("common.error")
+          : failure === "billing_cancel_failed"
+            ? t("account.err.billing")
+            : t("common.error")
       );
       setBusy(false);
       return;

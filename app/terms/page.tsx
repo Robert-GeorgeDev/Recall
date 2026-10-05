@@ -53,16 +53,25 @@ export default function TermsPage() {
 
       <h2>6. Plans and payments</h2>
       <p>
-        Octom is free during the beta. If we introduce paid plans, we will
-        explain prices and limits clearly before you are charged, and you will
-        be able to choose whether to upgrade.
+        Octom has a Free plan, currently available at no cost and without a
+        card, and paid plans: Pro at €7.99 per month and Business at €14.99 per
+        month. Prices and limits are shown before you subscribe and we may
+        change them for the future with notice.
+      </p>
+      <p>
+        Paid plans are billed monthly through Stripe and renew automatically
+        until you cancel. You can cancel at any time from Manage subscription;
+        your plan then stays active until the end of the period you already
+        paid for. If you are a consumer, the rights the law gives you cannot be
+        limited by these terms.
       </p>
 
       <h2>7. Ending the service</h2>
       <p>
         You can stop using Octom at any time and export your contacts first.
-        You can ask us to delete your account at {LEGAL.email}. We may suspend
-        or close accounts that break these terms.
+        You can delete your account yourself from the Account page, which also
+        cancels any paid subscription. We may suspend or close accounts that
+        break these terms.
       </p>
 
       <h2>8. Liability</h2>

@@ -4,10 +4,10 @@ export const LEGAL = {
   name: "OCTOM",
   address: "[Your address, Romania]",
   email: "contact@octom.com",
-  updated: "4 October 2026",
+  legalEmail: "[legal email]",
+  companyId: "[CUI]",
+  registryNo: "[J../../..]",
+  updated: "5 October 2026",
 };
 
-export const isDraft =
-  LEGAL.name.includes("[") ||
-  LEGAL.address.includes("[") ||
-  LEGAL.email.includes("[");
+export const isDraft = Object.values(LEGAL).some((v) => v.includes("["));

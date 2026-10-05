@@ -7,6 +7,9 @@ const ITEMS = [
   { href: "/privacy", label: "Privacy" },
   { href: "/terms", label: "Terms" },
   { href: "/cookies", label: "Cookies" },
+  { href: "/subprocessors", label: "Subprocessors" },
+  { href: "/security", label: "Security" },
+  { href: "/company", label: "Company" },
 ];
 
 export default function LegalNav() {

@@ -40,7 +40,13 @@ export default function PrivacyPage() {
         </li>
         <li>
           <strong>Email preferences:</strong> whether you turned on the optional daily
-          summary email.
+          summary email, and whether you agreed to receive news and offers
+          (with the date you agreed).
+        </li>
+        <li>
+          <strong>Billing data:</strong> if you subscribe to a paid plan, your
+          plan, subscription status and the customer reference from our payment
+          provider. Card details are entered with Stripe and never reach us.
         </li>
         <li>
           <strong>Browser storage:</strong> your login session and language
@@ -56,6 +62,8 @@ export default function PrivacyPage() {
       <ul>
         <li>To provide the service you asked for (contract).</li>
         <li>To keep the service secure and prevent abuse, including usage limits (legitimate interest).</li>
+        <li>To handle billing and keep the records the law requires (contract and legal obligation).</li>
+        <li>To send you news, product updates and offers by email, only if you agreed (consent). You can withdraw it at any time.</li>
         <li>To comply with legal obligations.</li>
       </ul>
 
@@ -63,26 +71,29 @@ export default function PrivacyPage() {
       <p>
         The contact records you add are about other people. For that content you
         decide why and how it is used and you are responsible for having a valid
-        legal basis for it; we process it on your behalf to run the service. A
-        data processing agreement is available on request.
+        legal basis for it. For that content we act as your processor: we
+        process it on your behalf and only to run the service. A data
+        processing agreement is available on request through the{" "}
+        <a href="/contact">contact form</a>.
       </p>
 
       <h2>5. Who we share data with</h2>
-      <p>We use these providers to run Octom:</p>
+      <p>
+        We use these providers to run Octom. The full list, with purpose and
+        data, is on the <a href="/subprocessors">Subprocessors</a> page.
+      </p>
       <ul>
         <li>Supabase: database and authentication (project hosted in the EU, Frankfurt).</li>
         <li>Vercel: website hosting.</li>
         <li>Resend: sends the optional daily summary email to you, only if you turn it on.</li>
         <li>
-          OpenAI: text generation for the AI assistant. When you use it, the
-          relevant contact details (name, company, status, notes, recent
-          activity, or your draft) are sent to OpenAI to produce the text.
-          OpenAI may keep API inputs for a limited period under its own terms.
+          OpenAI: some features use AI models provided by OpenAI. When you use
+          the AI assistant, the information needed for your request (your
+          draft, or the selected contact’s name, company, status, notes and
+          recent activity) is sent to OpenAI to produce the text. OpenAI may
+          keep API inputs for a limited period under its own terms.
         </li>
-        <li>
-          If we introduce paid plans, payments will be handled by Stripe. We do
-          not store card details.
-        </li>
+        <li>Stripe: handles payments for paid plans. We do not store card details.</li>
       </ul>
       <p>We do not sell personal data.</p>
 
@@ -98,8 +109,11 @@ export default function PrivacyPage() {
         We keep your data while your account is active. You can export your
         contacts at any time from the Import &amp; export page. You can delete
         your account and all its data yourself from the Account page, or
-        email us at {LEGAL.email}. AI usage counters are short-lived and contain
-        no content.
+        email us at {LEGAL.email}. When you delete your account, your workspace
+        data and login are removed and any paid subscription is cancelled.
+        Copies in provider backups expire on the provider’s normal schedule, and
+        we keep billing records for as long as the law requires. AI usage
+        counters are short-lived and contain no content.
       </p>
 
       <h2>8. Your rights</h2>

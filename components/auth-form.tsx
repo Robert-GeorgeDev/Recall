@@ -38,6 +38,7 @@ export default function AuthForm({ mode }: { mode: "login" | "signup" }) {
   const router = useRouter();
   const { t, lang } = useLanguage();
   const [email, setEmail] = useState("");
+  const [marketing, setMarketing] = useState(false);
   const [password, setPassword] = useState("");
   const [error, setError] = useState("");
   const [info, setInfo] = useState("");
@@ -63,7 +64,13 @@ export default function AuthForm({ mode }: { mode: "login" | "signup" }) {
     setBusy(true);
     try {
       const result = isSignup
-        ? await supabase.auth.signUp({ email, password, options: { data: { lang } } })
+        ? await supabase.auth.signUp({ email, password, options: {
+              data: {
+                lang,
+                marketing_consent: marketing,
+                ...(marketing ? { marketing_consent_at: new Date().toISOString() } : {}),
+              },
+            } })
         : await supabase.auth.signInWithPassword({ email, password });
 
       if (result.error) {
@@ -147,6 +154,18 @@ export default function AuthForm({ mode }: { mode: "login" | "signup" }) {
             </p>
           )}
         </div>
+
+        {isSignup && (
+          <label className="flex items-start gap-3 text-sm text-slate-600">
+            <input
+              type="checkbox"
+              checked={marketing}
+              onChange={(e) => setMarketing(e.target.checked)}
+              className="mt-0.5 h-4 w-4 shrink-0 rounded border-line accent-brand"
+            />
+            <span>{t("auth.marketing")}</span>
+          </label>
+        )}
 
         {error && (
           <p role="alert" className="rounded-xl bg-red-50 px-4 py-3 text-sm text-overdue">

@@ -63,10 +63,13 @@ export default function LegalLayout({
           <p>
             © {new Date().getFullYear()} {LEGAL.name}
           </p>
-          <div className="flex gap-4">
+          <div className="flex flex-wrap gap-x-4 gap-y-2">
             <Link href="/privacy" className="hover:text-ink">Privacy</Link>
             <Link href="/terms" className="hover:text-ink">Terms</Link>
             <Link href="/cookies" className="hover:text-ink">Cookies</Link>
+            <Link href="/subprocessors" className="hover:text-ink">Subprocessors</Link>
+            <Link href="/security" className="hover:text-ink">Security</Link>
+            <Link href="/company" className="hover:text-ink">Company</Link>
             <Link href="/contact" className="hover:text-ink">Contact</Link>
             <Link href="/" className="hover:text-ink">Home</Link>
           </div>
