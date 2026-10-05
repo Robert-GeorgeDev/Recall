@@ -5,6 +5,7 @@ import { ArrowRight, Check, Download, Lock, Server, Trash2, type LucideIcon } fr
 import Logo from "@/components/logo";
 import LanguageSwitcher from "@/components/language-switcher";
 import Hero from "@/components/hero";
+import { CookieSettingsButton } from "@/components/consent";
 import {
   HistoryMock, SnoozeMock, StoryMock, TeamMock, TodayMock,
 } from "@/components/site-mock";
@@ -253,6 +254,7 @@ export default function Home() {
               <Link href="/privacy" className="block text-slate-600 hover:text-ink">Privacy</Link>
               <Link href="/terms" className="block text-slate-600 hover:text-ink">Terms</Link>
               <Link href="/cookies" className="block text-slate-600 hover:text-ink">Cookies</Link>
+              <CookieSettingsButton className="block text-slate-600 hover:text-ink" />
               <Link href="/refunds" className="block text-slate-600 hover:text-ink">Refunds</Link>
               <Link href="/subprocessors" className="block text-slate-600 hover:text-ink">Subprocessors</Link>
               <Link href="/security" className="block text-slate-600 hover:text-ink">Security</Link>

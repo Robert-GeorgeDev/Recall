@@ -4,6 +4,7 @@ import Link from "next/link";
 import Logo from "@/components/logo";
 import LegalNav from "@/components/legal-nav";
 import LegalToc from "@/components/legal-toc";
+import { CookieSettingsButton } from "@/components/consent";
 import { useLanguage } from "@/components/language-provider";
 import { isDraft, LEGAL } from "@/lib/legal";
 
@@ -76,6 +77,7 @@ export default function LegalLayout({
             <Link href="/privacy" className="hover:text-ink">{ro ? "Confidențialitate" : "Privacy"}</Link>
             <Link href="/terms" className="hover:text-ink">{ro ? "Termeni" : "Terms"}</Link>
             <Link href="/cookies" className="hover:text-ink">Cookies</Link>
+            <CookieSettingsButton className="hover:text-ink" />
             <Link href="/refunds" className="hover:text-ink">{ro ? "Rambursări" : "Refunds"}</Link>
             <Link href="/subprocessors" className="hover:text-ink">{ro ? "Subprocesatori" : "Subprocessors"}</Link>
             <Link href="/security" className="hover:text-ink">{ro ? "Securitate" : "Security"}</Link>
