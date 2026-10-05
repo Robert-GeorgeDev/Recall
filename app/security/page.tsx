@@ -1,10 +1,14 @@
 import LegalLayout from "@/components/legal-layout";
+import Bi from "@/components/bi";
 
 export const metadata = { title: "Security – Octom" };
 
 export default function SecurityPage() {
   return (
-    <LegalLayout title="Security">
+    <LegalLayout title="Security" titleRo="Securitate">
+      <Bi
+        en={
+          <>
       <p>
         We build Octom with security as part of the product. No online service
         can promise perfect security, so this page describes what we actually
@@ -46,6 +50,55 @@ export default function SecurityPage() {
         <a href="/contact">contact form</a> with enough detail to reproduce it,
         and give us reasonable time to fix it before sharing it publicly.
       </p>
+          </>
+        }
+        ro={
+          <>
+      <p>
+        Construim Octom cu securitatea ca parte a produsului. Niciun serviciu online nu
+        poate promite securitate perfectă, așa că această pagină descrie ce facem
+        efectiv, fără garanții.
+      </p>
+
+      <h2>Izolarea datelor</h2>
+      <p>
+        Datele fiecărui spațiu de lucru sunt separate prin reguli de acces aplicate
+        chiar în baza de date. Un utilizator autentificat poate citi și modifica doar
+        datele spațiilor de lucru din care face parte.
+      </p>
+
+      <h2>Conexiuni criptate</h2>
+      <p>Traficul dintre browserul tău și Octom folosește HTTPS.</p>
+
+      <h2>Autentificare</h2>
+      <p>
+        Autentificarea și gestionarea parolelor sunt furnizate de Supabase
+        Authentication. Parolele sunt stocate doar sub formă de hash și nu ne sunt
+        vizibile.
+      </p>
+
+      <h2>Verificări pe server</h2>
+      <p>
+        Acțiunile cu efecte, precum facturarea, asistentul AI și ștergerea contului,
+        sunt verificate pe server pentru un utilizator autentificat. Asistentul AI și
+        formularul de contact au limite de utilizare pentru a reduce abuzurile.
+      </p>
+
+      <h2>Plăți</h2>
+      <p>
+        Datele cardului se introduc pe paginile Stripe. Octom nu le primește și nu le
+        stochează.
+      </p>
+
+      <h2>Raportează o problemă</h2>
+      <p>
+        Dacă crezi că ai găsit o problemă de securitate, spune-ne prin{" "}
+        <a href="/contact">formularul de contact</a>, cu suficiente detalii ca să o
+        reproducem, și dă-ne un timp rezonabil să o remediem înainte să o faci publică.
+      </p>
+          </>
+        }
+      />
     </LegalLayout>
   );
 }

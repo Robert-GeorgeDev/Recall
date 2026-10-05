@@ -1,11 +1,15 @@
 import LegalLayout from "@/components/legal-layout";
+import Bi from "@/components/bi";
 import { LEGAL } from "@/lib/legal";
 
 export const metadata = { title: "Terms of Service – Octom" };
 
 export default function TermsPage() {
   return (
-    <LegalLayout title="Terms of Service">
+    <LegalLayout title="Terms of Service" titleRo="Termeni și condiții">
+      <Bi
+        en={
+          <>
       <p>
         These terms govern your use of Octom, operated by {LEGAL.name},{" "}
         {LEGAL.address} (“we”, “us”). By creating an account or using the
@@ -97,6 +101,103 @@ export default function TermsPage() {
 
       <h2>11. Contact</h2>
       <p>Questions about these terms: {LEGAL.email}.</p>
+          </>
+        }
+        ro={
+          <>
+      <p>
+        Acești termeni reglementează folosirea Octom, operat de {LEGAL.name},{" "}
+        {LEGAL.address} („noi”). Prin crearea unui cont sau folosirea serviciului
+        ești de acord cu ei.
+      </p>
+
+      <h2>1. Serviciul</h2>
+      <p>
+        Octom este un CRM simplu care te ajută să ții evidența contactelor și a
+        follow-up-urilor. Serviciul este în prezent în beta. Funcțiile se pot schimba
+        și nu garantăm disponibilitate neîntreruptă.
+      </p>
+
+      <h2>2. Contul tău</h2>
+      <p>
+        Trebuie să furnizezi informații corecte și să îți păstrezi datele de
+        autentificare în siguranță. Ești responsabil pentru activitatea din contul
+        tău. Trebuie să ai cel puțin 18 ani și să folosești Octom în scop profesional.
+      </p>
+
+      <h2>3. Conținutul tău</h2>
+      <p>
+        Rămâi proprietarul datelor pe care le adaugi. Ne dai permisiunea să le stocăm
+        și să le prelucrăm doar pentru a furniza serviciul. Ești responsabil să ai
+        dreptul de a folosi datele personale ale persoanelor adăugate ca și contacte
+        și să le contactezi conform legii (de exemplu regulile de marketing și
+        consimțământ).
+      </p>
+
+      <h2>4. Utilizare acceptabilă</h2>
+      <ul>
+        <li>Fără utilizare ilegală, abuzivă, frauduloasă sau dăunătoare.</li>
+        <li>Fără trimiterea de spam sau mesaje în masă nesolicitate.</li>
+        <li>Fără încercări de a bloca, supraîncărca sau accesa neautorizat serviciul sau datele altor utilizatori.</li>
+        <li>Nu stoca date sensibile pentru care serviciul nu este conceput, precum numere de card sau informații medicale.</li>
+      </ul>
+
+      <h2>5. Asistentul AI</h2>
+      <p>
+        Asistentul AI produce texte sugerate. Acestea pot fi inexacte sau incomplete.
+        Trebuie să verifici tot înainte să folosești sau să trimiți și ești responsabil
+        pentru ce trimiți. Octom nu trimite niciodată mesaje în numele tău. Putem
+        limita cât îl poți folosi.
+      </p>
+
+      <h2>6. Planuri și plăți</h2>
+      <p>
+        Octom are un plan Free, disponibil în prezent fără cost și fără card, și planuri
+        plătite: Pro la 7,99 € pe lună și Business la 14,99 € pe lună. Prețurile și
+        limitele sunt afișate înainte să te abonezi și le putem schimba pentru viitor,
+        cu notificare.
+      </p>
+      <p>
+        Planurile plătite se facturează lunar prin Stripe și se reînnoiesc automat până
+        la anulare. Poți anula oricând din Gestionează abonamentul; planul rămâne apoi
+        activ până la sfârșitul perioadei deja plătite. Dacă ești consumator, drepturile
+        pe care ți le dă legea nu pot fi limitate prin acești termeni.
+      </p>
+
+      <h2>7. Încheierea serviciului</h2>
+      <p>
+        Poți înceta oricând să folosești Octom și îți poți exporta mai întâi contactele.
+        Îți poți șterge singur contul din pagina Cont, ceea ce anulează și orice
+        abonament plătit. Putem suspenda sau închide conturile care încalcă acești
+        termeni.
+      </p>
+
+      <h2>8. Răspundere</h2>
+      <p>
+        Serviciul este oferit „ca atare”. În măsura permisă de lege, nu răspundem
+        pentru pierderi indirecte sau subsecvente, profit nerealizat sau date pierdute,
+        iar răspunderea noastră totală este limitată la suma plătită nouă în cele 12
+        luni dinaintea pretenției. Nimic din acești termeni nu limitează răspunderea
+        care nu poate fi limitată prin lege.
+      </p>
+
+      <h2>9. Modificări</h2>
+      <p>
+        Putem actualiza acești termeni. Dacă o modificare este importantă, te vom
+        anunța. Continuarea folosirii Octom după o modificare înseamnă că o accepți.
+      </p>
+
+      <h2>10. Legea aplicabilă</h2>
+      <p>
+        Acești termeni sunt guvernați de legea română, fără a afecta drepturile
+        obligatorii pe care le poți avea conform legii țării tale.
+      </p>
+
+      <h2>11. Contact</h2>
+      <p>Întrebări despre acești termeni: {LEGAL.email}.</p>
+          </>
+        }
+      />
     </LegalLayout>
   );
 }
