@@ -6,7 +6,7 @@ import { SUPABASE_KEY, SUPABASE_URL } from "@/lib/supabase-config";
 export const runtime = "nodejs";
 
 // Deletes the signed-in user's account. Before the database cleanup runs, any
-// paid subscription of a workspace the user owns is cancelled in Stripe, so a
+// paid subscription of the workspaces being deleted is cancelled in Stripe, so a
 // deleted account is never billed again.
 export async function POST(req: Request) {
   const token = req.headers.get("authorization")?.replace(/^Bearer\s+/i, "");
@@ -18,12 +18,13 @@ export async function POST(req: Request) {
     const user = data.user;
     if (!user) return NextResponse.json({ error: "forbidden" }, { status: 403 });
 
-    const { data: owned } = await admin
+    // Same rule as the database function: every workspace the user belongs to
+    // must have no other members, otherwise nothing is cancelled or deleted.
+    const { data: mine } = await admin
       .from("organization_members")
       .select("organization_id")
-      .eq("user_id", user.id)
-      .eq("role", "owner");
-    const orgIds = (owned ?? []).map((r) => r.organization_id as string);
+      .eq("user_id", user.id);
+    const orgIds = (mine ?? []).map((r) => r.organization_id as string);
 
     if (orgIds.length > 0) {
       const { data: members } = await admin
