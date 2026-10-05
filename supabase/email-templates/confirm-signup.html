@@ -1,0 +1,29 @@
+{{ $en := false }}{{ if .Data.lang }}{{ if eq .Data.lang "en" }}{{ $en = true }}{{ end }}{{ end }}
+<!doctype html>
+<html lang="ro">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="color-scheme" content="light only">
+<meta name="supported-color-schemes" content="light only">
+<title>Octom</title>
+</head>
+<body style="margin:0;padding:0;background:#FAFAF9;">
+<div style="display:none;max-height:0;overflow:hidden;opacity:0;color:transparent;mso-hide:all;">{{ if $en }}One more step: confirm your email address.{{ else }}Mai ai un singur pas: confirmă adresa de email.{{ end }}&nbsp;&zwnj;&nbsp;&zwnj;&nbsp;&zwnj;&nbsp;&zwnj;&nbsp;&zwnj;&nbsp;&zwnj;</div>
+<table role="presentation" width="100%" cellpadding="0" cellspacing="0" border="0" bgcolor="#FAFAF9" style="background:#FAFAF9;">
+<tr><td align="center" style="padding:40px 16px 48px;">
+<table role="presentation" width="560" cellpadding="0" cellspacing="0" border="0" style="width:100%;max-width:560px;">
+<tr><td style="padding:0 4px 24px;font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,'Helvetica Neue',Arial,sans-serif;font-size:28px;font-weight:700;letter-spacing:-0.5px;color:#111827;">oc<span style="color:#4F46E5;">t</span>om</td></tr>
+<tr><td style="background:#ffffff;border:1px solid #E7E7E5;border-top:4px solid #4F46E5;border-radius:16px;padding:40px 36px;">
+<p style="margin:0;font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,'Helvetica Neue',Arial,sans-serif;font-size:12px;font-weight:600;letter-spacing:1.6px;text-transform:uppercase;color:#4F46E5;">{{ if $en }}Welcome{{ else }}Bine ai venit{{ end }}</p>
+<h1 style="margin:14px 0 0;font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,'Helvetica Neue',Arial,sans-serif;font-size:28px;font-weight:600;line-height:1.2;letter-spacing:-0.6px;color:#111827;">{{ if $en }}Confirm your email address{{ else }}Confirmă-ți adresa de email{{ end }}</h1>
+<p style="margin:16px 0 0;font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,'Helvetica Neue',Arial,sans-serif;font-size:16px;line-height:1.65;color:#4B5563;">{{ if $en }}Thanks for creating an Octom account. Confirm your email address to start seeing who to contact every day.{{ else }}Mulțumim că ți-ai creat un cont Octom. Confirmă adresa de email ca să începi să vezi, în fiecare zi, pe cine ai de contactat.{{ end }}</p>
+<table role="presentation" cellpadding="0" cellspacing="0" border="0" style="margin:28px 0 0;"><tr><td bgcolor="#4F46E5" style="background:#4F46E5;border-radius:10px;"><a href="{{ .ConfirmationURL }}" target="_blank" style="display:inline-block;padding:15px 30px;font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,'Helvetica Neue',Arial,sans-serif;font-size:16px;font-weight:600;line-height:1;color:#ffffff;text-decoration:none;border-radius:10px;">{{ if $en }}Confirm email{{ else }}Confirmă emailul{{ end }}</a></td></tr></table><p style="margin:28px 0 0;font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,'Helvetica Neue',Arial,sans-serif;font-size:13px;line-height:1.6;color:#6B7280;">{{ if $en }}If the button doesn't work, copy this link into your browser:{{ else }}Dacă butonul nu funcționează, copiază acest link în browser:{{ end }}<br><a href="{{ .ConfirmationURL }}" target="_blank" style="color:#4F46E5;word-break:break-all;text-decoration:underline;">{{ .ConfirmationURL }}</a></p>
+<table role="presentation" width="100%" cellpadding="0" cellspacing="0" border="0" style="margin:32px 0 0;"><tr><td style="border-top:1px solid #E7E7E5;padding-top:20px;font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,'Helvetica Neue',Arial,sans-serif;font-size:13px;line-height:1.6;color:#6B7280;">{{ if $en }}If you didn't create this account, you can safely ignore this email. Nothing will happen.{{ else }}Dacă nu ai creat tu acest cont, poți ignora emailul. Nu se va întâmpla nimic.{{ end }}</td></tr></table>
+</td></tr>
+<tr><td style="padding:24px 8px 0;font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,'Helvetica Neue',Arial,sans-serif;font-size:12px;line-height:1.7;color:#9CA3AF;text-align:center;">Octom &middot; {{ if $en }}Know who to contact today.{{ else }}Știi pe cine contactezi azi.{{ end }}<br>{{ if $en }}You received this email because your address was used with Octom.{{ else }}Ai primit acest email pentru că adresa ta a fost folosită la Octom.{{ end }}</td></tr>
+</table>
+</td></tr>
+</table>
+</body>
+</html>
