@@ -11,7 +11,8 @@
 --   enforce_contact_limit   no 10-contact limit while ON
 --   enforce_followup_limit  no 10-active-follow-up limit while ON
 --   ai_check_and_log        daily AI cap is 100 (the paid-plan cap) while ON;
---                           the 5-per-minute abuse limit stays
+--                           the 5-per-minute abuse limit stays; requests of the
+--                           same user are now serialized (no parallel bypass)
 --   org_seat_limit          5 seats while ON, like Business
 --
 -- public.org_plan() is NOT changed: it keeps reporting the real Stripe plan, so
@@ -98,6 +99,9 @@ begin
   from public.organization_members
   where user_id = uid
   limit 1;
+
+  -- One request at a time per user, so parallel requests cannot all pass the check.
+  perform pg_advisory_xact_lock(hashtext('ai:' || uid::text));
 
   if public.bootstrap_mode()
      or (org is not null and public.org_plan(org) <> 'free') then

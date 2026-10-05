@@ -1,7 +1,5 @@
 import { NextResponse } from "next/server";
-import { createClient } from "@supabase/supabase-js";
 import { adminClient, stripeClient } from "@/lib/billing";
-import { SUPABASE_KEY, SUPABASE_URL } from "@/lib/supabase-config";
 
 export const runtime = "nodejs";
 
@@ -55,12 +53,10 @@ export async function POST(req: Request) {
       }
     }
 
-    // Run the existing database function as the user, so auth.uid() is theirs.
-    const asUser = createClient(SUPABASE_URL, SUPABASE_KEY, {
-      auth: { persistSession: false },
-      global: { headers: { Authorization: `Bearer ${token}` } },
-    });
-    const { error } = await asUser.rpc("delete_my_account");
+    // The database function can only be run with the service key, never by a
+    // signed-in user directly, so Stripe cancellation above cannot be skipped.
+    // The id comes from the verified token, never from the request.
+    const { error } = await admin.rpc("delete_account_for", { target: user.id });
     if (error) {
       return NextResponse.json(
         { error: String(error.message).includes("members_exist") ? "members_exist" : "server_error" },
