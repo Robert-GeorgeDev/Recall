@@ -31,6 +31,13 @@ export const enPlans = {
   "plan.limitContacts": "You have reached the Free plan limit of 10 contacts.",
   "plan.limitFollowUps": "You have reached the Free plan limit of 10 active follow-ups. Complete or delete one first.",
   "plan.limitImport": "This import would go over your Free plan limits. You have room for {c} more contacts and {f} more follow-ups. Remove rows from your file and try again.",
+  "plans.boot.line": "All current features are included.",
+  "plans.boot.f1": "Unlimited contacts",
+  "plans.boot.f2": "Unlimited active follow-ups",
+  "plans.boot.f3": "Dashboard and lead statuses",
+  "plans.boot.f4": "CSV import and export",
+  "plans.boot.f5": "AI assistant, with a fair daily limit",
+  "plans.boot.note": "Octom is free while we build and improve the product.",
 };
 
 export const roPlans: Record<keyof typeof enPlans, string> = {
@@ -66,4 +73,11 @@ export const roPlans: Record<keyof typeof enPlans, string> = {
   "plan.limitContacts": "Ai atins limita planului gratuit: 10 contacte.",
   "plan.limitFollowUps": "Ai atins limita planului gratuit: 10 follow-up-uri active. Finalizează sau șterge mai întâi unul.",
   "plan.limitImport": "Acest import ar depăși limitele planului gratuit. Mai ai loc pentru {c} contacte și {f} follow-up-uri. Elimină rânduri din fișier și încearcă din nou.",
+  "plans.boot.line": "Toate funcțiile actuale sunt incluse.",
+  "plans.boot.f1": "Contacte nelimitate",
+  "plans.boot.f2": "Follow-up-uri active nelimitate",
+  "plans.boot.f3": "Panou și statusuri pentru lead-uri",
+  "plans.boot.f4": "Import și export CSV",
+  "plans.boot.f5": "Asistent AI, cu o limită zilnică rezonabilă",
+  "plans.boot.note": "Octom este gratuit cât timp construim și îmbunătățim produsul.",
 };

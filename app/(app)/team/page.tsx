@@ -7,6 +7,7 @@ import RequireAuth from "@/components/require-auth";
 import { useAuth } from "@/components/auth-provider";
 import { useLanguage } from "@/components/language-provider";
 import { useOrgId } from "@/hooks/use-org-id";
+import { useBootstrapMode } from "@/hooks/use-bootstrap";
 import { supabase } from "@/lib/supabase";
 
 type Member = { user_id: string; email: string; role: string; joined_at: string };
@@ -14,6 +15,7 @@ type Invite = { id: string; token: string; role: string; expires_at: string };
 
 function TeamView() {
   const { t, lang } = useLanguage();
+  const bootstrap = useBootstrapMode();
   const { user } = useAuth();
   const router = useRouter();
   const orgId = useOrgId();
@@ -212,7 +214,7 @@ function TeamView() {
         </section>
       )}
 
-      {seats <= 1 && (
+      {seats <= 1 && bootstrap === false && (
         <section className="mt-4 rounded-2xl border border-line bg-lavender p-5">
           <h2 className="text-lg font-semibold">{t("team.upsell.title")}</h2>
           <p className="mt-1 text-sm text-slate-600">{t("team.upsell.text")}</p>

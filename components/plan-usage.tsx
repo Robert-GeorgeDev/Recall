@@ -1,18 +1,20 @@
 "use client";
 
 import Link from "next/link";
-import { FREE_LIMITS, usePlan } from "@/hooks/use-plan";
+import { usePlan } from "@/hooks/use-plan";
 import { useLanguage } from "@/components/language-provider";
 
 export default function PlanUsage({ orgId }: { orgId: string }) {
   const { t } = useLanguage();
   const { state } = usePlan(orgId);
 
-  if (!state || state.plan !== "free") return null;
+  const { contacts: contactLimit, followUps: followUpLimit } = state?.entitlements.limits ?? {
+    contacts: null,
+    followUps: null,
+  };
+  if (!state || contactLimit === null || followUpLimit === null) return null;
 
-  const near =
-    state.contacts >= FREE_LIMITS.contacts * 0.8 ||
-    state.followUps >= FREE_LIMITS.followUps * 0.8;
+  const near = state.contacts >= contactLimit * 0.8 || state.followUps >= followUpLimit * 0.8;
 
   return (
     <div
@@ -24,8 +26,8 @@ export default function PlanUsage({ orgId }: { orgId: string }) {
     >
       <span>
         <strong>{t("plan.bannerTitle")}</strong> · {state.contacts}/
-        {FREE_LIMITS.contacts} {t("plan.contactsWord")} · {state.followUps}/
-        {FREE_LIMITS.followUps} {t("plan.followUpsWord")}
+        {contactLimit} {t("plan.contactsWord")} · {state.followUps}/
+        {followUpLimit} {t("plan.followUpsWord")}
       </span>
       <Link href="/plans" className="font-semibold text-brand hover:underline">
         {t("plan.seePlans")}

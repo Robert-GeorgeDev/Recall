@@ -13,6 +13,7 @@ export default function robots(): MetadataRoute.Robots {
         "/followups",
         "/data",
         "/plans",
+        "/admin",
         "/account",
         "/onboarding",
         "/pipeline",
