@@ -10,7 +10,15 @@ async function login(page: Page) {
   await page.locator("#email").fill(email!);
   await page.locator("#password").fill(password!);
   await page.getByRole("button", { name: "Log in" }).click();
-  await expect(page).toHaveURL(/dashboard/, { timeout: 20000 });
+  // Wait until a real page heading shows: either the dashboard greeting or the
+  // onboarding screen (the test account may have no workspace, e.g. after a data reset).
+  const h1 = page.getByRole("heading", { level: 1 });
+  await expect(h1).toContainText(/Good (morning|afternoon|evening)|call your workspace/, { timeout: 20000 });
+  if (/call your workspace/.test((await h1.textContent()) ?? "")) {
+    await page.locator("#workspace").fill("E2E workspace");
+    await page.getByRole("button", { name: "Continue" }).click();
+    await expect(h1).toContainText(/Good (morning|afternoon|evening)/, { timeout: 20000 });
+  }
 }
 
 test("login opens the dashboard", async ({ page }) => {
