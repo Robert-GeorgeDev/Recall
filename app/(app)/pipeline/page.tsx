@@ -61,8 +61,8 @@ function PipelineView() {
 
   return (
     <main className="px-5 pb-10 pt-8">
-      <h1 className="text-3xl font-bold tracking-tight">{t("pipe.title")}</h1>
-      <p className="mt-1 text-slate-600">{t("pipe.subtitle")}</p>
+      <h1 className="text-4xl font-semibold tracking-tight">{t("pipe.title")}</h1>
+      <p className="mt-2 text-lg text-slate-500">{t("pipe.subtitle")}</p>
       {error && <p role="alert" className="mt-3 text-sm text-overdue">{error}</p>}
       {cards === null && !error && <p className="mt-6 text-slate-600">{t("common.loading")}</p>}
 
@@ -78,12 +78,12 @@ function PipelineView() {
                   if (dragId) move(dragId, status);
                   setDragId(null);
                 }}
-                className="w-72 shrink-0 snap-start rounded-2xl border border-line bg-white/70 p-3"
+                className="w-72 shrink-0 snap-start rounded-2xl border border-line/70 bg-white/60 p-3 backdrop-blur"
               >
-                <h2 className="flex items-center gap-2 text-sm font-semibold">
+                <h2 className="flex items-center gap-2 px-1 text-sm font-semibold">
                   <span className={`h-2.5 w-2.5 rounded-full ${dot[status]}`} aria-hidden="true" />
                   {label(status)}
-                  <span className="ml-auto rounded-full bg-lavender px-2 py-0.5 text-xs text-brand">{inCol.length}</span>
+                  <span className="ml-auto rounded-full bg-slate-100 px-2 py-0.5 text-xs text-slate-600">{inCol.length}</span>
                 </h2>
                 <ul className="mt-3 space-y-2">
                   {inCol.length === 0 && <li className="py-4 text-center text-xs text-slate-400">{t("pipe.empty")}</li>}
@@ -93,7 +93,7 @@ function PipelineView() {
                       draggable
                       onDragStart={() => setDragId(c.id)}
                       onDragEnd={() => setDragId(null)}
-                      className="rounded-xl border border-line bg-white p-3 shadow-sm"
+                      className="cursor-grab rounded-xl border border-line/70 bg-white p-3.5 shadow-soft transition hover:-translate-y-0.5 hover:shadow-lift active:cursor-grabbing"
                     >
                       <Link href={`/contacts/${c.id}`} className="block font-semibold hover:text-brand">
                         {`${c.first_name} ${c.last_name}`.trim()}

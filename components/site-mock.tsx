@@ -13,7 +13,7 @@ export function ProductMock() {
   return (
     <div
       aria-hidden="true"
-      className="mx-auto mt-16 max-w-5xl rounded-3xl border border-line bg-white text-left shadow-[0_30px_80px_-20px_rgba(15,23,42,0.25)]"
+      className="mx-auto mt-16 max-w-5xl rounded-[1.75rem] border border-white/80 bg-white/90 text-left shadow-lift ring-1 ring-line/60 backdrop-blur"
     >
       <div className="flex items-center gap-2 border-b border-line px-5 py-3">
         <span className="h-3 w-3 rounded-full bg-slate-200" />
@@ -26,7 +26,7 @@ export function ProductMock() {
           <p className="text-2xl font-semibold tracking-tight">{t("dash.morning")}</p>
           <div className="mt-4 grid grid-cols-3 gap-3 text-center">
             {[["2", "group.overdue"], ["3", "group.today"], ["18", "dash.openLeads"]].map(([n, k]) => (
-              <div key={k} className="rounded-2xl bg-lavender px-2 py-3">
+              <div key={k} className="rounded-2xl bg-slate-50 px-2 py-3 ring-1 ring-line/60">
                 <p className="text-xl font-semibold">{n}</p>
                 <p className="text-[11px] text-slate-600">{t(k as "group.today")}</p>
               </div>
@@ -44,7 +44,7 @@ export function ProductMock() {
             ))}
           </ul>
         </div>
-        <div className="rounded-2xl bg-ink p-5 text-white">
+        <div className="rounded-2xl bg-ink p-5 text-white shadow-soft">
           <p className="text-sm font-semibold text-indigo-300">{t("ai.title")}</p>
           <p className="mt-3 text-sm leading-relaxed text-slate-200">{t("site.mock.draft")}</p>
           <p className="mt-4 text-xs text-slate-400">{t("ai.subtitle")}</p>
@@ -63,7 +63,7 @@ const team = [
 export function TeamMock() {
   const { t } = useLanguage();
   return (
-    <div aria-hidden="true" className="rounded-3xl border border-line bg-white p-6 shadow-[0_20px_60px_-25px_rgba(15,23,42,0.25)]">
+    <div aria-hidden="true" className="card rounded-3xl p-6 shadow-lift">
       <p className="text-xs font-medium uppercase tracking-wide text-slate-500">{t("land.preview.title")}</p>
       <ul className="mt-4 divide-y divide-line">
         {team.map((m) => (

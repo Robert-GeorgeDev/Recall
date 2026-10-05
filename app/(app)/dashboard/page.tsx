@@ -106,17 +106,17 @@ function DashboardView() {
     <main className="mx-auto max-w-6xl px-5 pb-10 pt-8">
       <div className="grid gap-6 lg:grid-cols-[minmax(0,1fr)_320px]">
         <div>
-          <h1 className="text-3xl font-bold tracking-tight">{greeting}</h1>
-          <p className="mt-1 text-slate-600">{t("dash.subtitle")}</p>
+          <h1 className="text-4xl font-semibold tracking-tight">{greeting}</h1>
+          <p className="mt-2 text-lg text-slate-500">{t("dash.subtitle")}</p>
 
           {teamSize > 1 && (
-            <div role="group" className="mt-4 inline-flex rounded-xl border border-line bg-white p-1 text-sm font-semibold">
+            <div role="group" className="mt-4 inline-flex rounded-full border border-line bg-white p-1 text-sm font-semibold">
               {(["mine", "all"] as const).map((s) => (
                 <button
                   key={s}
                   onClick={() => setScope(s)}
                   aria-pressed={scope === s}
-                  className={`min-h-[40px] rounded-lg px-4 ${scope === s ? "bg-brand text-white" : "text-slate-600"}`}
+                  className={`min-h-[40px] rounded-full px-4 ${scope === s ? "bg-ink text-white" : "text-slate-600"}`}
                 >
                   {s === "mine" ? t("dash.mine") : t("dash.all")}
                 </button>
@@ -139,23 +139,23 @@ function DashboardView() {
             <>
               <div className="mt-6 grid grid-cols-2 gap-3 lg:grid-cols-4">
                 {stats.map(({ label, value, Icon, tone }) => (
-                  <div key={label} className="rounded-xl border border-line bg-white p-4">
-                    <span className={`grid h-9 w-9 place-items-center rounded-xl ${tone}`}>
+                  <div key={label} className="card p-5">
+                    <span className={`grid h-10 w-10 place-items-center rounded-2xl ${tone}`}>
                       <Icon className="h-5 w-5" aria-hidden="true" />
                     </span>
-                    <p className="mt-3 text-2xl font-bold">{value ?? "–"}</p>
-                    <p className="text-xs text-slate-600">{label}</p>
+                    <p className="mt-4 text-3xl font-semibold tracking-tight">{value ?? "–"}</p>
+                    <p className="mt-0.5 text-sm text-slate-500">{label}</p>
                   </div>
                 ))}
               </div>
 
               {open.length === 0 && (
-                <div className="mt-10 rounded-xl border border-dashed border-line bg-white p-8 text-center">
+                <div className="mt-10 rounded-2xl border border-dashed border-line bg-white/70 p-10 text-center">
                   <p className="text-lg font-semibold">{t("dash.emptyTitle")}</p>
                   <p className="mt-1 text-slate-600">{t("dash.emptyText")}</p>
                   <Link
                     href="/followups/new"
-                    className="mt-5 inline-block rounded-xl bg-cta px-6 py-3 font-semibold text-white hover:bg-cta-dark"
+                    className="mt-5 btn-brand mt-5 px-6"
                   >
                     {t("nav.addFollowUp")}
                   </Link>
@@ -195,7 +195,7 @@ function DashboardView() {
         </div>
 
         <aside className="hidden lg:sticky lg:top-8 lg:block lg:self-start">
-          <div className="rounded-xl border border-line bg-white p-5">
+          <div className="card p-6">
             <h2 className="font-semibold">{t("dash.schedule")}</h2>
             {groups.today.length === 0 ? (
               <p className="mt-3 text-sm text-slate-600">{t("dash.scheduleEmpty")}</p>
@@ -216,13 +216,13 @@ function DashboardView() {
           </div>
           <Link
             href="/assistant"
-            className="mt-4 block rounded-xl border border-line bg-white p-5 hover:border-brand"
+            className="mt-4 block rounded-2xl bg-ink p-6 text-white shadow-lift transition hover:bg-slate-800"
           >
             <span className="flex items-center gap-2 font-semibold">
-              <Sparkles className="h-4 w-4 text-brand" aria-hidden="true" />
+              <Sparkles className="h-4 w-4 text-indigo-300" aria-hidden="true" />
               {t("chat.title")}
             </span>
-            <span className="mt-2 block text-sm text-slate-600">{t("chat.subtitle")}</span>
+            <span className="mt-2 block text-sm text-slate-300">{t("chat.subtitle")}</span>
           </Link>
         </aside>
       </div>

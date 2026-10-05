@@ -9,7 +9,7 @@ export default function LanguageSwitcher() {
     <div
       role="group"
       aria-label="Language"
-      className="inline-flex rounded-xl border border-line bg-white p-0.5 text-xs font-semibold"
+      className="inline-flex rounded-full border border-line bg-white p-0.5 text-xs font-semibold"
     >
       {(["en", "ro"] as const).map((l) => (
         <button
@@ -17,8 +17,8 @@ export default function LanguageSwitcher() {
           type="button"
           onClick={() => setLang(l)}
           aria-pressed={lang === l}
-          className={`rounded-lg px-2.5 py-1 uppercase ${
-            lang === l ? "bg-brand text-white" : "text-slate-600 hover:text-ink"
+          className={`rounded-full px-2.5 py-1 uppercase ${
+            lang === l ? "bg-ink text-white" : "text-slate-600 hover:text-ink"
           }`}
         >
           {l}
