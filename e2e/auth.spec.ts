@@ -10,6 +10,12 @@ async function login(page: Page) {
   await page.locator("#email").fill(email!);
   await page.locator("#password").fill(password!);
   await page.getByRole("button", { name: "Log in" }).click();
+  await expect(page).toHaveURL(/dashboard|onboarding/, { timeout: 20000 });
+  // The test account may have no workspace yet (e.g. after a data reset): create one.
+  if (/onboarding/.test(page.url())) {
+    await page.locator("#workspace").fill("E2E workspace");
+    await page.getByRole("button", { name: "Continue" }).click();
+  }
   await expect(page).toHaveURL(/dashboard/, { timeout: 20000 });
 }
 
