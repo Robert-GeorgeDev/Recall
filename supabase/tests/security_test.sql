@@ -145,6 +145,11 @@ begin
     where action = 'bootstrap_mode_enabled' and actor_id = aid;
     if n = 0 then raise exception 'FAIL: bootstrap change was not audited'; end if;
 
+    -- While ON, the limits in the database are lifted (run supabase/bootstrap-limits.sql)
+    if public.org_seat_limit(oid) <> 5 then
+      raise exception 'FAIL: bootstrap seat limit not applied (run bootstrap-limits.sql)';
+    end if;
+
     perform public.set_bootstrap_mode(false);
     if public.bootstrap_mode() is not false then
       raise exception 'FAIL: admin could not disable bootstrap mode';
@@ -212,7 +217,11 @@ begin
       begin
         insert into public.contacts (organization_id, first_name) values (oid_b, 'intruder');
         raise exception 'FAIL: user A inserted a contact into workspace B';
-      exception when insufficient_privilege or check_violation then null;
+      exception
+        when insufficient_privilege or check_violation then null;
+        when raise_exception then
+          -- the assignee trigger refuses the row before row level security looks at it
+          if sqlerrm <> 'invalid_assignee' then raise; end if;
       end;
 
       -- A signed-in user without any workspace sees nothing
