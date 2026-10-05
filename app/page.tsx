@@ -252,6 +252,7 @@ export default function Home() {
           <div>
             <Logo />
             <p className="mt-3 text-sm text-slate-500">© {year} Octom. {t("site.footer.rights")}</p>
+            <AnpcSal className="mt-5" />
           </div>
           <div className="flex gap-16 text-sm">
             <div className="space-y-3">
@@ -274,9 +275,6 @@ export default function Home() {
               <Link href="/contact" className="block text-slate-600 hover:text-ink">{t("site.footer.contact")}</Link>
             </div>
           </div>
-        </div>
-        <div className="mx-auto mt-8 max-w-6xl px-5">
-          <AnpcSal />
         </div>
       </footer>
     </div>
