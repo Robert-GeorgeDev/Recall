@@ -253,8 +253,10 @@ export default function Home() {
               <Link href="/privacy" className="block text-slate-600 hover:text-ink">Privacy</Link>
               <Link href="/terms" className="block text-slate-600 hover:text-ink">Terms</Link>
               <Link href="/cookies" className="block text-slate-600 hover:text-ink">Cookies</Link>
+              <Link href="/refunds" className="block text-slate-600 hover:text-ink">Refunds</Link>
               <Link href="/subprocessors" className="block text-slate-600 hover:text-ink">Subprocessors</Link>
               <Link href="/security" className="block text-slate-600 hover:text-ink">Security</Link>
+              <Link href="/accessibility" className="block text-slate-600 hover:text-ink">Accessibility</Link>
               <Link href="/company" className="block text-slate-600 hover:text-ink">Company</Link>
               <Link href="/contact" className="block text-slate-600 hover:text-ink">{t("site.footer.contact")}</Link>
             </div>

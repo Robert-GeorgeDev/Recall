@@ -8,8 +8,10 @@ const ITEMS = [
   { href: "/privacy", en: "Privacy", ro: "Confidențialitate" },
   { href: "/terms", en: "Terms", ro: "Termeni" },
   { href: "/cookies", en: "Cookies", ro: "Cookies" },
+  { href: "/refunds", en: "Billing & refunds", ro: "Facturare și rambursări" },
   { href: "/subprocessors", en: "Subprocessors", ro: "Subprocesatori" },
   { href: "/security", en: "Security", ro: "Securitate" },
+  { href: "/accessibility", en: "Accessibility", ro: "Accesibilitate" },
   { href: "/company", en: "Company", ro: "Companie" },
 ];
 
