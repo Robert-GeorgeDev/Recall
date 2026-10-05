@@ -66,7 +66,16 @@ export async function POST(req: Request) {
       event.type === "customer.subscription.updated" ||
       event.type === "customer.subscription.deleted"
     ) {
-      await sync(event.data.object as Stripe.Subscription);
+      const received = event.data.object as Stripe.Subscription;
+      // Stripe can deliver events out of order, so an old "updated" must never
+      // overwrite a newer "deleted". Always sync the subscription's current state.
+      let current = received;
+      try {
+        current = await stripe.subscriptions.retrieve(received.id);
+      } catch (e) {
+        if ((e as { code?: string }).code !== "resource_missing") throw e;
+      }
+      await sync(current);
     }
   } catch {
     return NextResponse.json({ error: "processing_failed" }, { status: 500 });

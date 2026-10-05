@@ -9,7 +9,8 @@ export default defineConfig({
   reporter: process.env.CI ? [["list"], ["github"], ["html", { open: "never" }]] : "list",
   use: {
     baseURL,
-    trace: "retain-on-failure",
+    // Traces record typed passwords and session tokens, so they are never kept in CI.
+    trace: process.env.CI ? "off" : "retain-on-failure",
     // Pretend the visitor already declined analytics so the banner never covers the page.
     storageState: {
       cookies: [],

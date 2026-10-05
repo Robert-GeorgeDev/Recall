@@ -18,15 +18,12 @@ function builder(result: unknown) {
 
 vi.mock("@/lib/billing", () => ({
   adminClient: () => ({
+    rpc: state.rpc,
     auth: { getUser: async () => ({ data: { user: state.user } }) },
     from: (table: string) =>
       builder({ data: table === "subscriptions" ? state.subs : state.memberships }),
   }),
   stripeClient: () => ({ subscriptions: { cancel: state.cancel } }),
-}));
-
-vi.mock("@supabase/supabase-js", () => ({
-  createClient: () => ({ rpc: state.rpc }),
 }));
 
 import { POST } from "@/app/api/account/delete/route";
@@ -66,6 +63,8 @@ describe("account delete route", () => {
     expect(res.status).toBe(200);
     expect(state.cancel).toHaveBeenCalledWith("sub_1");
     expect(state.order).toEqual(["cancel", "rpc"]);
+    // the id passed to the database is the verified user's, nothing else
+    expect(state.rpc).toHaveBeenCalledWith("delete_account_for", { target: "u1" });
   });
 
   it("refuses without touching Stripe when the workspace has other members", async () => {
