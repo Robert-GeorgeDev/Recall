@@ -3,7 +3,7 @@
 export const LEGAL = {
   name: "OCTOM",
   address: "[Your address, Romania]",
-  email: "contact@octom.com",
+  email: "contact@octom.eu",
   legalEmail: "[legal email]",
   companyId: "[CUI]",
   registryNo: "[J../../..]",

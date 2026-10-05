@@ -1,5 +1,5 @@
-// Put your final website address here once you have a domain,
-// for example "https://orbito.app". Until then the sitemap stays empty.
-export const SITE_URL = "https://[your-domain]";
+// The final website address (no trailing slash). The sitemap and canonical
+// links use it. Leave a "[" in it to turn those off.
+export const SITE_URL = "https://octom.eu";
 
 export const siteConfigured = !SITE_URL.includes("[");
