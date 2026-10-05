@@ -7,6 +7,7 @@ import Logo from "@/components/logo";
 import LanguageSwitcher from "@/components/language-switcher";
 import SignOutButton from "@/components/sign-out-button";
 import AccountMenu from "@/components/account-menu";
+import PlanRedirect from "@/components/plan-redirect";
 import { useLanguage } from "@/components/language-provider";
 import { BRAND } from "@/lib/brand";
 
@@ -42,6 +43,7 @@ export default function AppShell({ children }: { children: React.ReactNode }) {
 
   return (
     <div className="min-h-screen">
+      <PlanRedirect />
       {/* Tablet + desktop sidebar: icon rail at md, full at lg */}
       <aside className="fixed inset-y-0 left-0 z-30 hidden w-20 flex-col border-r border-line/60 bg-white/80 p-3 backdrop-blur-xl md:flex lg:w-64 lg:p-5">
         <Link href="/dashboard" aria-label={BRAND} className="flex h-10 items-center justify-center lg:justify-start">

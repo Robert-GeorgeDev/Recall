@@ -1,12 +1,13 @@
 "use client";
 
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { supabase } from "@/lib/supabase";
 import Logo from "@/components/logo";
 import LanguageSwitcher from "@/components/language-switcher";
 import { useLanguage } from "@/components/language-provider";
+import { isPaidPlan, setPendingPlan, type PaidPlan } from "@/lib/pending-plan";
 import type { Key } from "@/lib/dictionaries";
 
 function errorKey(code: string | undefined): Key {
@@ -42,6 +43,18 @@ export default function AuthForm({ mode }: { mode: "login" | "signup" }) {
   const [info, setInfo] = useState("");
   const [busy, setBusy] = useState(false);
   const isSignup = mode === "signup";
+  const [chosen, setChosen] = useState<PaidPlan | null>(null);
+
+  // A plan picked on the pricing section arrives as ?plan=pro or ?plan=business.
+  useEffect(() => {
+    const value = new URLSearchParams(window.location.search).get("plan");
+    if (!isPaidPlan(value)) return;
+    setChosen(value);
+    setPendingPlan(value);
+    supabase.auth.getSession().then(({ data }) => {
+      if (data.session) router.replace("/dashboard");
+    });
+  }, [router]);
 
   async function handleSubmit(e: React.FormEvent<HTMLFormElement>) {
     e.preventDefault();
@@ -87,6 +100,12 @@ export default function AuthForm({ mode }: { mode: "login" | "signup" }) {
       <p className="mt-2 text-slate-600">
         {isSignup ? t("auth.createSub") : t("auth.loginSub")}
       </p>
+
+      {chosen && (
+        <p className="mt-4 rounded-xl bg-brand-soft px-4 py-3 text-sm text-brand">
+          {t("auth.planChosen").replace("{plan}", t(chosen === "pro" ? "plans.pro" : "plans.business"))}
+        </p>
+      )}
 
       <form onSubmit={handleSubmit} className="mt-8 space-y-4">
         <div>

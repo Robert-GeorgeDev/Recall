@@ -29,10 +29,10 @@ const privacy: { Icon: LucideIcon; text: Key }[] = [
   { Icon: Lock, text: "land.sec.4" },
 ];
 
-const plans: { name: Key; line: Key; price: string; feats: Key[]; live: boolean; pick: boolean }[] = [
-  { name: "plans.free", line: "site.plan.free", price: "0", live: true, pick: false, feats: ["plans.free.f1", "plans.free.f2", "plans.free.f3", "plans.free.f4", "plans.free.f5"] },
-  { name: "plans.pro", line: "site.plan.pro", price: "7.99", live: false, pick: true, feats: ["plans.pro.f1", "plans.pro.f2", "plans.pro.f3", "plans.pro.f4"] },
-  { name: "plans.business", line: "site.plan.business", price: "14.99", live: false, pick: false, feats: ["plans.business.f1", "plans.business.f2", "plans.business.f3"] },
+const plans: { name: Key; line: Key; price: string; feats: Key[]; slug: "free" | "pro" | "business"; pick: boolean }[] = [
+  { name: "plans.free", line: "site.plan.free", price: "0", slug: "free", pick: false, feats: ["plans.free.f1", "plans.free.f2", "plans.free.f3", "plans.free.f4", "plans.free.f5"] },
+  { name: "plans.pro", line: "site.plan.pro", price: "7.99", slug: "pro", pick: true, feats: ["plans.pro.f1", "plans.pro.f2", "plans.pro.f3", "plans.pro.f4"] },
+  { name: "plans.business", line: "site.plan.business", price: "14.99", slug: "business", pick: false, feats: ["plans.business.f1", "plans.business.f2", "plans.business.f3"] },
 ];
 
 const faq: { q: Key; a: Key }[] = [
@@ -207,10 +207,15 @@ export default function Home() {
                     <li key={f} className="flex gap-3"><Check className="mt-0.5 h-4 w-4 shrink-0 text-brand" aria-hidden="true" />{t(f)}</li>
                   ))}
                 </ul>
-                {p.live ? (
+                {p.slug === "free" ? (
                   <Link href="/signup" className={`${btn} mt-8 bg-ink text-white hover:bg-slate-800`}>{t("landing.cta")}</Link>
                 ) : (
-                  <span aria-disabled="true" className={`${btn} mt-8 cursor-not-allowed bg-slate-100 text-slate-500`}>{t("plans.comingSoon")}</span>
+                  <Link
+                    href={`/signup?plan=${p.slug}`}
+                    className={`${btn} mt-8 ${p.pick ? "bg-brand text-white hover:bg-brand-dark" : "border border-line bg-white text-ink hover:bg-slate-50"}`}
+                  >
+                    {t("site.plan.choose").replace("{name}", t(p.name))}
+                  </Link>
                 )}
               </div>
             ))}

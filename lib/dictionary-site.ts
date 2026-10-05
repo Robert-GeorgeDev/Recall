@@ -1,4 +1,5 @@
 export const enSite = {
+  "site.plan.choose": "Choose {name}",
   "site.story.title": "You sent an offer on Monday.",
   "site.story.l1": "The client said: \"I'll get back to you.\"",
   "site.story.l2": "Three days passed.",
@@ -47,6 +48,7 @@ export const enSite = {
 };
 
 export const roSite: Record<keyof typeof enSite, string> = {
+  "site.plan.choose": "Alege {name}",
   "site.story.title": "Ai trimis o ofertă luni.",
   "site.story.l1": "Clientul a zis: „Revin eu.”",
   "site.story.l2": "Au trecut trei zile.",
