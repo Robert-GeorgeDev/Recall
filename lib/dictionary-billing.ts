@@ -1,4 +1,5 @@
 export const enBilling = {
+  "auth.planChosen": "You chose the {plan} plan. You'll pay right after you create your account.",
   "billing.upgradePro": "Upgrade to Pro",
   "billing.upgradeBusiness": "Upgrade to Business",
   "billing.manage": "Manage subscription",
@@ -11,6 +12,7 @@ export const enBilling = {
 };
 
 export const roBilling = {
+  "auth.planChosen": "Ai ales planul {plan}. Vei plăti imediat după ce îți creezi contul.",
   "billing.upgradePro": "Treci la Pro",
   "billing.upgradeBusiness": "Treci la Business",
   "billing.manage": "Gestionează abonamentul",
