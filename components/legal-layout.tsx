@@ -1,16 +1,23 @@
+"use client";
+
 import Link from "next/link";
 import Logo from "@/components/logo";
 import LegalNav from "@/components/legal-nav";
 import LegalToc from "@/components/legal-toc";
+import { useLanguage } from "@/components/language-provider";
 import { isDraft, LEGAL } from "@/lib/legal";
 
 export default function LegalLayout({
   title,
+  titleRo,
   children,
 }: {
   title: string;
+  titleRo: string;
   children: React.ReactNode;
 }) {
+  const { lang } = useLanguage();
+  const ro = lang === "ro";
   return (
     <div className="min-h-screen">
       <header className="border-b border-line bg-white/80 backdrop-blur">
@@ -22,7 +29,7 @@ export default function LegalLayout({
             href="/login"
             className="rounded-xl border border-line bg-white px-4 py-2 text-sm font-semibold text-ink hover:bg-brand-soft"
           >
-            Log in
+            {ro ? "Autentificare" : "Log in"}
           </Link>
         </div>
       </header>
@@ -30,22 +37,24 @@ export default function LegalLayout({
       <main className="mx-auto max-w-5xl px-5 pb-16 pt-10">
         <LegalNav />
 
-        <h1 className="mt-8 text-4xl font-bold tracking-tight text-ink">{title}</h1>
-        <p className="mt-2 text-sm text-slate-500">Last updated: {LEGAL.updated}</p>
+        <h1 className="mt-8 text-4xl font-bold tracking-tight text-ink">{ro ? titleRo : title}</h1>
+        <p className="mt-2 text-sm text-slate-500">{ro ? "Ultima actualizare" : "Last updated"}: {LEGAL.updated}</p>
 
         {isDraft && (
           <p
             role="note"
             className="mt-6 rounded-xl border border-amber-200 bg-amber-50 px-4 py-3 text-sm text-amber-900"
           >
-            Draft. This text is not final and may change before launch.
+            {ro
+              ? "Ciornă. Acest text nu este final și se poate schimba înainte de lansare."
+              : "Draft. This text is not final and may change before launch."}
           </p>
         )}
 
         <div className="mt-10 grid gap-10 lg:grid-cols-[220px_minmax(0,1fr)] lg:gap-14">
           <aside className="hidden lg:block">
             <div className="sticky top-8">
-              <LegalToc label="On this page" />
+              <LegalToc key={lang} label={ro ? "Pe această pagină" : "On this page"} />
             </div>
           </aside>
 
@@ -64,14 +73,14 @@ export default function LegalLayout({
             © {new Date().getFullYear()} {LEGAL.name}
           </p>
           <div className="flex flex-wrap gap-x-4 gap-y-2">
-            <Link href="/privacy" className="hover:text-ink">Privacy</Link>
-            <Link href="/terms" className="hover:text-ink">Terms</Link>
+            <Link href="/privacy" className="hover:text-ink">{ro ? "Confidențialitate" : "Privacy"}</Link>
+            <Link href="/terms" className="hover:text-ink">{ro ? "Termeni" : "Terms"}</Link>
             <Link href="/cookies" className="hover:text-ink">Cookies</Link>
-            <Link href="/subprocessors" className="hover:text-ink">Subprocessors</Link>
-            <Link href="/security" className="hover:text-ink">Security</Link>
-            <Link href="/company" className="hover:text-ink">Company</Link>
-            <Link href="/contact" className="hover:text-ink">Contact</Link>
-            <Link href="/" className="hover:text-ink">Home</Link>
+            <Link href="/subprocessors" className="hover:text-ink">{ro ? "Subprocesatori" : "Subprocessors"}</Link>
+            <Link href="/security" className="hover:text-ink">{ro ? "Securitate" : "Security"}</Link>
+            <Link href="/company" className="hover:text-ink">{ro ? "Companie" : "Company"}</Link>
+            <Link href="/contact" className="hover:text-ink">{ro ? "Contact" : "Contact"}</Link>
+            <Link href="/" className="hover:text-ink">{ro ? "Acasă" : "Home"}</Link>
           </div>
         </div>
       </footer>

@@ -2,22 +2,25 @@
 
 import Link from "next/link";
 import { usePathname } from "next/navigation";
+import { useLanguage } from "@/components/language-provider";
 
 const ITEMS = [
-  { href: "/privacy", label: "Privacy" },
-  { href: "/terms", label: "Terms" },
-  { href: "/cookies", label: "Cookies" },
-  { href: "/subprocessors", label: "Subprocessors" },
-  { href: "/security", label: "Security" },
-  { href: "/company", label: "Company" },
+  { href: "/privacy", en: "Privacy", ro: "Confidențialitate" },
+  { href: "/terms", en: "Terms", ro: "Termeni" },
+  { href: "/cookies", en: "Cookies", ro: "Cookies" },
+  { href: "/subprocessors", en: "Subprocessors", ro: "Subprocesatori" },
+  { href: "/security", en: "Security", ro: "Securitate" },
+  { href: "/company", en: "Company", ro: "Companie" },
 ];
 
 export default function LegalNav() {
   const pathname = usePathname() ?? "";
+  const { lang } = useLanguage();
   return (
     <nav className="flex flex-wrap gap-2" aria-label="Legal">
-      {ITEMS.map(({ href, label }) => {
+      {ITEMS.map(({ href, en, ro }) => {
         const active = pathname === href;
+        const label = lang === "ro" ? ro : en;
         return (
           <Link
             key={href}

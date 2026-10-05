@@ -1,11 +1,15 @@
 import LegalLayout from "@/components/legal-layout";
+import Bi from "@/components/bi";
 import { LEGAL } from "@/lib/legal";
 
 export const metadata = { title: "Privacy Policy – Octom" };
 
 export default function PrivacyPage() {
   return (
-    <LegalLayout title="Privacy Policy">
+    <LegalLayout title="Privacy Policy" titleRo="Politica de confidențialitate">
+      <Bi
+        en={
+          <>
       <p>
         This policy explains how Octom (“we”, “us”) handles personal data when
         you use our service. We try to collect as little as possible.
@@ -140,6 +144,148 @@ export default function PrivacyPage() {
         We may update this policy. The date at the top shows the latest version,
         and we will notify you of important changes.
       </p>
+          </>
+        }
+        ro={
+          <>
+      <p>
+        Această politică explică cum prelucrează Octom („noi”) datele cu caracter
+        personal când folosești serviciul. Încercăm să colectăm cât mai puține date.
+      </p>
+
+      <h2>1. Cine suntem</h2>
+      <p>
+        Operatorul Octom este {LEGAL.name}, {LEGAL.address}. Ne poți contacta la{" "}
+        {LEGAL.email}.
+      </p>
+
+      <h2>2. Ce date prelucrăm</h2>
+      <ul>
+        <li>
+          <strong>Date de cont:</strong> adresa ta de email și o parolă. Parola este
+          gestionată de furnizorul nostru de autentificare și este stocată doar sub
+          formă de hash; noi nu o vedem niciodată.
+        </li>
+        <li>
+          <strong>Date din spațiul de lucru:</strong> numele spațiului de lucru și
+          conținutul pe care îl adaugi: contacte (nume, companii, emailuri, numere de
+          telefon, notițe), follow-up-uri și istoricul activității acestor înregistrări.
+        </li>
+        <li>
+          <strong>Contoare de utilizare AI:</strong> când folosești asistentul AI
+          înregistrăm că a avut loc o cerere (cine, când, ce tip) pentru a aplica
+          limitele de utilizare. Nu stocăm textele introduse și nici cele generate.
+        </li>
+        <li>
+          <strong>Date de echipă:</strong> dacă inviți colegi, aceștia pot vedea și
+          modifica datele spațiului de lucru și îți pot vedea adresa de email în
+          cadrul spațiului.
+        </li>
+        <li>
+          <strong>Preferințe de email:</strong> dacă ai activat emailul zilnic opțional
+          cu rezumatul și dacă ai fost de acord să primești noutăți și oferte (cu data
+          acordului).
+        </li>
+        <li>
+          <strong>Date de facturare:</strong> dacă te abonezi la un plan plătit, planul,
+          starea abonamentului și referința de client de la furnizorul nostru de plăți.
+          Datele cardului se introduc la Stripe și nu ajung la noi.
+        </li>
+        <li>
+          <strong>Stocare în browser:</strong> sesiunea de autentificare și limba aleasă
+          (vezi pagina Cookies).
+        </li>
+      </ul>
+      <p>
+        Nu cerem date de card, credențiale bancare, date medicale sau parole către alte
+        servicii și nu ar trebui să le introduci în notițe.
+      </p>
+
+      <h2>3. De ce le prelucrăm</h2>
+      <ul>
+        <li>Pentru a furniza serviciul cerut de tine (contract).</li>
+        <li>Pentru securitatea serviciului și prevenirea abuzurilor, inclusiv limitele de utilizare (interes legitim).</li>
+        <li>Pentru facturare și păstrarea evidențelor cerute de lege (contract și obligație legală).</li>
+        <li>Pentru a-ți trimite pe email noutăți, actualizări de produs și oferte, doar dacă ai fost de acord (consimțământ). Îl poți retrage oricând.</li>
+        <li>Pentru a respecta obligațiile legale.</li>
+      </ul>
+
+      <h2>4. Datele contactelor tale</h2>
+      <p>
+        Înregistrările de contact pe care le adaugi se referă la alte persoane. Pentru
+        acest conținut tu decizi de ce și cum este folosit și ești responsabil să ai o
+        bază legală valabilă. Pentru acest conținut acționăm ca persoană împuternicită
+        de tine: îl prelucrăm în numele tău și doar pentru a furniza serviciul. Un
+        acord de prelucrare a datelor (DPA) este disponibil la cerere prin{" "}
+        <a href="/contact">formularul de contact</a>.
+      </p>
+
+      <h2>5. Cu cine partajăm datele</h2>
+      <p>
+        Folosim acești furnizori pentru a opera Octom. Lista completă, cu scopul și
+        datele, se află pe pagina <a href="/subprocessors">Subprocesatori</a>.
+      </p>
+      <ul>
+        <li>Supabase: baza de date și autentificarea (proiect găzduit în UE, Frankfurt).</li>
+        <li>Vercel: găzduirea site-ului.</li>
+        <li>Resend: trimite emailul zilnic opțional cu rezumatul, doar dacă îl activezi.</li>
+        <li>
+          OpenAI: unele funcții folosesc modele AI furnizate de OpenAI. Când folosești
+          asistentul AI, informațiile necesare cererii tale (mesajul tău sau numele,
+          compania, statusul, notițele și activitatea recentă a contactului ales) sunt
+          trimise la OpenAI pentru a genera textul. OpenAI poate păstra datele trimise
+          prin API o perioadă limitată, conform propriilor termeni.
+        </li>
+        <li>Stripe: procesează plățile pentru planurile plătite. Nu stocăm datele cardului.</li>
+      </ul>
+      <p>Nu vindem date cu caracter personal.</p>
+
+      <h2>6. Transferuri internaționale</h2>
+      <p>
+        Unii furnizori pot prelucra date în afara Spațiului Economic European. În acest
+        caz ne bazăm pe garanțiile prevăzute de lege, precum clauzele contractuale
+        standard sau o decizie de adecvare, după caz.
+      </p>
+
+      <h2>7. Cât timp păstrăm datele</h2>
+      <p>
+        Păstrăm datele cât timp contul tău este activ. Îți poți exporta contactele
+        oricând din pagina Import și export. Îți poți șterge singur contul și toate
+        datele din pagina Cont sau ne poți scrie la {LEGAL.email}. Când ștergi contul,
+        datele spațiului de lucru și contul de autentificare sunt eliminate, iar orice
+        abonament plătit este anulat. Copiile din backup-urile furnizorilor expiră
+        conform ciclului normal al furnizorului, iar evidențele de facturare le păstrăm
+        cât timp cere legea. Contoarele de utilizare AI sunt de scurtă durată și nu
+        conțin conținut.
+      </p>
+
+      <h2>8. Drepturile tale</h2>
+      <p>
+        Conform GDPR poți cere acces la date, rectificare, ștergere, restricționare,
+        portabilitate și te poți opune prelucrării. Scrie-ne la {LEGAL.email}. Poți
+        depune o plângere la Autoritatea Națională de Supraveghere a Prelucrării Datelor
+        cu Caracter Personal (ANSPDCP) sau la autoritatea din țara ta.
+      </p>
+
+      <h2>9. Securitate</h2>
+      <p>
+        Datele sunt protejate prin reguli de acces la nivelul bazei de date, astfel
+        încât fiecare spațiu de lucru poate fi citit doar de membrii săi, iar
+        conexiunile folosesc HTTPS. Niciun sistem nu este perfect sigur, dar lucrăm să
+        îți protejăm datele și să remediem rapid problemele.
+      </p>
+
+      <h2>10. Minori</h2>
+      <p>Octom este destinat uzului profesional și nu este pentru persoane sub 18 ani.</p>
+
+      <h2>11. Modificări</h2>
+      <p>
+        Putem actualiza această politică. Data de la început arată ultima versiune, iar
+        pentru modificările importante te vom anunța.
+      </p>
+          </>
+        }
+      />
     </LegalLayout>
   );
 }
