@@ -8,6 +8,9 @@ declare
   oid uuid;
   cid uuid;
   aid uuid;
+  mid uuid;
+  morg uuid;
+  owner_uid uuid;
   n int;
 begin
   select user_id, organization_id into uid, oid
@@ -234,6 +237,67 @@ begin
       if n > 0 then raise exception 'FAIL: user without workspace can read contacts'; end if;
     end if;
   end;
+
+  -- Role escalation: an ordinary member cannot act as owner or admin
+  reset role;
+  select user_id, organization_id into mid, morg
+  from public.organization_members
+  where role = 'member'
+  limit 1;
+
+  if mid is null then
+    raise notice 'SKIPPED role tests: no member account exists yet';
+  else
+    select user_id into owner_uid
+    from public.organization_members
+    where organization_id = morg and role = 'owner'
+    limit 1;
+
+    perform set_config(
+      'request.jwt.claims',
+      json_build_object('sub', mid, 'role', 'authenticated')::text,
+      true
+    );
+    set local role authenticated;
+
+    begin
+      perform public.set_member_role(mid, 'admin');
+      raise exception 'FAIL: member changed own role';
+    exception when raise_exception then
+      if sqlerrm <> 'not_allowed' then raise; end if;
+    end;
+
+    begin
+      perform public.create_invitation('admin');
+      raise exception 'FAIL: member created an admin invitation';
+    exception when raise_exception then
+      if sqlerrm <> 'not_allowed' then raise; end if;
+    end;
+
+    begin
+      perform public.create_invitation('member');
+      raise exception 'FAIL: member created an invitation';
+    exception when raise_exception then
+      if sqlerrm <> 'not_allowed' then raise; end if;
+    end;
+
+    begin
+      perform public.remove_member(owner_uid);
+      raise exception 'FAIL: member removed the owner';
+    exception when raise_exception then
+      if sqlerrm <> 'not_allowed' then raise; end if;
+    end;
+
+    select count(*) into n from public.invitations;
+    if n > 0 then raise exception 'FAIL: member can read invitations'; end if;
+
+    -- org_plan is internal (run supabase/security-hardening-2.sql)
+    begin
+      perform public.org_plan(morg);
+      raise exception 'FAIL: signed-in user can call org_plan';
+    exception when insufficient_privilege then null;
+    end;
+  end if;
 
   reset role;
   set local role anon;
