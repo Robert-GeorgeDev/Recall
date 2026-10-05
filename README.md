@@ -2,7 +2,7 @@
 
 **Know who to contact today.**
 
-[![CI](https://github.com/Robert-GeorgeDev/Recall/actions/workflows/ci.yml/badge.svg)](https://github.com/Robert-GeorgeDev/Recall/actions/workflows/ci.yml)
+[![CI](https://github.com/Robert-GeorgeDev/octom/actions/workflows/ci.yml/badge.svg)](https://github.com/Robert-GeorgeDev/octom/actions/workflows/ci.yml)
 [![License: AGPL v3](https://img.shields.io/badge/license-AGPL--3.0-blue.svg)](LICENSE)
 
 Octom is a deliberately simple CRM built around follow-ups, not a sales suite.
