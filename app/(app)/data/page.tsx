@@ -6,7 +6,7 @@ import { Download, Upload } from "lucide-react";
 import RequireAuth from "@/components/require-auth";
 import { useLanguage } from "@/components/language-provider";
 import { useOrgId } from "@/hooks/use-org-id";
-import { FREE_LIMITS, usePlan } from "@/hooks/use-plan";
+import { usePlan } from "@/hooks/use-plan";
 import { supabase } from "@/lib/supabase";
 import { addDays, todayISO } from "@/lib/dates";
 import { BRAND } from "@/lib/brand";
@@ -313,14 +313,12 @@ function DataView() {
 
   const showPreview = parsed !== null && result === null;
 
+  const contactLimit = planState?.entitlements.limits.contacts ?? null;
+  const followUpLimit = planState?.entitlements.limits.followUps ?? null;
   const contactsLeft =
-    planState && planState.plan === "free"
-      ? Math.max(0, FREE_LIMITS.contacts - planState.contacts)
-      : null;
+    planState && contactLimit !== null ? Math.max(0, contactLimit - planState.contacts) : null;
   const followUpsLeft =
-    planState && planState.plan === "free"
-      ? Math.max(0, FREE_LIMITS.followUps - planState.followUps)
-      : null;
+    planState && followUpLimit !== null ? Math.max(0, followUpLimit - planState.followUps) : null;
   const datedRows = parsed ? parsed.rows.filter((r) => r.nextFollowup).length : 0;
   const overLimit =
     parsed !== null &&

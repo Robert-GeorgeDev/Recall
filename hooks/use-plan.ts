@@ -2,16 +2,18 @@
 
 import { useCallback, useEffect, useState } from "react";
 import { supabase } from "@/lib/supabase";
+import { fetchBootstrapMode } from "@/hooks/use-bootstrap";
+import { FREE_LIMITS, resolveEntitlements, type Entitlements, type Plan } from "@/lib/entitlements";
 
-export type Plan = "free" | "pro" | "business";
-
-// Must match the limits enforced by the database triggers.
-export const FREE_LIMITS = { contacts: 10, followUps: 10 };
+export { FREE_LIMITS };
+export type { Plan };
 
 export type PlanState = {
   plan: Plan;
   contacts: number;
   followUps: number;
+  bootstrap: boolean;
+  entitlements: Entitlements;
 };
 
 export function usePlan(orgId: string | null) {
@@ -20,7 +22,7 @@ export function usePlan(orgId: string | null) {
   const reload = useCallback(async () => {
     if (!orgId) return;
 
-    const [sub, contacts, followUps] = await Promise.all([
+    const [sub, contacts, followUps, bootstrap] = await Promise.all([
       supabase
         .from("subscriptions")
         .select("plan, status")
@@ -35,17 +37,20 @@ export function usePlan(orgId: string | null) {
         .select("id", { count: "exact", head: true })
         .eq("organization_id", orgId)
         .eq("status", "open"),
+      fetchBootstrapMode(),
     ]);
 
-    const row = sub.data as { plan: string; status: string } | null;
-    const isActive = row?.status === "active" || row?.status === "trialing";
-    const p = row?.plan;
-    const plan: Plan = isActive && (p === "pro" || p === "business") ? p : "free";
+    const entitlements = resolveEntitlements(
+      bootstrap,
+      sub.data as { plan: string; status: string } | null
+    );
 
     setState({
-      plan,
+      plan: entitlements.plan,
       contacts: contacts.count ?? 0,
       followUps: followUps.count ?? 0,
+      bootstrap,
+      entitlements,
     });
   }, [orgId]);
 
