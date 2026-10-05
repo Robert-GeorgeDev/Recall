@@ -6,6 +6,7 @@ import Logo from "@/components/logo";
 import LanguageSwitcher from "@/components/language-switcher";
 import Hero from "@/components/hero";
 import { CookieSettingsButton } from "@/components/consent";
+import AnpcSal from "@/components/anpc-sal";
 import {
   HistoryMock, SnoozeMock, StoryMock, TeamMock, TodayMock,
 } from "@/components/site-mock";
@@ -263,6 +264,9 @@ export default function Home() {
               <Link href="/contact" className="block text-slate-600 hover:text-ink">{t("site.footer.contact")}</Link>
             </div>
           </div>
+        </div>
+        <div className="mx-auto mt-8 max-w-6xl px-5">
+          <AnpcSal />
         </div>
       </footer>
     </div>
