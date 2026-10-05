@@ -1,4 +1,12 @@
 export const enSite = {
+  "site.hero.count": "You have 3 things to do.",
+  "site.hero.n2": "Asked me to follow up this week.",
+  "site.hero.done": "Done",
+  "site.hero.ago": "3 days ago",
+  "site.hero.from": "3 Oct",
+  "site.hero.draft": "Hi Maria, I wanted to check whether you had a chance to look at the proposal…",
+  "site.hero.viewDraft": "View draft →",
+  "site.hero.resolved": "3 follow-ups completed",
   "site.plan.choose": "Choose {name}",
   "site.story.title": "You sent an offer on Monday.",
   "site.story.l1": "The client said: \"I'll get back to you.\"",
@@ -48,6 +56,14 @@ export const enSite = {
 };
 
 export const roSite: Record<keyof typeof enSite, string> = {
+  "site.hero.count": "Ai 3 lucruri de făcut.",
+  "site.hero.n2": "Mi-a cerut să revin săptămâna asta.",
+  "site.hero.done": "Rezolvat",
+  "site.hero.ago": "3 zile în urmă",
+  "site.hero.from": "3 oct",
+  "site.hero.draft": "Bună Maria, voiam să verific dacă ai apucat să te uiți peste ofertă…",
+  "site.hero.viewDraft": "Vezi ciorna →",
+  "site.hero.resolved": "3 follow-up-uri rezolvate",
   "site.plan.choose": "Alege {name}",
   "site.story.title": "Ai trimis o ofertă luni.",
   "site.story.l1": "Clientul a zis: „Revin eu.”",

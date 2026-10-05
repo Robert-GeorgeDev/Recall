@@ -4,8 +4,9 @@ import Link from "next/link";
 import { ArrowRight, Check, Download, Lock, Server, Trash2, type LucideIcon } from "lucide-react";
 import Logo from "@/components/logo";
 import LanguageSwitcher from "@/components/language-switcher";
+import Hero from "@/components/hero";
 import {
-  HistoryMock, ProductMock, SnoozeMock, StoryMock, TeamMock, TodayMock,
+  HistoryMock, SnoozeMock, StoryMock, TeamMock, TodayMock,
 } from "@/components/site-mock";
 import { useLanguage } from "@/components/language-provider";
 import type { Key } from "@/lib/dictionaries";
@@ -76,20 +77,7 @@ export default function Home() {
       </header>
 
       <main>
-        <section className="relative overflow-hidden pb-12 pt-20 sm:pt-28">
-          <div aria-hidden="true" className="pointer-events-none absolute inset-x-0 top-0 -z-10 h-[520px] bg-[radial-gradient(50%_70%_at_50%_0%,rgba(99,102,241,0.10),transparent)]" />
-          <div className="mx-auto max-w-6xl px-5 text-center">
-            <p className="text-xs font-semibold uppercase tracking-[0.14em] text-brand">{t("site.hero.eyebrow")}</p>
-            <h1 className="mx-auto mt-5 max-w-4xl whitespace-pre-line text-[2.6rem] font-semibold leading-[1.05] tracking-tight text-balance sm:text-6xl lg:text-7xl">{t("landing.title")}</h1>
-            <p className={`mx-auto mt-6 max-w-2xl ${lead}`}>{t("landing.subtitle")}</p>
-            <div className="mt-10 flex flex-col items-center justify-center gap-4 sm:flex-row">
-              <Link href="/signup" className={`${btn} bg-brand text-white shadow-soft hover:bg-brand-dark`}>{t("landing.cta")} <ArrowRight className="h-4 w-4" aria-hidden="true" /></Link>
-              <a href="#how" className={`${btn} border border-line bg-white text-ink hover:bg-slate-50`}>{t("landing.how")}</a>
-            </div>
-            <p className="mt-4 text-sm text-slate-500">{t("land.hero.note")}</p>
-            <ProductMock />
-          </div>
-        </section>
+        <Hero />
 
         <Section id="story" className="text-center">
           <h2 className={`${h2} mx-auto max-w-3xl`}>{t("site.story.title")}</h2>

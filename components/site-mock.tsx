@@ -28,38 +28,6 @@ function FollowRow({ r }: { r: (typeof rows)[number] }) {
   );
 }
 
-/** Hero: the Today screen, as the product shows it. */
-export function ProductMock() {
-  const { t } = useLanguage();
-  return (
-    <div aria-hidden="true" className={`mx-auto mt-16 max-w-5xl p-5 sm:p-8 ${frame}`}>
-      <div className="grid gap-6 md:grid-cols-[1fr_280px]">
-        <div>
-          <p className="text-2xl font-semibold tracking-tight">{t("dash.morning")}</p>
-          <div className="mt-4 grid grid-cols-3 gap-3 text-center">
-            {[["2", "group.overdue", "text-overdue"], ["3", "group.today", "text-amber-700"], ["18", "dash.openLeads", "text-slate-500"]].map(([n, k, c]) => (
-              <div key={k} className="rounded-xl bg-slate-50 px-2 py-3 ring-1 ring-line/70">
-                <p className={`text-xl font-semibold ${c}`}>{n}</p>
-                <p className="text-[11px] text-slate-600">{t(k as "group.today")}</p>
-              </div>
-            ))}
-          </div>
-          <ul className="mt-5 space-y-3">
-            {rows.map((r) => (
-              <FollowRow key={r.name} r={r} />
-            ))}
-          </ul>
-        </div>
-        <div className="rounded-xl bg-ink p-5 text-white">
-          <p className="text-sm font-semibold text-indigo-300">{t("ai.title")}</p>
-          <p className="mt-3 text-sm leading-relaxed text-slate-200">{t("site.mock.draft")}</p>
-          <p className="mt-4 text-xs text-slate-400">{t("ai.subtitle")}</p>
-        </div>
-      </div>
-    </div>
-  );
-}
-
 /** Story section: one follow-up that has gone quiet. */
 export function StoryMock() {
   const { t } = useLanguage();
