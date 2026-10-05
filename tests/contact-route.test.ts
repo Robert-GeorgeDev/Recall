@@ -62,7 +62,7 @@ describe("contact route", () => {
   });
 
   it("answers 502 when the email provider fails", async () => {
-    vi.stubGlobal("fetch", vi.fn().mockResolvedValue({ ok: false }));
+    vi.stubGlobal("fetch", vi.fn().mockResolvedValue({ ok: false, status: 403, text: async () => "domain not verified" }));
     const res = await POST(request(valid));
     expect(res.status).toBe(502);
   });
