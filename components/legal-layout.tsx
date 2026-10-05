@@ -5,6 +5,7 @@ import Logo from "@/components/logo";
 import LegalNav from "@/components/legal-nav";
 import LegalToc from "@/components/legal-toc";
 import { CookieSettingsButton } from "@/components/consent";
+import AnpcSal from "@/components/anpc-sal";
 import { useLanguage } from "@/components/language-provider";
 import { isDraft, LEGAL } from "@/lib/legal";
 
@@ -86,6 +87,9 @@ export default function LegalLayout({
             <Link href="/contact" className="hover:text-ink">{ro ? "Contact" : "Contact"}</Link>
             <Link href="/" className="hover:text-ink">{ro ? "Acasă" : "Home"}</Link>
           </div>
+        </div>
+        <div className="mx-auto max-w-5xl px-5 pb-6">
+          <AnpcSal />
         </div>
       </footer>
     </div>
