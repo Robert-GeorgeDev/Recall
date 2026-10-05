@@ -4,6 +4,7 @@ import "./globals.css";
 import { SITE_URL, siteConfigured } from "@/lib/site";
 import { AuthProvider } from "@/components/auth-provider";
 import { LanguageProvider } from "@/components/language-provider";
+import Consent from "@/components/consent";
 
 const inter = Inter({ subsets: ["latin", "latin-ext"], variable: "--font-inter" });
 
@@ -62,6 +63,7 @@ export default function RootLayout({
         />
         <LanguageProvider>
           <AuthProvider>{children}</AuthProvider>
+          <Consent />
         </LanguageProvider>
       </body>
     </html>
