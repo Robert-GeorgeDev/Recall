@@ -250,6 +250,8 @@ export async function POST(req: Request) {
 
   const { data: userData, error: userError } = await sb.auth.getUser(token);
   if (userError || !userData.user) return fail(401, "unauthorized");
+  // Fake sign-ups with addresses nobody owns must not be able to spend AI budget.
+  if (!userData.user.email_confirmed_at) return fail(403, "email_not_confirmed");
 
   let data: unknown = null;
   if (action === "improve") {

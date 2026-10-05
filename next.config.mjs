@@ -6,7 +6,7 @@ const csp = [
   "style-src 'self' 'unsafe-inline'",
   "img-src 'self' data: blob:",
   "font-src 'self' data:",
-  "connect-src 'self' https://*.supabase.co wss://*.supabase.co",
+  "connect-src 'self' https://lhrcbasrojssskbciahl.supabase.co wss://lhrcbasrojssskbciahl.supabase.co",
   "frame-src 'none'",
   "frame-ancestors 'none'",
   "base-uri 'self'",
