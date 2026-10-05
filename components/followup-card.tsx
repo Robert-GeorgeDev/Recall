@@ -67,7 +67,7 @@ export default function FollowUpCard({
 
   return (
     <article
-      className={`rounded-2xl border border-line border-l-4 bg-white p-4 shadow-sm ${bars[group]}`}
+      className={`rounded-2xl border border-line/70 border-l-4 bg-white p-5 shadow-soft ${bars[group]}`}
     >
       <div className="flex items-start justify-between gap-3">
         <div className="min-w-0">
@@ -98,7 +98,7 @@ export default function FollowUpCard({
           type="button"
           onClick={complete}
           disabled={busy}
-          className="rounded-xl bg-done px-4 py-2 text-sm font-semibold text-white hover:opacity-90 disabled:opacity-60"
+          className="rounded-full bg-done px-5 py-2 text-sm font-semibold text-white hover:opacity-90 disabled:opacity-60"
         >
           {t("card.complete")}
         </button>
@@ -106,7 +106,7 @@ export default function FollowUpCard({
           type="button"
           onClick={() => setMode(mode === "none" ? "snooze" : "none")}
           disabled={busy}
-          className="rounded-xl border border-line bg-white px-4 py-2 text-sm font-semibold text-ink hover:bg-brand-soft disabled:opacity-60"
+          className="rounded-full border border-line bg-white px-5 py-2 text-sm font-semibold text-ink hover:bg-slate-50 disabled:opacity-60"
         >
           {t("card.snooze")}
         </button>

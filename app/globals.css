@@ -3,7 +3,14 @@
 @tailwind utilities;
 
 body {
-  @apply bg-surface text-ink antialiased;
+  @apply text-ink antialiased;
+  background-color: #f8fafc;
+  background-image:
+    radial-gradient(60rem 40rem at 8% -10%, rgba(99, 102, 241, 0.10), transparent 60%),
+    radial-gradient(50rem 36rem at 100% 0%, rgba(56, 189, 248, 0.10), transparent 60%),
+    radial-gradient(50rem 40rem at 60% 110%, rgba(251, 191, 136, 0.12), transparent 60%);
+  background-attachment: fixed;
+  min-height: 100vh;
 }
 
 :focus-visible {
@@ -11,9 +18,32 @@ body {
   outline-offset: 2px;
 }
 
-/* NEXIMO-BG */
-body{background:linear-gradient(180deg,#F5F3FF 0%,#F8FAFC 60%);min-height:100vh}
-input,select,textarea{font-size:16px}
+input, select, textarea { font-size: 16px; }
+html { scroll-behavior: smooth; }
 
-/* OCTOM-SMOOTH */
-html{scroll-behavior:smooth}
+@layer components {
+  /* Shared building blocks for the product UI */
+  .card {
+    @apply rounded-2xl border border-line/70 bg-white shadow-soft;
+  }
+  .btn {
+    @apply inline-flex min-h-[44px] items-center justify-center gap-2 rounded-full px-5 text-sm font-semibold transition disabled:cursor-not-allowed disabled:opacity-60;
+  }
+  .btn-dark {
+    @apply btn bg-ink text-white hover:bg-slate-800;
+  }
+  .btn-brand {
+    @apply btn bg-brand text-white hover:bg-brand-dark;
+  }
+  .btn-soft {
+    @apply btn border border-line bg-white text-ink hover:bg-slate-50;
+  }
+  .pill {
+    @apply inline-flex items-center rounded-full px-2.5 py-0.5 text-xs font-semibold;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  html { scroll-behavior: auto; }
+  * { transition-duration: 0.01ms !important; animation-duration: 0.01ms !important; }
+}
