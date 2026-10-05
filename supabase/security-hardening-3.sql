@@ -121,3 +121,9 @@ create policy "admins view invitations" on public.invitations
 --   drop policy "admins view invitations" on public.invitations;
 --   create policy "admins view invitations" on public.invitations
 --     for select to authenticated using (public.is_org_admin(organization_id));
+
+-- 4. TRUNCATE-class privileges -------------------------------------------------
+-- Newer Postgres has a MAINTAIN privilege (vacuum, analyze, reindex...). Users do
+-- not need it. Row level security does not apply to it, so remove it.
+revoke maintain on all tables in schema public from anon, authenticated;
+-- To undo part 4: grant maintain on all tables in schema public to authenticated;

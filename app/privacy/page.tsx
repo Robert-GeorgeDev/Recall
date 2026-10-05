@@ -88,16 +88,16 @@ export default function PrivacyPage() {
       </p>
       <ul>
         <li>Supabase: database and authentication (project hosted in the EU, Frankfurt).</li>
-        <li>Vercel: website hosting.</li>
-        <li>Resend: sends the optional daily summary email to you, only if you turn it on.</li>
+        <li>Vercel: website hosting and, only if you accept analytics cookies, anonymous visit statistics (Vercel Web Analytics).</li>
+        <li>Resend: sends the optional daily summary email (only if you turn it on), account emails and messages from the contact form.</li>
         <li>
           OpenAI: some features use AI models provided by OpenAI. When you use
           the AI assistant, the information needed for your request (your
           draft, or the selected contact’s name, company, status, notes and
-          recent activity) is sent to OpenAI to produce the text. OpenAI may
+          recent activity) is sent to OpenAI to produce the text. The request can include up to 10 recent messages of the chat. This data may be processed in the United States; OpenAI may
           keep API inputs for a limited period under its own terms.
         </li>
-        <li>Stripe: handles payments for paid plans. We do not store card details.</li>
+        <li>Stripe: handles payments for paid plans. We do not store card details. Invoices and payment records may be kept by Stripe and by us after account deletion, as required by accounting law.</li>
       </ul>
       <p>We do not sell personal data.</p>
 
@@ -227,16 +227,16 @@ export default function PrivacyPage() {
       </p>
       <ul>
         <li>Supabase: baza de date și autentificarea (proiect găzduit în UE, Frankfurt).</li>
-        <li>Vercel: găzduirea site-ului.</li>
-        <li>Resend: trimite emailul zilnic opțional cu rezumatul, doar dacă îl activezi.</li>
+        <li>Vercel: găzduirea site-ului și, doar dacă accepți cookie-urile de analiză, statistici anonime de vizite (Vercel Web Analytics).</li>
+        <li>Resend: trimite emailul zilnic opțional cu rezumatul (doar dacă îl activezi), emailurile de cont și mesajele din formularul de contact.</li>
         <li>
           OpenAI: unele funcții folosesc modele AI furnizate de OpenAI. Când folosești
           asistentul AI, informațiile necesare cererii tale (mesajul tău sau numele,
           compania, statusul, notițele și activitatea recentă a contactului ales) sunt
-          trimise la OpenAI pentru a genera textul. OpenAI poate păstra datele trimise
+          trimise la OpenAI pentru a genera textul. Cererea poate include ultimele 10 mesaje din conversație. Datele pot fi prelucrate în Statele Unite; OpenAI poate păstra datele trimise
           prin API o perioadă limitată, conform propriilor termeni.
         </li>
-        <li>Stripe: procesează plățile pentru planurile plătite. Nu stocăm datele cardului.</li>
+        <li>Stripe: procesează plățile pentru planurile plătite. Nu stocăm datele cardului. Facturile și evidența plăților pot fi păstrate de Stripe și de noi după ștergerea contului, conform legii contabilității.</li>
       </ul>
       <p>Nu vindem date cu caracter personal.</p>
 
