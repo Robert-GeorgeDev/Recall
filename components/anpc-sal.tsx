@@ -12,9 +12,9 @@ export default function AnpcSal({ className = "" }: { className?: string }) {
       <img
         src="/anpc-sal.png"
         alt="ANPC – Soluționarea alternativă a litigiilor"
-        width={250}
-        height={62}
-        className="h-auto w-[250px] max-w-full"
+        width={201}
+        height={50}
+        className="h-[50px] w-[201px] max-w-full"
       />
     </a>
   );

@@ -70,10 +70,13 @@ export default function LegalLayout({
       </main>
 
       <footer className="border-t border-line bg-white">
-        <div className="mx-auto flex max-w-5xl flex-wrap items-center justify-between gap-3 px-5 py-6 text-sm text-slate-500">
-          <p>
-            © {new Date().getFullYear()} {LEGAL.name}
-          </p>
+        <div className="mx-auto flex max-w-5xl flex-wrap items-start justify-between gap-4 px-5 py-6 text-sm text-slate-500">
+          <div>
+            <p>
+              © {new Date().getFullYear()} {LEGAL.name}
+            </p>
+            <AnpcSal className="mt-4" />
+          </div>
           <div className="flex flex-wrap gap-x-4 gap-y-2">
             <Link href="/privacy" className="hover:text-ink">{ro ? "Confidențialitate" : "Privacy"}</Link>
             <Link href="/terms" className="hover:text-ink">{ro ? "Termeni" : "Terms"}</Link>
@@ -87,9 +90,6 @@ export default function LegalLayout({
             <Link href="/contact" className="hover:text-ink">{ro ? "Contact" : "Contact"}</Link>
             <Link href="/" className="hover:text-ink">{ro ? "Acasă" : "Home"}</Link>
           </div>
-        </div>
-        <div className="mx-auto max-w-5xl px-5 pb-6">
-          <AnpcSal />
         </div>
       </footer>
     </div>
