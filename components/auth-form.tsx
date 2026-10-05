@@ -36,7 +36,7 @@ const inputClass =
 
 export default function AuthForm({ mode }: { mode: "login" | "signup" }) {
   const router = useRouter();
-  const { t } = useLanguage();
+  const { t, lang } = useLanguage();
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [error, setError] = useState("");
@@ -63,7 +63,7 @@ export default function AuthForm({ mode }: { mode: "login" | "signup" }) {
     setBusy(true);
     try {
       const result = isSignup
-        ? await supabase.auth.signUp({ email, password })
+        ? await supabase.auth.signUp({ email, password, options: { data: { lang } } })
         : await supabase.auth.signInWithPassword({ email, password });
 
       if (result.error) {
@@ -138,6 +138,13 @@ export default function AuthForm({ mode }: { mode: "login" | "signup" }) {
           />
           {isSignup && (
             <p className="mt-1 text-xs text-slate-500">{t("auth.min8")}</p>
+          )}
+          {!isSignup && (
+            <p className="mt-2 text-right text-sm">
+              <Link href="/forgot-password" className="font-semibold text-brand hover:underline">
+                {t("auth.forgot")}
+              </Link>
+            </p>
           )}
         </div>
 

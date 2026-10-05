@@ -67,6 +67,7 @@ export default function LegalLayout({
             <Link href="/privacy" className="hover:text-ink">Privacy</Link>
             <Link href="/terms" className="hover:text-ink">Terms</Link>
             <Link href="/cookies" className="hover:text-ink">Cookies</Link>
+            <Link href="/contact" className="hover:text-ink">Contact</Link>
             <Link href="/" className="hover:text-ink">Home</Link>
           </div>
         </div>

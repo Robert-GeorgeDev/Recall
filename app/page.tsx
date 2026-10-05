@@ -253,6 +253,7 @@ export default function Home() {
               <Link href="/privacy" className="block text-slate-600 hover:text-ink">Privacy</Link>
               <Link href="/terms" className="block text-slate-600 hover:text-ink">Terms</Link>
               <Link href="/cookies" className="block text-slate-600 hover:text-ink">Cookies</Link>
+              <Link href="/contact" className="block text-slate-600 hover:text-ink">{t("site.footer.contact")}</Link>
             </div>
           </div>
         </div>
