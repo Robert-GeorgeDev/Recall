@@ -28,7 +28,7 @@ need clarity more than features.
 - CSV import with preview; CSV export for contacts, follow-ups and activity
 - Optional daily summary email
 - English and Romanian interface
-- Free, Pro and Business plans with Stripe subscriptions
+- Free, Pro and Business plans with Stripe subscriptions, plus an admin-only Bootstrap Mode that makes the app free while the product is launching
 
 ## Stack
 
@@ -52,26 +52,26 @@ need clarity more than features.
 
 ## Privacy
 
-The database is hosted in the EU (Frankfurt). Some providers (hosting, email, payments, AI) may process data outside the EEA; the full list is on the in-app Subprocessors page and in [docs/data-map.md](docs/data-map.md). No analytics or advertising trackers are used.
+The database is hosted in the EU (Frankfurt). Some providers (hosting, email, payments, AI) may process data outside the EEA; the full list is on the in-app Subprocessors page and in [docs/data-map.md](docs/data-map.md). No advertising trackers are used; anonymous visit statistics load only after the visitor accepts them.
 
 ## Run it locally
 
 1. Install Node.js 22 or newer.
 2. `npm ci`
 3. Put your Supabase project URL and public key in `lib/supabase-config.ts`. Copy `.env.example` to `.env.local` and fill in your own server-side values.
-4. Run `supabase/hardening.sql` and `supabase/delete_my_account.sql` in your Supabase SQL editor after creating the schema.
+4. In your Supabase SQL editor run the files listed in [supabase/README.md](supabase/README.md), starting with `baseline.sql`.
 5. `npm run dev` and open http://localhost:3000
 
 Run the unit tests with `npm test` and the end-to-end tests with `npm run test:e2e`.
 
-The full database schema for self-hosting is not published yet. It will be added under `supabase/migrations`.
+The database structure is published as `supabase/baseline.sql` and described in [docs/database.md](docs/database.md). How the pieces fit together is in [docs/architecture.md](docs/architecture.md).
 
 ## Project layout
 
 - `app/` pages and API routes
 - `components/`, `hooks/`, `lib/` UI, data hooks, dictionaries (EN/RO) and helpers
-- `supabase/` SQL hardening, account deletion function, security tests, email templates
-- `docs/` data map, incident plan, draft DPA for legal review
+- `supabase/` database baseline and patches, security tests, email templates
+- `docs/` architecture, database, data map, incident plan, draft DPA for legal review
 - `tests/`, `e2e/` unit and end-to-end tests
 
 ## Contributing
