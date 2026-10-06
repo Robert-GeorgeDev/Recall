@@ -7,7 +7,7 @@ import AuthShell, { authInput } from "@/components/auth-shell";
 import { useLanguage } from "@/components/language-provider";
 import { supabase } from "@/lib/supabase";
 
-type State = "checking" | "ready" | "invalid" | "done";
+type State = "checking" | "confirm" | "ready" | "invalid" | "done";
 
 export default function ResetPasswordForm() {
   const { t } = useLanguage();
@@ -20,6 +20,14 @@ export default function ResetPasswordForm() {
 
   // The link in the email signs the visitor in briefly; wait for that session.
   useEffect(() => {
+    // New-style link: /reset-password?token_hash=...&type=recovery. The token is only
+    // spent when the person presses the button, so email scanners that open links
+    // in advance cannot use it up.
+    const params = new URLSearchParams(window.location.search);
+    if (params.get("token_hash") && params.get("type") === "recovery") {
+      setState("confirm");
+      return;
+    }
     let settled = false;
     const settle = (next: State) => {
       settled = true;
@@ -39,6 +47,17 @@ export default function ResetPasswordForm() {
       data.subscription.unsubscribe();
     };
   }, []);
+
+  async function confirmLink() {
+    setBusy(true);
+    const tokenHash = new URLSearchParams(window.location.search).get("token_hash") ?? "";
+    const { error: failure } = await supabase.auth.verifyOtp({
+      token_hash: tokenHash,
+      type: "recovery",
+    });
+    setBusy(false);
+    setState(failure ? "invalid" : "ready");
+  }
 
   async function handleSubmit(e: React.FormEvent<HTMLFormElement>) {
     e.preventDefault();
@@ -68,6 +87,15 @@ export default function ResetPasswordForm() {
       <h1 className="mt-10 text-3xl font-semibold tracking-tight">{t("reset.title")}</h1>
 
       {state === "checking" && <p className="mt-4 text-slate-600">{t("reset.checking")}</p>}
+
+      {state === "confirm" && (
+        <>
+          <p className="mt-2 text-slate-600">{t("reset.verify")}</p>
+          <button type="button" onClick={confirmLink} disabled={busy} className="btn-brand mt-6 w-full py-3">
+            {busy ? t("auth.wait") : t("reset.verifyBtn")}
+          </button>
+        </>
+      )}
 
       {state === "invalid" && (
         <>

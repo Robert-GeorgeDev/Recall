@@ -23,3 +23,6 @@ La înregistrare, aplicația salvează `lang` în metadatele utilizatorului. Șa
 - **Authentication → URL Configuration**: `Site URL` = domeniul real; la *Redirect URLs* adaugă `https://<domeniu>/reset-password` și `https://<domeniu>/**`.
 - **Authentication → SMTP**: folosește Resend (domeniu verificat), altfel emailurile pleacă din serverul implicit, limitat și cu risc de spam.
 - Testează cu o înregistrare reală și o resetare de parolă.
+
+## Resetare parolă (important)
+Șablonul `reset-password.html` folosește `{{ .SiteURL }}/reset-password?token_hash={{ .TokenHash }}&type=recovery`, nu `{{ .ConfirmationURL }}`. Tokenul se consumă doar când omul apasă „Continuă” pe site, deci scanerele de email (Gmail, Outlook) care deschid linkurile în avans nu îl mai strică ("otp_expired"). `Site URL` trebuie să fie exact adresa folosită de utilizatori (ex. `https://www.octom.eu`).
