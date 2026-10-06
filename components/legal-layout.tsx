@@ -7,7 +7,7 @@ import LegalToc from "@/components/legal-toc";
 import { CookieSettingsButton } from "@/components/consent";
 import AnpcSal from "@/components/anpc-sal";
 import { useLanguage } from "@/components/language-provider";
-import { isDraft, LEGAL } from "@/lib/legal";
+import { formatUpdated, isDraft, LEGAL } from "@/lib/legal";
 
 export default function LegalLayout({
   title,
@@ -40,7 +40,7 @@ export default function LegalLayout({
         <LegalNav />
 
         <h1 className="mt-8 text-4xl font-bold tracking-tight text-ink">{ro ? titleRo : title}</h1>
-        <p className="mt-2 text-sm text-slate-500">{ro ? "Ultima actualizare" : "Last updated"}: {LEGAL.updated}</p>
+        <p className="mt-2 text-sm text-slate-500">{ro ? "Ultima actualizare" : "Last updated"}: {formatUpdated(LEGAL.updated, ro ? "ro" : "en")}</p>
 
         {isDraft && (
           <p
