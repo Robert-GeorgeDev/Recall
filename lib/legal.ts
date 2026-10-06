@@ -2,12 +2,23 @@
 // until every value below is real (no square brackets left).
 export const LEGAL = {
   name: "OCTOM",
-  address: "[Your address, Romania]",
+  legalName: "[Denumirea completă a societății]",
+  legalForm: "[S.R.L.]",
+  address: "[Adresa sediului social, România]",
   email: "contact@octom.eu",
-  legalEmail: "[legal email]",
   companyId: "[CUI]",
   registryNo: "[J../../..]",
-  updated: "5 October 2026",
+  updated: "2026-10-06",
 };
 
 export const isDraft = Object.values(LEGAL).some((v) => v.includes("["));
+
+export function formatUpdated(iso: string, lang: "ro" | "en"): string {
+  const [y, m, d] = iso.split("-").map(Number);
+  return new Date(Date.UTC(y, m - 1, d)).toLocaleDateString(lang === "ro" ? "ro-RO" : "en-GB", {
+    day: "numeric",
+    month: "long",
+    year: "numeric",
+    timeZone: "UTC",
+  });
+}
