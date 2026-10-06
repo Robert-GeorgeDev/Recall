@@ -1,4 +1,4 @@
-import type { Metadata } from "next";
+import type { Metadata, Viewport } from "next";
 import { Inter } from "next/font/google";
 import "./globals.css";
 import { SITE_URL, siteConfigured } from "@/lib/site";
@@ -22,9 +22,13 @@ export const metadata: Metadata = {
       "A simple CRM built around follow-ups for freelancers, consultants and small teams.",
     siteName: "Octom",
     type: "website",
+    url: "/",
   },
   twitter: { card: "summary_large_image" },
+  alternates: { canonical: "/" },
 };
+
+export const viewport: Viewport = { themeColor: "#4F46E5" };
 
 const jsonLd = {
   "@context": "https://schema.org",
