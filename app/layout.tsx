@@ -11,16 +11,16 @@ const inter = Inter({ subsets: ["latin", "latin-ext"], variable: "--font-inter" 
 export const metadata: Metadata = {
   metadataBase: siteConfigured ? new URL(SITE_URL) : undefined,
   title: {
-    default: "Octom – Know who to contact today",
-    template: "%s | Octom",
+    default: "OCTOM One – Know who to contact today",
+    template: "%s | OCTOM One",
   },
   description:
-    "Octom is the simple CRM that tells you who to contact, when to contact them, and what to say.",
+    "OCTOM One is the simple CRM that tells you who to contact, when to contact them, and what to say.",
   openGraph: {
-    title: "Octom – Know who to contact today",
+    title: "OCTOM One – Know who to contact today",
     description:
       "A simple CRM built around follow-ups for freelancers, consultants and small teams.",
-    siteName: "Octom",
+    siteName: "OCTOM One",
     type: "website",
     url: "/",
   },
@@ -40,7 +40,7 @@ const jsonLd = {
     },
     {
       "@type": "SoftwareApplication",
-      name: "Octom",
+      name: "OCTOM One",
       applicationCategory: "BusinessApplication",
       operatingSystem: "Web",
       description:

@@ -4,9 +4,6 @@ import { adminClient, planFromPrice, stripeClient } from "@/lib/billing";
 
 export const runtime = "nodejs";
 
-// Bootstrap Mode deliberately does not touch this handler: Stripe keeps
-// reporting on existing subscriptions, and they stay in sync while it is ON.
-
 function mapStatus(s: string): string | null {
   if (s === "active" || s === "trialing") return s;
   if (s === "past_due" || s === "unpaid") return "past_due";

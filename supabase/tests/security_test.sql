@@ -7,7 +7,6 @@ declare
   uid uuid;
   oid uuid;
   cid uuid;
-  aid uuid;
   mid uuid;
   morg uuid;
   owner_uid uuid;
@@ -82,84 +81,6 @@ begin
   exception when insufficient_privilege then null;
   end;
 
-  -- Bootstrap Mode: an ordinary signed-in user cannot read or change it
-  -- (run supabase/bootstrap-mode.sql first)
-  perform set_config(
-    'request.jwt.claims',
-    json_build_object('sub', gen_random_uuid(), 'role', 'authenticated')::text,
-    true
-  );
-
-  begin
-    perform public.set_bootstrap_mode(true);
-    raise exception 'FAIL: non-admin changed bootstrap mode';
-  exception when insufficient_privilege then null;
-  end;
-
-  begin
-    update public.app_settings set value = 'true'::jsonb where key = 'bootstrap_mode';
-    get diagnostics n = row_count;
-    if n > 0 then raise exception 'FAIL: non-admin wrote app_settings'; end if;
-  exception when insufficient_privilege then null;
-  end;
-
-  begin
-    insert into public.platform_admins (user_id) values (gen_random_uuid());
-    raise exception 'FAIL: user made themselves platform admin';
-  exception when insufficient_privilege then null;
-  end;
-
-  begin
-    insert into public.audit_log (action) values ('forged');
-    raise exception 'FAIL: user wrote to audit_log';
-  exception when insufficient_privilege then null;
-  end;
-
-  select count(*) into n from public.app_settings;
-  if n > 0 then raise exception 'FAIL: non-admin can read app_settings'; end if;
-
-  select count(*) into n from public.audit_log;
-  if n > 0 then raise exception 'FAIL: non-admin can read audit_log'; end if;
-
-  if public.is_platform_admin() then
-    raise exception 'FAIL: random user is platform admin';
-  end if;
-
-  -- Bootstrap Mode: a platform admin can change it, and the change is audited
-  reset role;
-  select user_id into aid from public.platform_admins limit 1;
-  if aid is null then
-    raise notice 'SKIPPED platform admin tests: no platform admin exists yet';
-  else
-    perform set_config(
-      'request.jwt.claims',
-      json_build_object('sub', aid, 'role', 'authenticated')::text,
-      true
-    );
-    set local role authenticated;
-
-    perform public.set_bootstrap_mode(false);
-    perform public.set_bootstrap_mode(true);
-    if public.bootstrap_mode() is not true then
-      raise exception 'FAIL: admin could not enable bootstrap mode';
-    end if;
-
-    select count(*) into n from public.audit_log
-    where action = 'bootstrap_mode_enabled' and actor_id = aid;
-    if n = 0 then raise exception 'FAIL: bootstrap change was not audited'; end if;
-
-    -- While ON, the limits in the database are lifted (run supabase/bootstrap-limits.sql)
-    if public.org_seat_limit(oid) <> 5 then
-      raise exception 'FAIL: bootstrap seat limit not applied (run bootstrap-limits.sql)';
-    end if;
-
-    perform public.set_bootstrap_mode(false);
-    if public.bootstrap_mode() is not false then
-      raise exception 'FAIL: admin could not disable bootstrap mode';
-    end if;
-    reset role;
-  end if;
-
   -- Anonymous visitors cannot read data
   set local role anon;
   begin
@@ -168,13 +89,13 @@ begin
   exception when insufficient_privilege then null;
   end;
 
-  -- Anonymous visitors may learn only the Bootstrap Mode flag, nothing else
-  perform public.bootstrap_mode();
-  begin
-    perform 1 from public.app_settings limit 1;
-    raise exception 'FAIL: anon can read app_settings';
-  exception when insufficient_privilege then null;
-  end;
+  -- The removed Bootstrap / admin objects must be gone
+  if to_regclass('public.app_settings') is not null
+     or to_regclass('public.audit_log') is not null
+     or to_regclass('public.platform_admins') is not null
+     or to_regprocedure('public.bootstrap_mode()') is not null then
+    raise exception 'FAIL: bootstrap objects still exist (run remove-bootstrap.sql)';
+  end if;
 
   -- Cross-workspace isolation: user A must not touch workspace B
   reset role;

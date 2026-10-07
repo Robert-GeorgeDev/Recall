@@ -84,8 +84,8 @@ export default function Consent() {
           <div className="mx-auto flex max-w-3xl flex-col gap-3 sm:flex-row sm:items-center sm:justify-between">
             <p className="text-sm text-slate-700">
               {ro
-                ? "Folosim doar stocare strict necesară. Cu acordul tău, măsurăm și vizitele anonim (Vercel Web Analytics, fără cookie-uri publicitare) ca să îmbunătățim Octom. "
-                : "We only use strictly necessary storage. With your consent we also measure visits anonymously (Vercel Web Analytics, no advertising cookies) to improve Octom. "}
+                ? "Folosim doar stocare strict necesară. Cu acordul tău, măsurăm și vizitele anonim (Vercel Web Analytics, fără cookie-uri publicitare) ca să îmbunătățim OCTOM One. "
+                : "We only use strictly necessary storage. With your consent we also measure visits anonymously (Vercel Web Analytics, no advertising cookies) to improve OCTOM One. "}
               <Link href="/cookies" className="underline">
                 {ro ? "Detalii" : "Details"}
               </Link>

@@ -15,9 +15,21 @@ Browser
             |-- /api/ai         OpenAI drafts (limits enforced in the database)
             |-- /api/contact    contact form via Resend
             |-- /api/account    account deletion (service role)
-            |-- /api/admin      Bootstrap Mode switch (platform admins only)
             |-- /api/cron       daily summary email (Resend)
 ```
+
+## Addresses
+
+One deployment serves two addresses. `proxy.ts` (rules in `lib/hosts.ts`) sends
+each page to the right one:
+
+- `octom.eu` / `www.octom.eu`: public site, legal pages, contact form.
+- `one.octom.eu`: the app, OCTOM One (sign in, sign up, CRM). Not indexed.
+- `/api/*` works on both (the Stripe webhook keeps its address).
+- Other hosts (localhost, preview deployments) are never redirected.
+
+The browser session is kept per address, so signing in happens on
+`one.octom.eu`.
 
 ## Where the rules live
 
@@ -27,10 +39,7 @@ Browser
 - **Limits** (contacts, follow-ups, seats, AI): enforced by database triggers
   and functions, so they cannot be bypassed from the browser.
 - **Plans:** `lib/entitlements.ts` is the single place that turns a
-  subscription and the Bootstrap Mode flag into what a workspace may do.
-- **Bootstrap Mode:** a flag in `app_settings`, changed only by platform admins
-  through `set_bootstrap_mode()`, every change written to `audit_log`. While on,
-  the app is free and paid checkout is blocked on the server. Stripe code stays.
+  subscription into what a workspace may do.
 - **Secrets:** only in the hosting environment. The browser only knows the
   Supabase URL and public key (`lib/supabase-config.ts`).
 

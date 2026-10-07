@@ -6,15 +6,13 @@ Această politică face parte din **Termenii și condițiile Octom**. În cazul 
 
 Octom poate oferi planuri gratuite și planuri plătite.
 
-**În perioada de lansare, Octom este gratuit și abonamentele plătite nu sunt disponibile.** Nu se percep plăți, iar informațiile de mai jos se vor aplica numai dacă și atunci când introducem planuri plătite.
-
-Prețurile orientative avute în vedere sunt:
+În prezent, planurile disponibile sunt:
 
 * **Free** – fără cost;
 * **Pro** – **7,99 EUR/lună**;
 * **Business** – **14,99 EUR/lună**.
 
-Prețul final și limitele fiecărui plan vor fi afișate pe site și în aplicație înainte de abonare. Nu vei fi trecut la un plan plătit fără acordul tău expres.
+Caracteristicile și limitele fiecărui plan sunt afișate pe site și în aplicație. Nu vei fi trecut la un plan plătit fără acordul tău expres.
 
 Prețul aplicabil abonamentului este afișat înainte de finalizarea achiziției.
 

@@ -1,23 +1,20 @@
--- Octom: Bootstrap Mode for the database limits (safe to run more than once)
+-- Octom: remove Bootstrap Mode and the platform-admin objects (safe to run more than once)
 --
--- Run supabase/bootstrap-mode.sql FIRST (it creates public.bootstrap_mode()).
 -- How to run: Supabase dashboard > SQL Editor > paste this whole file > Run.
--- Then run supabase/tests/security_test.sql.
+-- Then run supabase/tests/security_test.sql. It must end with the message
+-- "ALL TESTS PASSED (rolled back on purpose)".
 --
--- The Free plan limits are enforced by these functions. Each one is replaced
--- with the same code plus one extra rule: while Bootstrap Mode is ON the
--- commercial limits are skipped. When it is OFF they behave exactly as before.
+-- WARNING: after this runs the Free plan limits apply again to every account
+-- (10 contacts, 10 open follow-ups, 5 AI requests a day, 1 seat). Deploy the
+-- matching app version first or at the same time.
 --
---   enforce_contact_limit   no 10-contact limit while ON
---   enforce_followup_limit  no 10-active-follow-up limit while ON
---   ai_check_and_log        daily AI cap is 30 while ON (paid plans keep 100);
---                           the 5-per-minute abuse limit stays; requests of the
---                           same user are now serialized (no parallel bypass)
---   org_seat_limit          5 seats while ON, like Business
---
--- public.org_plan() is NOT changed: it keeps reporting the real Stripe plan, so
--- existing subscriptions and billing stay exactly as they are.
+-- What this does:
+--   1. Puts the four limit functions back to plain plan rules (no flag).
+--   2. Drops set_bootstrap_mode(), bootstrap_mode(), is_platform_admin().
+--   3. Drops the tables app_settings, audit_log, platform_admins. They only held
+--      the Bootstrap switch, its history and the admin list.
 
+-- 1. Limits ----------------------------------------------------------------------
 create or replace function public.enforce_contact_limit()
 returns trigger
 language plpgsql
@@ -29,7 +26,7 @@ declare
 begin
   perform pg_advisory_xact_lock(hashtext('contacts:' || new.organization_id::text));
 
-  if public.org_plan(new.organization_id) = 'free' and not public.bootstrap_mode() then
+  if public.org_plan(new.organization_id) = 'free' then
     select count(*) into used
     from public.contacts
     where organization_id = new.organization_id;
@@ -62,7 +59,7 @@ begin
 
   perform pg_advisory_xact_lock(hashtext('follow_ups:' || new.organization_id::text));
 
-  if public.org_plan(new.organization_id) = 'free' and not public.bootstrap_mode() then
+  if public.org_plan(new.organization_id) = 'free' then
     select count(*) into used
     from public.follow_ups
     where organization_id = new.organization_id
@@ -88,8 +85,10 @@ declare
   uid uuid := auth.uid();
   org uuid;
   day_limit int := 5;
+  global_day_limit constant int := 3000;
   used_day int;
   used_minute int;
+  used_global int;
 begin
   if uid is null then
     raise exception 'not authenticated';
@@ -105,8 +104,6 @@ begin
 
   if org is not null and public.org_plan(org) <> 'free' then
     day_limit := 100;
-  elsif public.bootstrap_mode() then
-    day_limit := 30;
   end if;
 
   delete from public.ai_usage
@@ -120,7 +117,11 @@ begin
   from public.ai_usage
   where user_id = uid and created_at > now() - interval '1 minute';
 
-  if used_day >= day_limit or used_minute >= 5 then
+  select count(*) into used_global
+  from public.ai_usage
+  where created_at > now() - interval '1 day';
+
+  if used_day >= day_limit or used_minute >= 5 or used_global >= global_day_limit then
     return false;
   end if;
 
@@ -138,8 +139,16 @@ stable
 security definer
 set search_path to ''
 as $function$
-  select case
-    when public.bootstrap_mode() then 5
-    else case public.org_plan(org) when 'business' then 5 else 1 end
-  end;
+  select case public.org_plan(org) when 'business' then 5 else 1 end;
 $function$;
+
+-- 2. Functions ---------------------------------------------------------------------
+-- (After step 1 nothing depends on bootstrap_mode() any more.)
+drop function if exists public.set_bootstrap_mode(boolean);
+drop function if exists public.bootstrap_mode();
+drop function if exists public.is_platform_admin();
+
+-- 3. Tables ------------------------------------------------------------------------
+drop table if exists public.audit_log;
+drop table if exists public.app_settings;
+drop table if exists public.platform_admins;

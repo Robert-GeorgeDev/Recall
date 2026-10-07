@@ -6,15 +6,13 @@ This policy is part of the **Octom Terms and conditions**. If it conflicts with 
 
 Octom may offer free plans and paid plans.
 
-**During the launch period, Octom is free and paid subscriptions are not available.** No payments are taken, and the information below will apply only if and when we introduce paid plans.
-
-The indicative prices we have in mind are:
+The plans currently available are:
 
 * **Free** – no cost;
 * **Pro** – **EUR 7.99/month**;
 * **Business** – **EUR 14.99/month**.
 
-The final price and the limits of each plan will be shown on the site and in the application before you subscribe. You will not be moved to a paid plan without your express agreement.
+The features and limits of each plan are shown on the site and in the application. You will not be moved to a paid plan without your express agreement.
 
 Before you pay, you will see the relevant information about:
 

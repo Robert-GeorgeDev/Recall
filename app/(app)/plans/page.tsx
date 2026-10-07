@@ -6,7 +6,7 @@ import { useLanguage } from "@/components/language-provider";
 import { useOrgId } from "@/hooks/use-org-id";
 import BillingButton, { CheckoutNotice } from "@/components/billing-actions";
 import { usePlan } from "@/hooks/use-plan";
-import { visiblePlans, type Plan } from "@/lib/entitlements";
+import type { Plan } from "@/lib/entitlements";
 import type { Key } from "@/lib/dictionaries";
 
 const names: Record<Plan, Key> = {
@@ -20,14 +20,6 @@ const prices: Record<Plan, string> = {
   pro: "€7.99",
   business: "€14.99",
 };
-
-const bootstrapFeatures: Key[] = [
-  "plans.boot.f1",
-  "plans.boot.f2",
-  "plans.boot.f3",
-  "plans.boot.f4",
-  "plans.boot.f5",
-];
 
 const features: Record<Plan, Key[]> = {
   free: ["plans.free.f1", "plans.free.f2", "plans.free.f3", "plans.free.f4", "plans.free.f5"],
@@ -73,7 +65,6 @@ function PlansView() {
   const { state, reload } = usePlan(orgId);
   const current: Plan = state?.plan ?? "free";
   const e = state?.entitlements;
-  const bootstrap = state?.bootstrap ?? false;
 
   return (
     <main className="mx-auto max-w-5xl px-5 pb-10 pt-8">
@@ -104,8 +95,8 @@ function PlansView() {
         </div>
       )}
 
-      <div className={`mt-6 grid gap-4 ${bootstrap ? "max-w-md" : "md:grid-cols-3"}`}>
-        {state && visiblePlans(bootstrap, current).map((id) => (
+      <div className="mt-6 grid gap-4 md:grid-cols-3">
+        {state && (["free", "pro", "business"] as Plan[]).map((id) => (
           <article
             key={id}
             className={`rounded-xl border bg-white p-5 ${
@@ -126,11 +117,8 @@ function PlansView() {
                 <span className="text-sm text-slate-600"> {t("plans.perMonth")}</span>
               )}
             </p>
-            {bootstrap && id === "free" && (
-              <p className="mt-1 text-sm text-slate-600">{t("plans.boot.line")}</p>
-            )}
             <ul className="mt-4 space-y-2 text-sm">
-              {(bootstrap && id === "free" ? bootstrapFeatures : features[id]).map((f) => (
+              {features[id].map((f) => (
                 <li key={f} className="flex gap-2">
                   <Check className="mt-0.5 h-4 w-4 shrink-0 text-success" aria-hidden="true" />
                   <span>{t(f)}</span>
@@ -145,7 +133,7 @@ function PlansView() {
       </div>
 
       <p className="mt-6 text-sm text-slate-600">
-        {t(bootstrap ? "plans.boot.note" : "plans.betaNote")}
+        {t("plans.betaNote")}
       </p>
     </main>
   );

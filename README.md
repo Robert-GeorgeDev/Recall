@@ -28,7 +28,7 @@ need clarity more than features.
 - CSV import with preview; CSV export for contacts, follow-ups and activity
 - Optional daily summary email
 - English and Romanian interface
-- Free, Pro and Business plans with Stripe subscriptions, plus an admin-only Bootstrap Mode that makes the app free while the product is launching
+- Free, Pro and Business plans with Stripe subscriptions
 
 ## Stack
 

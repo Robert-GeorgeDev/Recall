@@ -26,12 +26,11 @@ auth.users
 | `subscriptions` | Plan and Stripe references. Written only by the webhook (service role) |
 | `email_preferences` | Daily summary and marketing consent per user |
 | `ai_usage` | Counters for AI limits. No message content is stored |
-| `app_settings`, `audit_log`, `platform_admins` | Bootstrap Mode switch, its history, who may change it |
 
 Rules worth knowing:
 - Child rows use composite foreign keys `(contact_id, organization_id)` so a row
   cannot point at another workspace's contact.
 - `created_by` is nullable and becomes empty when its author's account is deleted.
 - Users cannot change `organization_id` or `created_by` after a row is created.
-- `supabase/tests/security_test.sql` checks isolation, role limits and
-  Bootstrap Mode permissions, and rolls everything back.
+- `supabase/tests/security_test.sql` checks isolation and role limits,
+  and rolls everything back.

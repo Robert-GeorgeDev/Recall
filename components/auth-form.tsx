@@ -8,7 +8,6 @@ import Logo from "@/components/logo";
 import LanguageSwitcher from "@/components/language-switcher";
 import { useLanguage } from "@/components/language-provider";
 import { isPaidPlan, setPendingPlan, type PaidPlan } from "@/lib/pending-plan";
-import { useBootstrapMode } from "@/hooks/use-bootstrap";
 import type { Key } from "@/lib/dictionaries";
 
 function errorKey(code: string | undefined): Key {
@@ -46,12 +45,9 @@ export default function AuthForm({ mode }: { mode: "login" | "signup" }) {
   const [busy, setBusy] = useState(false);
   const isSignup = mode === "signup";
   const [chosen, setChosen] = useState<PaidPlan | null>(null);
-  const bootstrap = useBootstrapMode();
 
   // A plan picked on the pricing section arrives as ?plan=pro or ?plan=business.
-  // In Bootstrap Mode paid plans are not on sale, so the choice is ignored.
   useEffect(() => {
-    if (bootstrap !== false) return;
     const value = new URLSearchParams(window.location.search).get("plan");
     if (!isPaidPlan(value)) return;
     setChosen(value);
@@ -59,7 +55,7 @@ export default function AuthForm({ mode }: { mode: "login" | "signup" }) {
     supabase.auth.getSession().then(({ data }) => {
       if (data.session) router.replace("/dashboard");
     });
-  }, [router, bootstrap]);
+  }, [router]);
 
   async function handleSubmit(e: React.FormEvent<HTMLFormElement>) {
     e.preventDefault();

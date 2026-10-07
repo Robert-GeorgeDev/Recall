@@ -11,7 +11,6 @@ import {
   HistoryMock, SnoozeMock, StoryMock, TeamMock, TodayMock,
 } from "@/components/site-mock";
 import { useLanguage } from "@/components/language-provider";
-import { useBootstrapMode } from "@/hooks/use-bootstrap";
 import type { Key } from "@/lib/dictionaries";
 
 const demos: { n: Key; title: Key; text: Key; Mock: () => React.JSX.Element }[] = [
@@ -20,7 +19,6 @@ const demos: { n: Key; title: Key; text: Key; Mock: () => React.JSX.Element }[] 
   { n: "site.p3.n", title: "site.p3.title", text: "site.p3.text", Mock: HistoryMock },
 ];
 
-const bootFeats: Key[] = ["plans.boot.f1", "plans.boot.f2", "plans.boot.f3", "plans.boot.f4", "plans.boot.f5"];
 
 const steps: { title: Key; text: Key }[] = [
   { title: "landing.s1.title", text: "landing.s1.text" },
@@ -61,14 +59,13 @@ const lead = "text-lg leading-relaxed text-slate-600 sm:text-xl";
 
 export default function Home() {
   const { t } = useLanguage();
-  const bootstrap = useBootstrapMode();
   const year = new Date().getFullYear();
 
   return (
     <div className="text-ink">
       <header className="sticky top-0 z-40 border-b border-line/60 bg-white/80 backdrop-blur-xl">
         <div className="mx-auto flex h-14 max-w-6xl items-center justify-between px-5">
-          <Link href="/" aria-label="Octom"><Logo /></Link>
+          <Link href="/" aria-label="OCTOM One"><Logo /></Link>
           <nav className="hidden items-center gap-8 text-sm text-slate-600 md:flex" aria-label="Main">
             <a href="#product" className="transition hover:text-ink">{t("land.nav.features")}</a>
             <a href="#pricing" className="transition hover:text-ink">{t("land.nav.pricing")}</a>
@@ -185,24 +182,21 @@ export default function Home() {
           <div className="text-center">
             <h2 className={h2}>{t("land.pricing.title")}</h2>
             <p className="mt-4 text-lg text-slate-600">
-              {t(bootstrap ? "site.pricing.boot.sub" : "site.pricing.sub")}
+              {t("site.pricing.sub")}
             </p>
             <p className="mt-5 inline-flex rounded-full border border-line bg-white px-3 py-1 text-xs font-semibold tracking-wide text-slate-600">{t("site.beta")}</p>
           </div>
-          {bootstrap === null ? (
-            <div className="mt-12 min-h-[28rem]" aria-hidden="true" />
-          ) : (
-          <div className={bootstrap ? "mx-auto mt-12 grid max-w-md gap-6" : "mt-12 grid gap-6 lg:grid-cols-3"}>
-            {(bootstrap ? plans.filter((p) => p.slug === "free") : plans).map((p) => (
+          <div className="mt-12 grid gap-6 lg:grid-cols-3">
+            {plans.map((p) => (
               <div key={p.name} className={`relative flex flex-col rounded-2xl p-8 ${p.pick ? "border-2 border-brand bg-white shadow-lift" : "card"}`}>
                 {p.pick && (
                   <span className="absolute -top-3 left-8 rounded-full bg-brand px-3 py-0.5 text-xs font-semibold text-white">{t("site.plan.recommended")}</span>
                 )}
                 <h3 className="text-lg font-semibold">{t(p.name)}</h3>
-                <p className="mt-1 text-sm text-slate-500">{t(bootstrap ? "plans.boot.line" : p.line)}</p>
+                <p className="mt-1 text-sm text-slate-500">{t(p.line)}</p>
                 <p className="mt-5"><span className="text-5xl font-semibold tracking-tight">€{p.price}</span> <span className="text-slate-500">{t("plans.perMonth")}</span></p>
                 <ul className="mt-8 flex-1 space-y-3 text-sm">
-                  {(bootstrap ? bootFeats : p.feats).map((f) => (
+                  {p.feats.map((f) => (
                     <li key={f} className="flex gap-3"><Check className="mt-0.5 h-4 w-4 shrink-0 text-brand" aria-hidden="true" />{t(f)}</li>
                   ))}
                 </ul>
@@ -219,8 +213,7 @@ export default function Home() {
               </div>
             ))}
           </div>
-          )}
-          <p className="mt-8 text-center text-sm text-slate-500">{t(bootstrap ? "plans.boot.note" : "plans.betaNote")}</p>
+          <p className="mt-8 text-center text-sm text-slate-500">{t("plans.betaNote")}</p>
         </Section>
 
         <Section id="faq" className="border-t border-line/70 bg-white/70">
@@ -232,7 +225,7 @@ export default function Home() {
                   {t(q)}
                   <span className="text-2xl text-slate-400 transition duration-200 group-open:rotate-45" aria-hidden="true">+</span>
                 </summary>
-                <p className="mt-3 text-slate-600">{t(bootstrap && a === "land.a1" ? "land.a1.boot" : a)}</p>
+                <p className="mt-3 text-slate-600">{t(a)}</p>
               </details>
             ))}
           </div>

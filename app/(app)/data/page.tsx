@@ -9,7 +9,7 @@ import { useOrgId } from "@/hooks/use-org-id";
 import { usePlan } from "@/hooks/use-plan";
 import { supabase } from "@/lib/supabase";
 import { addDays, todayISO } from "@/lib/dates";
-import { BRAND } from "@/lib/brand";
+import { BRAND_SLUG } from "@/lib/brand";
 import {
   buildCsv,
   buildTable,
@@ -108,7 +108,7 @@ function DataView() {
   function downloadTemplate() {
     const next = addDays(todayISO(), 7);
     downloadCsv(
-      `${BRAND.toLowerCase()}-contacts-template.csv`,
+      `${BRAND_SLUG}-contacts-template.csv`,
       buildCsv([
         ["Maria", "Ionescu", "Bright Agency", "maria@example.com", "+40 700 000 000", "Contacted", "Asked for a call this week", next],
         ["Andrei", "Pop", "Studio Nord", "andrei@example.com", "", "New", "", ""],
@@ -206,7 +206,7 @@ function DataView() {
             .range(from, to)
         );
         downloadCsv(
-          `${BRAND.toLowerCase()}-follow-ups-${todayISO()}.csv`,
+          `${BRAND_SLUG}-follow-ups-${todayISO()}.csv`,
           buildTable(
             ["contact_name", "contact_email", "due_date", "due_time", "priority", "status", "completed_at", "note"],
             rows.map((r) => [
@@ -233,7 +233,7 @@ function DataView() {
             .range(from, to)
         );
         downloadCsv(
-          `${BRAND.toLowerCase()}-activity-${todayISO()}.csv`,
+          `${BRAND_SLUG}-activity-${todayISO()}.csv`,
           buildTable(
             ["contact_name", "contact_email", "created_at", "type", "description"],
             rows.map((r) => [
@@ -284,7 +284,7 @@ function DataView() {
       }
 
       downloadCsv(
-        `${BRAND.toLowerCase()}-contacts-${todayISO()}.csv`,
+        `${BRAND_SLUG}-contacts-${todayISO()}.csv`,
         buildCsv(
           contacts.map((c) => [
             c.first_name,

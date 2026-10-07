@@ -68,9 +68,12 @@ describe.each(LEGAL_SLUGS)("legal page %s", (slug) => {
 });
 
 describe("paid plans wording", () => {
-  it.each(["terms", "refunds"])("%s says the launch period is free", (slug) => {
-    expect(read(slug, "ro")).toMatch(/perioada de lansare, Octom este (oferit )?gratuit/);
-    expect(read(slug, "en")).toMatch(/During the launch period, Octom is (offered )?free/);
+  it.each(["terms", "refunds"])("%s lists the paid plans and no free-launch wording", (slug) => {
+    for (const lang of ["ro", "en"] as const) {
+      const text = read(slug, lang);
+      expect(text).toMatch(/7[.,]99/);
+      expect(text).not.toMatch(/launch period|perioada de lansare/i);
+    }
   });
 
   it("terms do not forbid what the AGPL allows", () => {

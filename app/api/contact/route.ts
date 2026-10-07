@@ -77,7 +77,7 @@ export async function POST(req: Request) {
       method: "POST",
       headers: { Authorization: `Bearer ${key}`, "Content-Type": "application/json" },
       body: JSON.stringify({
-        from: process.env.EMAIL_FROM ?? "Octom <onboarding@resend.dev>",
+        from: process.env.EMAIL_FROM ?? "OCTOM One <onboarding@resend.dev>",
         to,
         reply_to: email,
         subject: `Octom contact: ${name}`.replace(/[\r\n]/g, " ").slice(0, 150),
