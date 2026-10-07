@@ -1,6 +1,5 @@
 import { NextResponse } from "next/server";
 import { adminClient, authorize, originOf, priceFor, stripeClient } from "@/lib/billing";
-import { BOOTSTRAP_BLOCKED_MESSAGE, getBootstrapMode } from "@/lib/bootstrap";
 
 export async function POST(req: Request) {
   let body: { orgId?: string; plan?: string };
@@ -14,14 +13,6 @@ export async function POST(req: Request) {
     return NextResponse.json({ error: "bad_request" }, { status: 400 });
   }
   try {
-    // Bootstrap Mode: no new paid subscriptions. Checked on the server, from the
-    // database, every time. If the setting cannot be read this fails closed.
-    if (await getBootstrapMode()) {
-      return NextResponse.json(
-        { error: "bootstrap_mode", message: BOOTSTRAP_BLOCKED_MESSAGE },
-        { status: 403 }
-      );
-    }
     const user = await authorize(req, orgId);
     if (!user) return NextResponse.json({ error: "forbidden" }, { status: 403 });
     const price = priceFor(plan);

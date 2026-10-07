@@ -1,4 +1,4 @@
-These Terms and Conditions ("Terms") govern access to and use of the **Octom** service, including the website, the web application and the features available through them.
+These Terms and Conditions ("Terms") govern access to and use of the **Octom** service, offered under the name **OCTOM One** (in these Terms, “Octom”), including the website (octom.eu), the web application (one.octom.eu) and the features available through them.
 
 By creating an account, accessing or using Octom, you accept these Terms.
 
@@ -128,11 +128,7 @@ The applicable limits are shown in the relevant plan and may be changed for the 
 
 Octom may offer free plans and paid plans.
 
-**During the launch period, Octom is offered free of charge and paid subscriptions are not available.** You will not be charged for using the service during this period.
-
-We reserve the right to introduce paid plans later. The indicative prices we have in mind are **Pro – EUR 7.99/month** and **Business – EUR 14.99/month**; the final price, billing period, applicable taxes and the limits of each plan will be shown before you subscribe. You will not be moved to a paid plan without your express agreement.
-
-If we introduce paid plans, you will be able to choose between the free plan, within the limits shown in the application, and the paid plans.
+The plans currently available are **Free**, **Pro** (EUR 7.99/month) and **Business** (EUR 14.99/month). The final price, billing period, applicable taxes and limits of each plan are shown before you subscribe. You will not be moved to a paid plan without your express agreement. You can use the free plan within the limits shown in the application.
 
 ### Paid subscriptions
 

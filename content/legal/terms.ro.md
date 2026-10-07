@@ -1,4 +1,4 @@
-Acești Termeni și condiții („Termenii”) reglementează accesul și utilizarea serviciului **Octom**, inclusiv site-ul, aplicația web și funcționalitățile disponibile prin intermediul acestora.
+Acești Termeni și condiții („Termenii”) reglementează accesul și utilizarea serviciului **Octom**, comercializat sub numele **OCTOM One** (în acești Termeni, „Octom”), inclusiv site-ul (octom.eu), aplicația web (one.octom.eu) și funcționalitățile disponibile prin intermediul acestora.
 
 Prin crearea unui cont, accesarea sau utilizarea Octom, accepți acești Termeni.
 
@@ -138,11 +138,7 @@ Limitele aplicabile sunt afișate în cadrul planului relevant și pot fi modifi
 
 Octom poate oferi planuri gratuite și planuri plătite.
 
-**În perioada de lansare, Octom este oferit gratuit, iar abonamentele plătite nu sunt disponibile.** Nu vei fi taxat pentru utilizarea serviciului în această perioadă.
-
-Ne rezervăm dreptul de a introduce ulterior planuri plătite. Prețurile orientative avute în vedere sunt **Pro – 7,99 EUR/lună** și **Business – 14,99 EUR/lună**; prețul final, perioada de facturare, taxele aplicabile și limitele fiecărui plan vor fi afișate înainte de efectuarea abonării. Nu vei fi trecut la un plan plătit fără acordul tău expres.
-
-Dacă introducem planuri plătite, vei putea alege între planul gratuit, în limitele afișate în aplicație, și planurile plătite.
+În prezent, planurile disponibile sunt **Free**, **Pro** (7,99 EUR/lună) și **Business** (14,99 EUR/lună). Prețul final, perioada de facturare, taxele aplicabile și limitele fiecărui plan sunt afișate înainte de efectuarea abonării. Nu vei fi trecut la un plan plătit fără acordul tău expres. Poți folosi planul gratuit în limitele afișate în aplicație.
 
 Putem introduce, modifica sau elimina planuri și funcționalități pentru viitor, în conformitate cu legislația aplicabilă.
 

@@ -1,7 +1,7 @@
 import { createClient } from "@supabase/supabase-js";
 import Stripe from "stripe";
 import { SUPABASE_URL } from "@/lib/supabase-config";
-import { SITE_URL } from "@/lib/site";
+import { APP_URL } from "@/lib/hosts";
 
 export function stripeClient() {
   const key = process.env.STRIPE_SECRET_KEY;
@@ -48,5 +48,5 @@ export async function authorize(req: Request, orgId: string) {
 
 // Where Stripe sends people back to. Never taken from request headers.
 export function originOf(_req?: Request) {
-  return process.env.APP_URL || SITE_URL;
+  return process.env.APP_URL || APP_URL;
 }

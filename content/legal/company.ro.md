@@ -11,7 +11,7 @@ Informațiile de mai jos sunt furnizate pentru identificarea operatorului servic
 **{{legalForm}}**
 
 **Marca / serviciul:**
-**Octom**
+**Octom** – serviciul **OCTOM One** (aplicația, la one.octom.eu; site-ul, la octom.eu)
 
 **Sediu social:**
 **{{address}}**

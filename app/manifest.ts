@@ -2,8 +2,8 @@ import type { MetadataRoute } from "next";
 
 export default function manifest(): MetadataRoute.Manifest {
   return {
-    name: "Octom",
-    short_name: "Octom",
+    name: "OCTOM One",
+    short_name: "OCTOM One",
     description: "Know who to contact today.",
     start_url: "/dashboard",
     display: "standalone",

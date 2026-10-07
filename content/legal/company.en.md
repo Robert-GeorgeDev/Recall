@@ -11,7 +11,7 @@ The information below identifies the operator of the service and is provided for
 **{{legalForm}}**
 
 **Brand / service:**
-**Octom**
+**Octom** – the **OCTOM One** service (the app at one.octom.eu; the website at octom.eu)
 
 **Registered office:**
 **{{address}}**

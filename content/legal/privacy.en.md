@@ -216,7 +216,7 @@ Used to process payments and manage subscriptions.
 
 Full card details are sent directly to Stripe and are not stored by Octom.
 
-We may keep information about the subscription, transactions and invoices for as long as needed to administer the service and meet legal obligations. This information is not deleted automatically together with the account where the law requires it to be kept (for example, accounting documents). During the launch period, paid plans are not available.
+We may keep information about the subscription, transactions and invoices for as long as needed to administer the service and meet legal obligations. This information is not deleted automatically together with the account where the law requires it to be kept (for example, accounting documents).
 
 ### Public authorities and other recipients
 

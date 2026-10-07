@@ -12,7 +12,6 @@ import { enData, roData } from "@/lib/dictionary-data";
 import { enActivity, roActivity } from "@/lib/dictionary-activity";
 import { enMore, roMore } from "@/lib/dictionary-more";
 import { enHelp, roHelp } from "@/lib/dictionary-help";
-import { enAdmin, roAdmin } from "@/lib/dictionary-admin";
 
 const enBase = {
   "nav.dashboard": "Dashboard",
@@ -25,7 +24,7 @@ const enBase = {
 
   "landing.login": "Log in",
   "landing.title": "You said you'd follow up.\nOctom remembers.",
-  "landing.subtitle": "Octom shows you who to contact, when to follow up and what to do. No forgotten spreadsheets, nothing kept in your head.",
+  "landing.subtitle": "OCTOM One shows you who to contact, when to follow up and what to do. No forgotten spreadsheets, nothing kept in your head.",
   "landing.cta": "Start free",
   "landing.how": "See how it works",
   "landing.howTitle": "How it works",
@@ -96,7 +95,7 @@ const enBase = {
   "card.confirmDelete": "Delete this follow-up?",
 };
 
-const en = { ...enBase, ...enMore, ...enActivity, ...enData, ...enAi, ...enLegal, ...enPlans, ...enAccount, ...enLand, ...enTeam, ...enSite, ...enBilling, ...enAssistant, ...enHelp, ...enAdmin };
+const en = { ...enBase, ...enMore, ...enActivity, ...enData, ...enAi, ...enLegal, ...enPlans, ...enAccount, ...enLand, ...enTeam, ...enSite, ...enBilling, ...enAssistant, ...enHelp };
 export type Key = keyof typeof en;
 
 const roBase: Record<keyof typeof enBase, string> = {
@@ -110,7 +109,7 @@ const roBase: Record<keyof typeof enBase, string> = {
 
   "landing.login": "Autentificare",
   "landing.title": "Ai spus că revii.\nOctom ține minte.",
-  "landing.subtitle": "Octom îți arată pe cine să contactezi, când să revii și ce ai de făcut. Fără tabele uitate și lucruri ținute în cap.",
+  "landing.subtitle": "OCTOM One îți arată pe cine să contactezi, când să revii și ce ai de făcut. Fără tabele uitate și lucruri ținute în cap.",
   "landing.cta": "Începe gratuit",
   "landing.how": "Vezi cum funcționează",
   "landing.howTitle": "Cum funcționează",
@@ -181,7 +180,7 @@ const roBase: Record<keyof typeof enBase, string> = {
   "card.confirmDelete": "Ștergi acest follow-up?",
 };
 
-const ro: Record<Key, string> = { ...roBase, ...roMore, ...roActivity, ...roData, ...roAi, ...roLegal, ...roPlans, ...roAccount, ...roLand, ...roTeam, ...roSite, ...roBilling, ...roAssistant, ...roHelp, ...roAdmin };
+const ro: Record<Key, string> = { ...roBase, ...roMore, ...roActivity, ...roData, ...roAi, ...roLegal, ...roPlans, ...roAccount, ...roLand, ...roTeam, ...roSite, ...roBilling, ...roAssistant, ...roHelp };
 
 export const dictionaries: Record<"en" | "ro", Record<Key, string>> = { en, ro };
 

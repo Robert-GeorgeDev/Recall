@@ -6,14 +6,6 @@ const state = vi.hoisted(() => ({
   event: null as unknown,
 }));
 
-// Bootstrap Mode must not influence webhook handling. If the handler ever asks
-// for the setting, this test fails.
-vi.mock("@/lib/bootstrap", () => ({
-  getBootstrapMode: () => {
-    throw new Error("webhook must not read Bootstrap Mode");
-  },
-}));
-
 vi.mock("@/lib/billing", () => ({
   planFromPrice: (id?: string) => (id === "price_pro" ? "pro" : null),
   adminClient: () => ({ from: () => ({ upsert: state.upsert }) }),
@@ -45,7 +37,7 @@ describe("stripe webhook", () => {
     };
   });
 
-  it("keeps syncing existing subscriptions regardless of Bootstrap Mode", async () => {
+  it("syncs the subscription from the event", async () => {
     const res = await POST(
       new Request("http://localhost/api/stripe/webhook", {
         method: "POST",

@@ -8,7 +8,7 @@ export const LEGAL = {
   email: "contact@octom.eu",
   companyId: "[CUI]",
   registryNo: "[J../../..]",
-  updated: "2026-10-06",
+  updated: "2026-10-07",
 };
 
 export const isDraft = Object.values(LEGAL).some((v) => v.includes("["));

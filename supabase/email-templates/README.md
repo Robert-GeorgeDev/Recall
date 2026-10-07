@@ -1,4 +1,4 @@
-# Șabloane email Octom (Supabase Auth)
+# Șabloane email OCTOM One (Supabase Auth)
 
 Design premium, bilingv (RO implicit, EN când contul are `lang = en`).
 
@@ -7,12 +7,12 @@ Supabase Dashboard → **Authentication → Emails → Templates**. Pentru fieca
 
 | Șablon Supabase | Fișier | Subiect (Subject) |
 |---|---|---|
-| Confirm signup | `confirm-signup.html` | Confirmă-ți contul Octom · Confirm your Octom account |
-| Invite user | `invite-user.html` | Ai fost invitat în Octom · You're invited to Octom |
-| Magic link | `magic-link.html` | Link-ul tău de autentificare Octom · Your Octom sign-in link |
+| Confirm signup | `confirm-signup.html` | Confirmă-ți contul OCTOM One · Confirm your OCTOM One account |
+| Invite user | `invite-user.html` | Ai fost invitat în OCTOM One · You're invited to OCTOM One |
+| Magic link | `magic-link.html` | Link-ul tău de autentificare OCTOM One · Your OCTOM One sign-in link |
 | Change email address | `change-email.html` | Confirmă noua adresă de email · Confirm your new email address |
-| Reset password | `reset-password.html` | Resetează-ți parola Octom · Reset your Octom password |
-| Reauthentication | `reauthentication.html` | Codul tău de verificare Octom · Your Octom verification code |
+| Reset password | `reset-password.html` | Resetează-ți parola OCTOM One · Reset your OCTOM One password |
+| Reauthentication | `reauthentication.html` | Codul tău de verificare OCTOM One · Your OCTOM One verification code |
 
 Subiectele sunt statice în Supabase, de aceea sunt bilingve.
 
@@ -20,9 +20,9 @@ Subiectele sunt statice în Supabase, de aceea sunt bilingve.
 La înregistrare, aplicația salvează `lang` în metadatele utilizatorului. Șabloanele folosesc `{{ .Data.lang }}`; dacă lipsește, se afișează în română.
 
 ## Setări necesare
-- **Authentication → URL Configuration**: `Site URL` = domeniul real; la *Redirect URLs* adaugă `https://<domeniu>/reset-password` și `https://<domeniu>/**`.
+- **Authentication → URL Configuration**: `Site URL` = `https://one.octom.eu` (aplicația); la *Redirect URLs* adaugă `https://one.octom.eu/**` (poți păstra și `https://octom.eu/**`, `https://www.octom.eu/**`).
 - **Authentication → SMTP**: folosește Resend (domeniu verificat), altfel emailurile pleacă din serverul implicit, limitat și cu risc de spam.
 - Testează cu o înregistrare reală și o resetare de parolă.
 
 ## Resetare parolă (important)
-Șablonul `reset-password.html` folosește `{{ .SiteURL }}/reset-password?token_hash={{ .TokenHash }}&type=recovery`, nu `{{ .ConfirmationURL }}`. Tokenul se consumă doar când omul apasă „Continuă” pe site, deci scanerele de email (Gmail, Outlook) care deschid linkurile în avans nu îl mai strică ("otp_expired"). `Site URL` trebuie să fie exact adresa folosită de utilizatori (ex. `https://www.octom.eu`).
+Șablonul `reset-password.html` folosește `{{ .SiteURL }}/reset-password?token_hash={{ .TokenHash }}&type=recovery`, nu `{{ .ConfirmationURL }}`. Tokenul se consumă doar când omul apasă „Continuă” pe site, deci scanerele de email (Gmail, Outlook) care deschid linkurile în avans nu îl mai strică ("otp_expired"). `Site URL` trebuie să fie exact adresa folosită de utilizatori (`https://one.octom.eu`).

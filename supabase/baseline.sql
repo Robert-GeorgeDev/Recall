@@ -2,14 +2,14 @@
 -- Purpose: version control + disaster recovery + a way to build a staging project.
 -- It is a reference. Production already has all of this; do NOT run it there.
 -- To build a NEW empty Supabase project, run in the SQL Editor, in this order:
---   1. this file   2. bootstrap-mode.sql   3. bootstrap-limits.sql
---   4. security-fixes.sql   5. security-hardening-2.sql   6. security-hardening-3.sql
--- (2-6 are idempotent patches; this snapshot already contains their live effects
+--   1. this file   2. security-fixes.sql   3. security-hardening-2.sql
+--   4. security-hardening-3.sql
+-- (2-4 are idempotent patches; this snapshot already contains their live effects
 -- up to the date above, so re-running them is harmless.)
--- Tables app_settings, audit_log, platform_admins are defined in bootstrap-mode.sql.
+-- Bootstrap Mode and the platform-admin tables were removed (remove-bootstrap.sql).
 -- Not included: Supabase-managed objects (auth schema, event trigger rls_auto_enable).
 
-set check_function_bodies = off; -- some functions reference tables created later by bootstrap-mode.sql
+set check_function_bodies = off;
 
 -- ===== Tables =====
 create table if not exists public.organizations (
@@ -184,7 +184,33 @@ begin
     raise exception 'invalid_invitation';
   end if;
 
-  perform pg_advisory_xact_lock(hashtext('seats:' \;
+  perform pg_advisory_xact_lock(hashtext('seats:' || inv.organization_id::text));
+
+  select organization_id into cur_org from public.organization_members where user_id = uid limit 1;
+
+  if cur_org = inv.organization_id then raise exception 'already_member'; end if;
+
+  if cur_org is not null then
+    -- only an empty personal workspace (just this user, no data) may be replaced
+    if (select count(*) from public.organization_members where organization_id = cur_org) <> 1
+       or exists (select 1 from public.contacts where organization_id = cur_org)
+       or exists (select 1 from public.follow_ups where organization_id = cur_org) then
+      raise exception 'already_in_workspace';
+    end if;
+    delete from public.organizations where id = cur_org;
+  end if;
+
+  select count(*) into seats from public.organization_members where organization_id = inv.organization_id;
+  if seats >= public.org_seat_limit(inv.organization_id) then raise exception 'plan_limit_seats'; end if;
+
+  insert into public.organization_members (organization_id, user_id, role)
+  values (inv.organization_id, uid, inv.role);
+
+  update public.invitations set accepted_at = now(), accepted_by = uid where id = inv.id;
+
+  return inv.organization_id;
+end;
+$function$;
 CREATE OR REPLACE FUNCTION public.ai_check_and_log(request_kind text)
  RETURNS boolean
  LANGUAGE plpgsql
@@ -195,8 +221,10 @@ declare
   uid uuid := auth.uid();
   org uuid;
   day_limit int := 5;
+  global_day_limit constant int := 3000;
   used_day int;
   used_minute int;
+  used_global int;
 begin
   if uid is null then
     raise exception 'not authenticated';
@@ -208,17 +236,36 @@ begin
   limit 1;
 
   -- One request at a time per user, so parallel requests cannot all pass the check.
-  perform pg_advisory_xact_lock(hashtext('ai:' \;
-CREATE OR REPLACE FUNCTION public.bootstrap_mode()
- RETURNS boolean
- LANGUAGE sql
- STABLE SECURITY DEFINER
- SET search_path TO ''
-AS $function$
-  select coalesce(
-    (select s.value = 'true'::jsonb from public.app_settings s where s.key = 'bootstrap_mode'),
-    false
-  )
+  perform pg_advisory_xact_lock(hashtext('ai:' || uid::text));
+
+  if org is not null and public.org_plan(org) <> 'free' then
+    day_limit := 100;
+  end if;
+
+  delete from public.ai_usage
+  where user_id = uid and created_at < now() - interval '2 days';
+
+  select count(*) into used_day
+  from public.ai_usage
+  where user_id = uid and created_at > now() - interval '1 day';
+
+  select count(*) into used_minute
+  from public.ai_usage
+  where user_id = uid and created_at > now() - interval '1 minute';
+
+  select count(*) into used_global
+  from public.ai_usage
+  where created_at > now() - interval '1 day';
+
+  if used_day >= day_limit or used_minute >= 5 or used_global >= global_day_limit then
+    return false;
+  end if;
+
+  insert into public.ai_usage (user_id, kind)
+  values (uid, left(coalesce(request_kind, ''), 30));
+
+  return true;
+end;
 $function$;
 CREATE OR REPLACE FUNCTION public.check_assignee()
  RETURNS trigger
@@ -278,7 +325,21 @@ begin
   if invite_role not in ('admin', 'member') then raise exception 'invalid_role'; end if;
   if invite_role = 'admin' and my_role <> 'owner' then raise exception 'not_allowed'; end if;
 
-  perform pg_advisory_xact_lock(hashtext('seats:' \;
+  perform pg_advisory_xact_lock(hashtext('seats:' || org::text));
+
+  select count(*) into used from public.organization_members where organization_id = org;
+  select count(*) into pending from public.invitations
+    where organization_id = org and accepted_at is null and expires_at > now();
+
+  if used + pending >= public.org_seat_limit(org) then raise exception 'plan_limit_seats'; end if;
+
+  insert into public.invitations (organization_id, role)
+  values (org, invite_role)
+  returning token into tok;
+
+  return tok;
+end;
+$function$;
 CREATE OR REPLACE FUNCTION public.create_workspace(workspace_name text)
  RETURNS uuid
  LANGUAGE plpgsql
@@ -360,7 +421,21 @@ AS $function$
 declare
   used int;
 begin
-  perform pg_advisory_xact_lock(hashtext('contacts:' \;
+  perform pg_advisory_xact_lock(hashtext('contacts:' || new.organization_id::text));
+
+  if public.org_plan(new.organization_id) = 'free' then
+    select count(*) into used
+    from public.contacts
+    where organization_id = new.organization_id;
+
+    if used >= 10 then
+      raise exception 'plan_limit_contacts';
+    end if;
+  end if;
+
+  return new;
+end;
+$function$;
 CREATE OR REPLACE FUNCTION public.enforce_followup_limit()
  RETURNS trigger
  LANGUAGE plpgsql
@@ -378,7 +453,23 @@ begin
     return new;
   end if;
 
-  perform pg_advisory_xact_lock(hashtext('follow_ups:' \;
+  perform pg_advisory_xact_lock(hashtext('follow_ups:' || new.organization_id::text));
+
+  if public.org_plan(new.organization_id) = 'free' then
+    select count(*) into used
+    from public.follow_ups
+    where organization_id = new.organization_id
+      and status = 'open'
+      and id <> new.id;
+
+    if used >= 10 then
+      raise exception 'plan_limit_follow_ups';
+    end if;
+  end if;
+
+  return new;
+end;
+$function$;
 CREATE OR REPLACE FUNCTION public.is_org_admin(org uuid)
  RETURNS boolean
  LANGUAGE sql
@@ -404,14 +495,6 @@ AS $function$
     where m.organization_id = org
       and m.user_id = (select auth.uid())
   );
-$function$;
-CREATE OR REPLACE FUNCTION public.is_platform_admin()
- RETURNS boolean
- LANGUAGE sql
- STABLE SECURITY DEFINER
- SET search_path TO ''
-AS $function$
-  select exists (select 1 from public.platform_admins where user_id = auth.uid())
 $function$;
 CREATE OR REPLACE FUNCTION public.leave_workspace()
  RETURNS void
@@ -525,10 +608,7 @@ CREATE OR REPLACE FUNCTION public.org_seat_limit(org uuid)
  STABLE SECURITY DEFINER
  SET search_path TO ''
 AS $function$
-  select case
-    when public.bootstrap_mode() then 5
-    else case public.org_plan(org) when 'business' then 5 else 1 end
-  end;
+  select case public.org_plan(org) when 'business' then 5 else 1 end;
 $function$;
 CREATE OR REPLACE FUNCTION public.preview_invitation(invite_token text)
  RETURNS TABLE(organization_name text, role text)
@@ -583,45 +663,6 @@ begin
   if org is null or not public.is_org_admin(org) then raise exception 'not_allowed'; end if;
   delete from public.invitations where id = invitation_id and accepted_at is null;
 end;
-$function$;
-CREATE OR REPLACE FUNCTION public.set_bootstrap_mode(enabled boolean)
- RETURNS boolean
- LANGUAGE plpgsql
- SECURITY DEFINER
- SET search_path TO ''
-AS $function$
-declare
-  uid uuid := auth.uid();
-  prev boolean;
-begin
-  if uid is null
-     or not exists (select 1 from public.platform_admins where user_id = uid) then
-    raise exception 'forbidden' using errcode = '42501';
-  end if;
-  if enabled is null then
-    raise exception 'invalid value' using errcode = '22023';
-  end if;
-
-  prev := public.bootstrap_mode();
-  if prev = enabled then
-    return enabled;
-  end if;
-
-  insert into public.app_settings (key, value, updated_at, updated_by)
-  values ('bootstrap_mode', to_jsonb(enabled), now(), uid)
-  on conflict (key) do update
-    set value = excluded.value, updated_at = now(), updated_by = uid;
-
-  insert into public.audit_log (action, actor_id, previous_value, new_value)
-  values (
-    case when enabled then 'bootstrap_mode_enabled' else 'bootstrap_mode_disabled' end,
-    uid,
-    to_jsonb(prev),
-    to_jsonb(enabled)
-  );
-
-  return enabled;
-end
 $function$;
 CREATE OR REPLACE FUNCTION public.set_member_role(target uuid, new_role text)
  RETURNS void

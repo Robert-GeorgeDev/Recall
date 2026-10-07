@@ -224,7 +224,7 @@ Utilizat pentru procesarea plăților și administrarea abonamentelor.
 
 Datele complete ale cardului sunt transmise direct către Stripe și nu sunt stocate de Octom.
 
-Putem păstra informații privind abonamentul, tranzacțiile și facturile atât timp cât este necesar pentru administrarea serviciului și îndeplinirea obligațiilor legale. Aceste informații nu sunt șterse automat odată cu contul, în măsura în care legea impune păstrarea lor (de exemplu, documentele contabile). În perioada de lansare, planurile plătite nu sunt disponibile.
+Putem păstra informații privind abonamentul, tranzacțiile și facturile atât timp cât este necesar pentru administrarea serviciului și îndeplinirea obligațiilor legale. Aceste informații nu sunt șterse automat odată cu contul, în măsura în care legea impune păstrarea lor (de exemplu, documentele contabile).
 
 ### Autorități publice și alte destinatari
 

@@ -5,7 +5,6 @@ import { useRouter } from "next/navigation";
 import { useLanguage } from "@/components/language-provider";
 import { useOrgId } from "@/hooks/use-org-id";
 import { clearPendingPlan, getPendingPlan } from "@/lib/pending-plan";
-import { useBootstrapMode } from "@/hooks/use-bootstrap";
 import { supabase } from "@/lib/supabase";
 
 /**
@@ -16,17 +15,11 @@ export default function PlanRedirect() {
   const { t } = useLanguage();
   const router = useRouter();
   const orgId = useOrgId();
-  const bootstrap = useBootstrapMode();
   const started = useRef(false);
   const [busy, setBusy] = useState(false);
 
   useEffect(() => {
-    if (!orgId || started.current || bootstrap === null) return;
-    if (bootstrap) {
-      // Paid plans are not on sale right now; forget any earlier choice.
-      clearPendingPlan();
-      return;
-    }
+    if (!orgId || started.current) return;
     const plan = getPendingPlan();
     if (!plan) return;
     started.current = true;
@@ -57,7 +50,7 @@ export default function PlanRedirect() {
       setBusy(false);
       router.replace("/plans");
     })();
-  }, [orgId, router, bootstrap]);
+  }, [orgId, router]);
 
   if (!busy) return null;
   return (

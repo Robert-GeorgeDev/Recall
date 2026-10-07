@@ -1,6 +1,8 @@
+import { timingSafeEqual } from "node:crypto";
 import { NextResponse } from "next/server";
 import { createClient } from "@supabase/supabase-js";
 import { SUPABASE_URL } from "@/lib/supabase-config";
+import { APP_URL } from "@/lib/hosts";
 
 export const dynamic = "force-dynamic";
 
@@ -18,8 +20,7 @@ function nameOf(r: Row) {
 
 function baseUrl() {
   if (process.env.APP_URL) return process.env.APP_URL.replace(/\/$/, "");
-  if (process.env.VERCEL_PROJECT_PRODUCTION_URL) return `https://${process.env.VERCEL_PROJECT_PRODUCTION_URL}`;
-  return null;
+  return APP_URL;
 }
 
 function build(rows: Row[], today: string, base: string, token: string) {
@@ -33,22 +34,28 @@ function build(rows: Row[], today: string, base: string, token: string) {
   const html = `<div style="font-family:Arial,sans-serif;max-width:520px;margin:0 auto;color:#0F172A">
 <h1 style="font-size:20px">Who to contact today</h1>
 ${block("Overdue", overdue)}${block("Due today", due)}
-<p style="margin:24px 0"><a href="${base}/dashboard" style="background:#4F46E5;color:#fff;padding:12px 18px;border-radius:10px;text-decoration:none">Open Octom</a></p>
+<p style="margin:24px 0"><a href="${base}/dashboard" style="background:#4F46E5;color:#fff;padding:12px 18px;border-radius:10px;text-decoration:none">Open OCTOM One</a></p>
 <p style="font-size:12px;color:#64748B">You get this because you turned on the daily summary. <a href="${unsub}">Unsubscribe</a></p></div>`;
   const line = (r: Row) => `- ${nameOf(r)}${r.note ? `: ${r.note}` : ""}`;
   const text = [
     "Who to contact today",
     overdue.length ? `\nOverdue:\n${overdue.map(line).join("\n")}` : "",
     due.length ? `\nDue today:\n${due.map(line).join("\n")}` : "",
-    `\nOpen Octom: ${base}/dashboard`,
+    `\nOpen OCTOM One: ${base}/dashboard`,
     `Unsubscribe: ${unsub}`,
   ].join("\n");
   return { subject: `Your follow-ups for today (${rows.length})`, html, text, unsub };
 }
 
+function sameSecret(given: string | null, secret: string): boolean {
+  const a = Buffer.from(given ?? "");
+  const b = Buffer.from(`Bearer ${secret}`);
+  return a.length === b.length && timingSafeEqual(a, b);
+}
+
 export async function GET(request: Request) {
   const secret = process.env.CRON_SECRET;
-  if (!secret || request.headers.get("authorization") !== `Bearer ${secret}`) {
+  if (!secret || !sameSecret(request.headers.get("authorization"), secret)) {
     return NextResponse.json({ error: "unauthorized" }, { status: 401 });
   }
 
@@ -60,7 +67,7 @@ export async function GET(request: Request) {
   }
 
   const dry = new URL(request.url).searchParams.get("dry") === "1";
-  const from = process.env.EMAIL_FROM ?? "Octom <onboarding@resend.dev>";
+  const from = process.env.EMAIL_FROM ?? "OCTOM One <onboarding@resend.dev>";
   const admin = createClient(SUPABASE_URL, serviceKey, { auth: { persistSession: false } });
   const today = new Date().toLocaleDateString("en-CA", { timeZone: "Europe/Bucharest" });
 
