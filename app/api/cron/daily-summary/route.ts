@@ -32,6 +32,7 @@ function build(rows: Row[], today: string, base: string, token: string) {
   const block = (title: string, items: Row[]) =>
     items.length ? `<h2 style="font-size:16px;margin:20px 0 8px">${title}</h2><ul style="padding-left:18px;margin:0">${items.map(li).join("")}</ul>` : "";
   const html = `<div style="font-family:Arial,sans-serif;max-width:520px;margin:0 auto;color:#0F172A">
+<p style="margin:0 0 20px;font-size:24px;font-weight:700;letter-spacing:-0.5px;color:#111827">octom <span style="color:#4F46E5">One</span></p>
 <h1 style="font-size:20px">Who to contact today</h1>
 ${block("Overdue", overdue)}${block("Due today", due)}
 <p style="margin:24px 0"><a href="${base}/dashboard" style="background:#4F46E5;color:#fff;padding:12px 18px;border-radius:10px;text-decoration:none">Open OCTOM One</a></p>
